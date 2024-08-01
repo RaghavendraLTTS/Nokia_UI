@@ -1,0 +1,79 @@
+.nokia {
+  top: 140px;
+  left: 45px;
+  width: 300px;
+  background: transparent linear-gradient(180deg, #403480 0%, #141653 100%) 0%
+    0% no-repeat padding-box;
+  box-shadow: 0px 0px 5px #00000080;
+  border-radius: 8px;
+  opacity: 1;
+}
+
+.dateTime {
+  /* top: 140px; */
+  left: 45px;
+  width: 300px;
+  /* height: 50px; */
+
+  /* height: auto; */
+  /* margin-top: -8px; */
+  background: transparent linear-gradient(180deg, #403480 0%, #141653 100%) 0%
+    0% no-repeat padding-box;
+  box-shadow: 0px 0px 5px #00000080;
+  border-radius: 8px;
+  opacity: 1;
+}
+
+.timeDur {
+  /* top: 140px; */
+  /* left: 45px; */
+  width: 520px;
+  /* height: 50px; */
+
+  /* height: auto; */
+  /* margin-top: -8px; */
+  background: transparent linear-gradient(180deg, #403480 0%, #141653 100%) 0%
+    0% no-repeat padding-box;
+  box-shadow: 0px 0px 5px #00000080;
+  border-radius: 8px;
+  opacity: 1;
+}
+
+.textStyle {
+  position: "relative";
+  text-align: "left";
+  color: "#97B5F9";
+  font: "Roboto";
+  font-size: "16px";
+  opacity: 1;
+}
+
+.gridStyle{
+  margin-top: "10px";
+  margin-left: "33px";
+}
+
+.MuiPickersLayout-contentWrapper.css-13xe9rf-MuiPickersLayout-contentWrapper {
+  background: transparent linear-gradient(180deg, #403480 0%, #141653 100%) 0% 0% no-repeat padding-box !important;
+}
+.css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root.Mui-error.MuiOutlinedInput-notchedOutline {
+  border: none !important;
+}
+
+.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation8.MuiPopover-paper.MuiMenu-paper.MuiMenu-paper.css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
+  background-color: #282468 !important;
+  color: "#A9C2FF" !important;
+}
+
+.cron_builder_bordering select{
+  color: #fff;
+}
+.MuiInputBase-input.MuiOutlinedInput-input.MuiInputBase-inputAdornedEnd.css-nxo287-MuiInputBase-input-MuiOutlinedInput-input {
+  color: #fff !important;
+}
+.MuiButtonBase-root.MuiIconButton-root.MuiIconButton-edgeEnd.MuiIconButton-sizeMedium.css-1yq5fb3-MuiButtonBase-root-MuiIconButton-root{
+color: #fff !important;
+}
+.MuiInputBase-root.MuiOutlinedInput-root.MuiInputBase-colorPrimary.MuiInputBase-formControl.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root{
+  color: #fff !important;
+}

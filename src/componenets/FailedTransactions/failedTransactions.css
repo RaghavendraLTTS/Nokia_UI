@@ -1,0 +1,19 @@
+.failedTrans{
+    color: rgb(151, 181, 249);
+    font-size: 16px;
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid #5B6E9A;
+    background: #33405D 0% 0% no-repeat padding-box;
+    opacity: 1;
+}
+
+.iconColor{
+    color: rgb(151, 181, 249);
+    opacity: 1;
+}
+
+.tableCell {
+    color: rgb(151, 181, 249);
+  }
+

@@ -1,0 +1,67 @@
+/* CronGenerator.css */
+.cron-generator-container {
+  padding: 20px;
+  max-width: 600px;
+  /* margin: 0 auto; */
+  font-family: Arial, sans-serif;
+}
+
+.cron-expression-display {
+  margin-top: 20px;
+}
+.cron_builder {
+  margin-top: 10px;
+  border-color: #141653;
+  min-width: 600px;
+  background-color: #141653;
+
+  opacity: 1;
+}
+.cron_builder_bordering {
+  color: #fff;
+  border-color: #141653;
+  background-color: #141653;
+}
+.cron_builder .well {
+  border-color: #141653;
+  background-color: #141653;
+}
+.cron_builder_bordering input {
+  color: #fff;
+  background-color: #141653;
+}
+.cron_builder_bordering select {
+  border-color: #141653;
+  background-color: #141653;
+}
+.toggle-button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: #141653;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.toggle-button:hover {
+  border-color: #141653;
+  background-color: #141653;
+}
+
+.next-run-times {
+  margin-top: 20px;
+}
+
+ul {
+  border-color: #141653;
+  list-style-type: none;
+  padding: 0;
+}
+
+/* li {
+  border-color: #141653;
+  background: #141653;
+  margin: 5px 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+} */

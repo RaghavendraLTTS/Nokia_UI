@@ -1,0 +1,90 @@
+.loginButton {
+  background: transparent
+    linear-gradient(97deg, #7a045d 0%, #b135a1 52%, #9959ec 100%) 0% 0%
+    no-repeat padding-box;
+  box-shadow: 0px 0px 5px #00000029;
+  border-radius: 10px;
+  opacity: 1;
+}
+
+.card {
+  background: transparent
+    linear-gradient(90deg, #1c0f45 0%, #2e2a48 55%, #100d1f 100%) 0% 0%
+    no-repeat padding-box;
+  box-shadow: 0px 10px 20px #00000029 !important ;
+  border-radius: 50px !important;
+  opacity: 1;
+}
+
+.icons {
+  width: 13px;
+  height: 24px;
+  background: #5b6e9a 0% 0% no-repeat padding-box;
+  opacity: 1;
+}
+
+
+.customText > .css-1rrfrxi {
+  color: #ffffff !important;
+}
+/* .customPwdText > .css-1rrfrxi{
+  color: #ffffff !important;
+} */
+
+.MuiFormLabel-root.MuiInputLabel-root.MuiInputLabel-formControl.MuiInputLabel-animated.MuiInputLabel-sizeMedium.MuiInputLabel-standard.MuiFormLabel-colorPrimary.MuiInputLabel-root.MuiInputLabel-formControl.MuiInputLabel-animated.MuiInputLabel-sizeMedium.MuiInputLabel-standard.css-aqpgxn-MuiFormLabel-root-MuiInputLabel-root {
+  font: normal normal normal 14px/12px Century Gothic !important;
+  letter-spacing: 0px !important;
+  color: #ffffff !important;
+  opacity: 0.65 !important;
+}
+
+.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation1.MuiCard-root.card.css-bhp9pd-MuiPaper-root-MuiCard-root {
+  background: transparent
+    linear-gradient(90deg, #1c0f45 0%, #2e2a48 55%, #100d1f 100%) 0% 0%
+    no-repeat padding-box !important;
+  box-shadow: 0px 10px 20px #00000029 !important;
+  border-radius: 50px !important;
+  opacity: 1 !important;
+}
+
+.textStyles {
+  font: normal normal normal 14px/14px Century Gothic;
+  letter-spacing: 0px;
+  color: #687dad;
+  opacity: 1;
+}
+
+.MuiTypography-root.MuiTypography-body2.MuiTypography-alignCenter.css-1wynu8h-MuiTypography-root {
+  font: normal normal normal 14px/12px Century Gothic !important;
+}
+
+.MuiInputBase-input.MuiInput-input.css-1x51dt5-MuiInputBase-input-MuiInput-input {
+  color: white !important;
+}
+
+
+.nokia-logo {
+  animation: zoomIn 2s ease-in-out;
+}
+
+.onetouch-gsd {
+  animation: zoomIn 2s ease-in-out;
+}
+
+@keyframes zoomIn {
+  0% {
+    transform: scale(0.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
