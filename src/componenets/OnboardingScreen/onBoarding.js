@@ -27,16 +27,16 @@ import CardContent from "@mui/material/CardContent";
 
 const tabStyle = {
   textAlign: "left",
-  color: "#C4D5FF",
-  font: "Roboto",
+  color: "#fff",
+  fontFamily: "Roboto, Helvetica, Arial, sans-serif",
   fontSize: "12px",
   opacity: 1,
 };
 const textStyle = {
   position: "relative",
   textAlign: "left",
-  color: "#97B5F9",
-  font: "Roboto",
+  color: "#fff",
+  fontFamily: "Roboto, Helvetica, Arial, sans-serif",
   fontSize: "16px",
   opacity: 1,
 };
@@ -195,9 +195,9 @@ function OnboardScreen({ dataAdd }) {
     const executePostRequest = async (payload) => {
       try {
         const response = await fetch(
-          "http://localhost:8081/api/saveToolConfig",
+          // "http://localhost:8081/api/saveToolConfig",
           // "http://ltts-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/saveToolConfig",
-          // "http://wfm-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/saveToolConfig",
+          "http://wfm-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/saveToolConfig",
 
           {
             method: "POST",
@@ -239,9 +239,9 @@ function OnboardScreen({ dataAdd }) {
     const storePostRequest = async (payload) => {
       try {
         const response = await fetch(
-          "http://localhost:8081/api/updatecpt",
+          // "http://localhost:8081/api/updatecpt",
           // "http://ltts-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/updatecpt",
-          // "http://wfm-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/updatecpt",
+          "http://wfm-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/updatecpt",
           {
             method: "POST",
             headers: {

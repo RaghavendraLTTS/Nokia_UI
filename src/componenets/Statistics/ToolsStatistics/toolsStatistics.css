@@ -1,5 +1,5 @@
 /* src/DataTable.css */
-table {
+/* .tableStyle {
     width: 100%;
     border-collapse: collapse;
     margin: 20px 0;
@@ -11,12 +11,12 @@ td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
-}
+} */
 
-th {
-    cursor: pointer;
+/* th { */
+    /* cursor: pointer; */
     /* background-color: #f2f2f2; */
-}
+/* } */
 
 /* input[type="text"] {
     margin-bottom: 10px;

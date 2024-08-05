@@ -67,8 +67,8 @@ const LoginPage = (props) => {
   const handleSignIn = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8085/api/users/login",
-        // "http://wfm-user-mgmnt.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/users/login",
+        // "http://localhost:8085/api/users/login",
+        "http://wfm-user-mgmnt.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/users/login",
          {
         method: "POST",
         headers: { "Content-Type": "application/json" },

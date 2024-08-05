@@ -35,7 +35,6 @@ const data = [
     client: "BSNL",
     project: "Project 02",
     toolName: "Tool3",
-    loginTimestamp: "03-07-2024 13:00:00",
     dashboardOpenTimestamp: "03-07-2024 13:00:10",
     dashboardCloseTimestamp: "03-07-2024 14:00:00",
     actualSpentTime: "00:30:00",
@@ -46,7 +45,6 @@ const data = [
     client: "Samsung",
     project: "Project 03",
     toolName: "Tool2",
-    loginTimestamp: "03-07-2024 15:00:45",
     dashboardOpenTimestamp: "03-07-2024 15:00:55",
     dashboardCloseTimestamp: "03-07-2024 15:30:45",
     actualSpentTime: "00:20:45",
@@ -57,7 +55,6 @@ const data = [
     client: "Motorala",
     project: "Project 03",
     toolName: "Tool3",
-    loginTimestamp: "03-07-2024 16:15:20",
     dashboardOpenTimestamp: "03-07-2024 16:15:30",
     dashboardCloseTimestamp: "03-07-2024 16:45:30",
     actualSpentTime: "00:30",
@@ -68,7 +65,6 @@ const data = [
     client: "Nokia",
     project: "Project 04",
     toolName: "Tool17",
-    loginTimestamp: "03-07-2024 16:30:00",
     dashboardOpenTimestamp: "03-07-2024 16:30:10",
     dashboardCloseTimestamp: "03-07-2024 17:00:00",
     actualSpentTime: "00:03:00",
@@ -79,7 +75,6 @@ const data = [
     client: "Airtel",
     project: "Project 05",
     toolName: "Tool10",
-    loginTimestamp: "03-07-2027 17:00:00",
     dashboardOpenTimestamp: "03-07-2027 17:00:10",
     dashboardCloseTimestamp: "03-07-2027 17:30:00",
     actualSpentTime: "00:03:15",
@@ -90,7 +85,6 @@ const data = [
     client: "Samsung",
     project: "Project 06",
     toolName: "Tool1",
-    loginTimestamp: "03-07-2024 13:00:00",
     dashboardOpenTimestamp: "03-07-2024 13:00:10",
     dashboardCloseTimestamp: "03-07-2024 14:00:00",
     actualSpentTime: "00:30",
@@ -101,7 +95,6 @@ const data = [
     client: "T-mobile",
     project: "Project 07",
     toolName: "Tool3",
-    loginTimestamp: "03-07-2024 13:00:00",
     dashboardOpenTimestamp: "03-07-2024 13:00:10",
     dashboardCloseTimestamp: "03-07-2024 14:00:00",
     actualSpentTime: "00:30",
@@ -112,7 +105,6 @@ const data = [
     client: "Motorala",
     project: "Project 08",
     toolName: "Tool 14",
-    loginTimestamp: "03-07-2024 16:30:00",
     dashboardOpenTimestamp: "03-07-2024 16:30:10",
     dashboardCloseTimestamp: "03-07-2024 17:00:00",
     actualSpentTime: "00:30",
@@ -123,7 +115,6 @@ const data = [
     client: "Airtel",
     project: "Project 10",
     toolName: "Tool10",
-    loginTimestamp: "03-07-2024 13:00:00",
     dashboardOpenTimestamp: "03-07-2024 13:00:10",
     dashboardCloseTimestamp: "03-07-2024 14:00:00",
     actualSpentTime: "00:30",
@@ -135,13 +126,13 @@ const filterOptions = Object.keys(data[0]).reduce((acc, key) => {
   return acc;
 }, {});
 
-console.log(filterOptions);
+
 const UserStatistics = () => {
     const [searchTerms, setSearchTerms] = useState({});
     const [filterConditions, setFilterConditions] = useState({});
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
     const [search, setSearch] = useState('');
 
     const handleSearchFilter = (event) => {
@@ -240,7 +231,7 @@ const UserStatistics = () => {
               {Object.keys(data[0]).map((column) => (
                 <TableCell
                   sx={{
-                    color: "#7994D1",
+                    color: "#fff !important",
                     opacity: 1,
                     font: "16px Robotonormal normal medium 16px/19px Roboto",
                     border: "1px solid #4d5987",
@@ -267,7 +258,7 @@ const UserStatistics = () => {
                       {column === "userName" || column === "project" || column === "toolName" || column === "client" ? (
                         <Grid item xs={4} mt={1}>
                           <IconButton
-                            sx={{ color: "#6477b1" }}
+                            sx={{ color: "#fff !important" }}
                             onClick={() => handleFilterToggle(column)}
                           >
                             <FilterListIcon />
@@ -282,7 +273,7 @@ const UserStatistics = () => {
                               style={{ minWidth: 120, marginLeft: "10px" }}
                             >
                               <InputLabel
-                                sx={{ color: "#6477b1", minWidth: "100px" }}
+                                sx={{ color: "#fff !important", minWidth: "100px" }}
                               >
                                 Filter
                               </InputLabel>
@@ -327,7 +318,7 @@ const UserStatistics = () => {
                 {Object.values(row).map((cell, cellIndex) => (
                   <TableCell
                     sx={{
-                      color: "#6477b1",
+                      color: "#fff !important",
                       border: "1px solid #4d5987",
                       padding: "4px 8px", // reduce padding
                       fontSize: 14, // reduce font size
@@ -343,7 +334,7 @@ const UserStatistics = () => {
         </Table>
       </TableContainer>
       <TablePagination
-        sx={{ color: "#6477b1" }}
+        sx={{ color: "#fff !important" }}
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
         count={sortedData.length}

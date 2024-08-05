@@ -1,21 +1,20 @@
 /* src/DataTable.css */
-table {
+ table {
     width: 100%;
     border-collapse: collapse;
     margin: 20px 0;
     font-family: 'normal normal medium 16px/19px Roboto';
 }
 
-th,
+/* th,
 td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
-}
+}  */
 
 th {
     cursor: pointer;
-    /* background-color: #f2f2f2; */
 }
 
 /* input[type="text"] {

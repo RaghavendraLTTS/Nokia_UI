@@ -6,17 +6,17 @@ table {
     font-family: 'normal normal medium 16px/19px Roboto';
 }
 
-th,
+/* th,
 td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
-}
+}  */
 
-th {
+/* th {
     cursor: pointer;
-    /* background-color: #f2f2f2; */
-}
+    background-color: #f2f2f2;
+} */
 
 /* input[type="text"] {
     margin-bottom: 10px;

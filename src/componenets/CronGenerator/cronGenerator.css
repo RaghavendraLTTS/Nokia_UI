@@ -1,51 +1,51 @@
 /* CronGenerator.css */
 .cron-generator-container {
-  padding: 20px;
-  max-width: 600px;
+  padding: 20px !important;
+  max-width: 600px !important;
   /* margin: 0 auto; */
-  font-family: Arial, sans-serif;
+  font-family: Arial, sans-serif !important;
 }
 
 .cron-expression-display {
-  margin-top: 20px;
+  margin-top: 20px !important;
 }
 .cron_builder {
-  margin-top: 10px;
-  border-color: #141653;
-  min-width: 600px;
-  background-color: #141653;
-
-  opacity: 1;
+  margin-top: 10px !important;
+  border-color: #141653 !important;
+  min-width: 600px !important;
+  background-color: #141653 !important;
+  opacity: 1 !important;
 }
 .cron_builder_bordering {
-  color: #fff;
-  border-color: #141653;
-  background-color: #141653;
+  color: #fff !important;
+  border-color: #141653 !important;
+  background-color: #141653 !important;
 }
 .cron_builder .well {
-  border-color: #141653;
-  background-color: #141653;
+  border-color: #141653 !important;
+  background-color: #141653 !important;
 }
 .cron_builder_bordering input {
-  color: #fff;
-  background-color: #141653;
+  color: #fff !important;
+  background-color: #141653 !important;
 }
 .cron_builder_bordering select {
-  border-color: #141653;
-  background-color: #141653;
+  color: #fff !important;
+  border-color: #141653 !important;
+  background-color: #141653 !important;
 }
 .toggle-button {
-  margin-left: 10px;
-  padding: 5px 10px;
-  background-color: #141653;
-  color: white;
-  border: none;
-  cursor: pointer;
+  margin-left: 10px !important;
+  padding: 5px 10px !important;
+  background-color: #141653 !important;
+  color: #fff !important;
+  border: none !important;
+  cursor: pointer !important;
 }
 
 .toggle-button:hover {
-  border-color: #141653;
-  background-color: #141653;
+  border-color: #141653 !important;
+  background-color: #141653 !important;
 }
 
 .next-run-times {
@@ -53,9 +53,9 @@
 }
 
 ul {
-  border-color: #141653;
-  list-style-type: none;
-  padding: 0;
+  border-color: #141653 !important;
+  list-style-type: none !important;
+  padding: 0 !important;
 }
 
 /* li {

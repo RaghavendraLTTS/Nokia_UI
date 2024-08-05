@@ -1,6 +1,4 @@
 body {
-    /* background: '#2c2d69'; */
     background: transparent radial-gradient(closest-side at 1% 98%, #311EA5 0%, #2c2d69 100%) 0% 0% no-repeat padding-box;
-
     height: 100vh;
 }

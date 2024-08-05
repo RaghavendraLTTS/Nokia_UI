@@ -94,9 +94,9 @@ function App() {
     if (token) {
       const fetchData = async () => {
         try {
-          const response = await fetch('http://localhost:8081/api/getData');
+          // const response = await fetch('http://localhost:8081/api/getData');
           // const response = await fetch ("http://ltts-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/getData")
-          // const response = await fetch ("http://wfm-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/getData")
+          const response = await fetch ("http://wfm-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/getData")
           
           const result = await response.json();
           setData(result);
@@ -109,9 +109,9 @@ function App() {
 
       const fetchToolData = async () => {
         try {
-          const resp = await fetch('http://localhost:8081/api/getTools');
+          // const resp = await fetch('http://localhost:8081/api/getTools');
           // const resp = await fetch("http://ltts-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/getTools")
-          // const resp = await fetch("http://wfm-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/getTools")
+          const resp = await fetch("http://wfm-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/getTools")
           const res = await resp.json();
           setToolData(res);
           setLoading(false);

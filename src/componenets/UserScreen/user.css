@@ -10,13 +10,9 @@
 }
 
 .dateTime {
-  /* top: 140px; */
   left: 45px;
-  width: 300px;
-  /* height: 50px; */
-
-  /* height: auto; */
-  /* margin-top: -8px; */
+  /* width: 300px; */
+  width: 259px;
   background: transparent linear-gradient(180deg, #403480 0%, #141653 100%) 0%
     0% no-repeat padding-box;
   box-shadow: 0px 0px 5px #00000080;
@@ -25,13 +21,7 @@
 }
 
 .timeDur {
-  /* top: 140px; */
-  /* left: 45px; */
   width: 520px;
-  /* height: 50px; */
-
-  /* height: auto; */
-  /* margin-top: -8px; */
   background: transparent linear-gradient(180deg, #403480 0%, #141653 100%) 0%
     0% no-repeat padding-box;
   box-shadow: 0px 0px 5px #00000080;
@@ -53,6 +43,11 @@
   margin-left: "33px";
 }
 
+.css-pwxzbm {
+  background-color: #282468 !important;
+  color: #fff !important;
+}
+
 .MuiPickersLayout-contentWrapper.css-13xe9rf-MuiPickersLayout-contentWrapper {
   background: transparent linear-gradient(180deg, #403480 0%, #141653 100%) 0% 0% no-repeat padding-box !important;
 }
@@ -62,12 +57,69 @@
 
 .MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation8.MuiPopover-paper.MuiMenu-paper.MuiMenu-paper.css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
   background-color: #282468 !important;
-  color: "#A9C2FF" !important;
+  color: #fff !important;
 }
 
-.cron_builder_bordering select{
-  color: #fff;
+.css-1bn53lx{
+  color: #fff !important;
 }
+.css-736ibl{
+  background-color: #282468 !important;
+  /* color: #fff !important; */
+}
+
+.css-13q0g9a{
+  color: #fff !important;
+}
+/* .css-slyssw{
+  color: #fff !important;
+} */
+/* .css-1wjkg3{
+  color: #fff !important;
+} */
+
+/* .css-1v994a0{
+  color: #fff !important;
+} */
+
+/* .css-11wxb{
+  color:  #fff !important;
+} */
+.css-vubbuv{
+  color:  #fff !important;
+}
+/* .css-16j77m4{
+  color:  #fff !important;
+} */
+/* .css-1h73gvd{
+  color:  #fff !important;
+} */
+/* .css-sldnni{
+  color:  #fff !important;
+} */
+/* .css-1cw4hi4{
+  color: #fff !important;
+} */
+.css-14x1nlk{
+  color: #fff !important;
+}
+/* .css-o9cot7{
+  color: #fff !important;
+} */
+/* .css-10qkmc3{
+  color: #fff !important;
+} */
+
+.css-1636szt{
+  color: #fff !important;
+}
+
+/* .cron_builder_bordering {
+  border-top: none;
+  text-align: center;
+  padding: 10px;
+  background: #282468;
+} */
 .MuiInputBase-input.MuiOutlinedInput-input.MuiInputBase-inputAdornedEnd.css-nxo287-MuiInputBase-input-MuiOutlinedInput-input {
   color: #fff !important;
 }
@@ -76,4 +128,8 @@ color: #fff !important;
 }
 .MuiInputBase-root.MuiOutlinedInput-root.MuiInputBase-colorPrimary.MuiInputBase-formControl.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root{
   color: #fff !important;
+}
+
+.css-ht032f{
+  margin-top: 0px;
 }

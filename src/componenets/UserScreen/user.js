@@ -20,22 +20,22 @@ import "../CronGenerator/cronGenerator.css";
 import { format, parse } from "date-fns";
 import { styled } from "@mui/system";
 import ManageAccountsRoundedIcon from "@mui/icons-material/ManageAccountsRounded";
-import AccountTreeRoundedIcon from '@mui/icons-material/AccountTreeRounded';
+import AccountTreeRoundedIcon from "@mui/icons-material/AccountTreeRounded";
 import AccessAlarmIcon from "@mui/icons-material/AccessAlarm";
-import ConstructionRoundedIcon from '@mui/icons-material/ConstructionRounded';
+import ConstructionRoundedIcon from "@mui/icons-material/ConstructionRounded";
 import Container from "@mui/material/Container";
 import Tooltip from "@mui/material/Tooltip";
 import "../UserScreen/user.css";
 import FailedTransactions from "../FailedTransactions/failedTransations";
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import { CircularProgress } from '@mui/material';
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import { CircularProgress } from "@mui/material";
 
 const textStyle = {
   position: "relative",
   textAlign: "left",
-  color: "#97B5F9",
-  font: "Roboto",
+  color: "#fff",
+  fontFamily: "Roboto, Helvetica, Arial, sans-serif",
   fontSize: "16px",
   opacity: 1,
 };
@@ -52,6 +52,7 @@ const StyledContainerDropDown = styled(Container)({
   alignItems: "center",
   marginTop: "20px",
   position: "relative",
+
 });
 
 const StyledButton = styled(Button)({
@@ -97,6 +98,7 @@ const StyledButton = styled(Button)({
     margin: "5px",
     color: "#EDF2F5",
   },
+ 
 });
 
 function UserScreen({ data }) {
@@ -112,7 +114,7 @@ function UserScreen({ data }) {
   const [scheduledTime, setscheduledTime] = useState(null);
   const { vertical, horizontal, open } = state;
   const [timeCycle, settimeCycle] = useState("");
-  const [manual, setManual] = useState("");
+  // const [manual, setManual] = useState("");
   const [displayCron, setDisplayCron] = useState(false);
   const [schedulerType, setSchedulerType] = useState("manual");
   const [isTimerSet, setisTimerSet] = useState(false);
@@ -237,9 +239,9 @@ function UserScreen({ data }) {
 
       try {
         const response = await fetch(
-          "http://localhost:8081/api/predefinedtools",
+          // "http://localhost:8081/api/predefinedtools",
           // "http://ltts-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/predefinedtools",
-          // "http://wfm-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/predefinedtools",
+          "http://wfm-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/predefinedtools",
           {
             method: "POST",
             headers: {
@@ -279,7 +281,7 @@ function UserScreen({ data }) {
     },
     [mountedRef, selectedTname]
   );
- 
+
   useEffect(() => {
     console.log("Selected tools:", selectedTname);
   }, [selectedTname]);
@@ -296,7 +298,7 @@ function UserScreen({ data }) {
     setSelectedTname([]);
     setSelectedCname("");
     setSelectedPname("");
-    setSchedulerType("");
+    setSchedulerType("manual");
     setisTimerSet(false);
     setYear("");
     setMonth("");
@@ -313,10 +315,10 @@ function UserScreen({ data }) {
         projectName: selectedPname,
         tools: selectedTname,
         schedulerType,
-        scheduledTime: schedulerType === "scheduledTime" ? scheduledTime : null,
+        scheduledTime: schedulerType === "scheduledTime" ? scheduledTime : '',
         timeDuration:
-          schedulerType === "timeDuration" ? timeDurationString : null,
-        timeCycle: schedulerType === "timeCycle" ? timeCycle : null,
+          schedulerType === "timeDuration" ? timeDurationString : '',
+        timeCycle: schedulerType === "timeCycle" ? timeCycle : '',
         isTimerSet:
           schedulerType === "" || schedulerType === "manual"
             ? isTimerSet
@@ -325,23 +327,24 @@ function UserScreen({ data }) {
       const executePostRequest = async () => {
         try {
           const response = await fetch(
-            "http://localhost:8081/api/startProcess", 
+            // "http://localhost:8081/api/startProcess",
             // "http://ltts-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/startProcess",
-            // "http://wfm-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/startProcess",
+            "http://wfm-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/startProcess",
             {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(postData),
-          });
-  
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(postData),
+            }
+          );
+
           if (!response.ok) {
             throw new Error(`Error ${response.status}: ${response.statusText}`);
           }
-  
+
           const result = await response.json();
-  
+
           localStorage.setItem("processedData", JSON.stringify(result));
           localStorage.setItem("toolnames", JSON.stringify(selectedTname));
           console.log("Data stored successfully:", result);
@@ -377,7 +380,8 @@ function UserScreen({ data }) {
       // setIsClicked(!isClicked);
       setIsExecuting(true);
       setShouldExecute(true);
-    },[]
+    },
+    []
     // [isClicked]
   );
 
@@ -386,466 +390,467 @@ function UserScreen({ data }) {
   }, [state]);
 
   return (
-    // <div
-    //   style={{
-    //     position: "absolute",
-    //     top: " 75px",
-    //     left: 0,
-    //     width: "100%",
-    //     zIndex: 1,
-    //   }}
-    // >
-      // <Card sx={{
-      //       backgroundColor: '#1c1444',
-      //       // boxShadow: '0px 0px 20px #0000004D',
-      //       opacity: 1
-      //   }}>
-      //       <CardContent>
-      
-      <Box sx={{ flexGrow: 1 }}>
-        <StyledContainerDropDown
-          style={{ maxWidth: "100%", height: "85vh", marginTop: "10px" }}
-          className="dropDown-selection"
+   
+    <Box sx={{ flexGrow: 1 }}>
+      <StyledContainerDropDown
+        style={{ maxWidth: "100%", height: "85vh", marginTop: "10px" }}
+        className="dropDown-selection"
+      >
+        <Grid
+          container
+          spacing={2}
+          style={{ marginTop: "10px", marginLeft: "33px" }}
         >
-          <Grid
-            container
-            spacing={2}
-            style={{ marginTop: "10px", marginLeft: "33px" }}
-          >
-            <Grid xs={3}>
-              <Box className="nokia">
-                <FormControl
-                  fullWidth
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                  }}
-                >
-                  <Grid container spacing={2}>
-                    <Grid item xs={2}>
-                      <ManageAccountsRoundedIcon
-                        style={{
-                          marginRight: 8,
-                          color: "#8ba5e1",
-                          width: "53px",
-                          height: "50px",
-                        }}
-                        fontSize="small"
-                      />
-                    </Grid>
-                    <Grid item xs={10}>
-                      <Box>
-                        <FormControl variant="filled" sx={{ minWidth: 246 }}>
-                          <InputLabel
-                            style={{ color: "#a9c2ff" }}
-                            id="demo-simple-select-label"
-                          >
-                            Customer
-                          </InputLabel>
-                          <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select-filled"
-                            value={selectedCname}
-                            onChange={(e) => {
-                              setSelectedCname(e.target.value);
-                              setSelectedPname("");
-                              setSelectedTname([]);
-                            }}
-                            style={{ color: "#a9c2ff" }}
-                          >
-                            {uniqueCnames.map((cname) => (
-                              <MenuItem key={cname} value={cname}>
-                                {cname}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
-                      </Box>
-                    </Grid>
+          <Grid xs={3}>
+            <Box className="nokia">
+              <FormControl
+                fullWidth
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <Grid container spacing={2}>
+                  <Grid item xs={2}>
+                    <ManageAccountsRoundedIcon
+                      style={{
+                        marginRight: 8,
+                        color: "#8ba5e1",
+                        width: "53px",
+                        height: "50px",
+                      }}
+                      fontSize="small"
+                    />
                   </Grid>
-                </FormControl>
-              </Box>
-            </Grid>
-            <Grid xs={3}>
-              <Box className="nokia">
-                <FormControl
-                  fullWidth
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                  }}
-                >
-                  <Grid container spacing={2}>
-                    <Grid item xs={2}>
-                      <AccountTreeRoundedIcon
-                        style={{
-                          marginRight: 8,
-                          color: "#8ba5e1",
-                          width: "53px",
-                          height: "50px",
-                        }}
-                        fontSize="small"
-                      />
-                    </Grid>
-                    <Grid item xs={10}>
-                      <Box>
-                        <FormControl variant="filled" sx={{ minWidth: 246 }}>
-                          <InputLabel
-                            style={{ color: "#a9c2ff" }}
-                            id="demo-simple-select-label"
-                          >
-                            Project
-                          </InputLabel>
-                          <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select-filled"
-                            value={selectedPname}
-                            onChange={(e) => {
-                              setSelectedPname(e.target.value);
-                              setSelectedTname([]);
-                            }}
-                            style={{ color: "#a9c2ff" }}
-                          >
-                            {uniquePnames.map((pname) => (
-                              <MenuItem key={pname} value={pname}>
-                                {pname}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
-                      </Box>
-                    </Grid>
-                  </Grid>
-                </FormControl>
-              </Box>
-            </Grid>
-            <Grid xs={3}>
-              <Box className="nokia">
-                <FormControl
-                  fullWidth
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                  }}
-                >
-                  <Grid container spacing={2}>
-                    <Grid item xs={2}>
-                      <ConstructionRoundedIcon
-                        style={{
-                          marginRight: 8,
-                          color: "#8ba5e1",
-                          width: "53px",
-                          height: "50px",
-                        }}
-                        fontSize="small"
-                      />
-                    </Grid>
-                    <Grid item xs={10}>
-                      <Box>
-                        <FormControl variant="filled" sx={{ minWidth: 246 }}>
-                          <InputLabel
-                            style={{ color: "#a9c2ff" }}
-                            id="demo-simple-select-label"
-                          >
-                            Tools to populate
-                          </InputLabel>
-                          <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select-filled"
-                            multiple
-                            value={selectedTname}
-                            onChange={handleTnameChange}
-                            renderValue={(selected) => selected.join(", ")}
-                            style={{ color: "#a9c2ff" }}
-                          >
-                            {uniqueTnames.map((tname) => (
-                              <MenuItem key={tname} value={tname}>
-                                <Checkbox
-                                  checked={selectedTname.indexOf(tname) > -1}
-                                />
-                                <ListItemText primary={tname} />
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
-                      </Box>
-                    </Grid>
-                  </Grid>
-                </FormControl>
-              </Box>
-            </Grid>
-            <Grid xs={3}>
-              <StyledButton className="reset" onClick={handleClear}>
-                RESET
-              </StyledButton>
-
-              <StyledButton
-                // className="execute"
-                className={isClicked ? "execute-clicked" : "execute"}
-                // onClick={handleExecuteClick()}
-                onClick={handleExecuteClick({
-                  vertical: "top",
-                  horizontal: "right",
-                })}
-                disabled={isExecuteButtonDisabled}
-              >{isExecuting ? (
-                <CircularProgress size={24} sx={{color:"#FFF"}} />
-              ) : (
-                'EXECUTE'
-              )}
-              </StyledButton>
-
-              <Snackbar
-                anchorOrigin={{ vertical, horizontal }}
-                open={open}
-                onClose={handleClose}
-                message={preSelectedMessage()}
-                key={vertical + horizontal}
-                autoHideDuration={3000}
-              />
-            </Grid>
-            <Grid xs={3}>
-              <Box className="nokia">
-                <FormControl
-                  fullWidth
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                  }}
-                >
-                  <Grid container spacing={2}>
-                    <Grid item xs={2}>
-                      <AccessAlarmIcon
-                        style={{
-                          marginRight: 8,
-                          color: "#8ba5e1",
-                          width: "53px",
-                          height: "50px",
-                        }}
-                        fontSize="small"
-                      />
-                    </Grid>
-                    <Grid item xs={10}>
-                      <Box>
-                        <FormControl variant="filled" sx={{ minWidth: 246 }}>
-                          <InputLabel
-                            style={{ color: "#a9c2ff" }}
-                            id="demo-simple-select-label"
-                          >
-                            Scheduler Type
-                          </InputLabel>
-                          <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select-filled"
-                            value={schedulerType}
-                            onChange={(e) => setSchedulerType(e.target.value)}
-                            style={{ color: "#a9c2ff" }}
-                          >
-                            <MenuItem value="manual">Manual</MenuItem>
-                            <MenuItem value="scheduledTime">
-                              scheduled Time
-                            </MenuItem>
-                            <MenuItem value="timeDuration">
-                              Time Duration
-                            </MenuItem>
-                            <MenuItem value="timeCycle">Time Cycle</MenuItem>
-                          </Select>
-                        </FormControl>
-                      </Box>
-                    </Grid>
-                  </Grid>
-                  <Grid></Grid>
-                </FormControl>
-              </Box>
-            </Grid>
-            {schedulerType === "scheduledTime" && (
-              <Grid xs={3}>
-                <Box className="dateTime">
-                  <FormControl
-                    fullWidth
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Grid sx={{ minWidth: 236 }}>
-                      <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <DateTimePicker
-                          // label="Select Date and Time"
-                          value={parse(
-                            scheduledTime,
-                            "yyyy-MM-dd'T'HH:mm:ssxxx",
-                            new Date()
-                          )}
-                          onChange={(newValue) => {
-                            const formattedDate = format(
-                              newValue,
-                              "yyyy-MM-dd'T'HH:mm:ssxxx"
-                            );
-                            setscheduledTime(formattedDate);
+                  <Grid item xs={10}>
+                    <Box>
+                      <FormControl variant="filled" sx={{ minWidth: 246 }}>
+                        <InputLabel
+                          style={{ color: "#a9c2ff" }}
+                          id="demo-simple-select-label"
+                        >
+                          Customer
+                        </InputLabel>
+                        <Select
+                          labelId="demo-simple-select-label"
+                          id="demo-simple-select-filled"
+                          value={selectedCname}
+                          onChange={(e) => {
+                            setSelectedCname(e.target.value);
+                            setSelectedPname("");
+                            setSelectedTname([]);
                           }}
-                          renderInput={(params) => (
-                            <TextField {...params} fullWidth />
-                          )}
-                        />
-                      </LocalizationProvider>
-                    </Grid>
-                  </FormControl>
-                </Box>
-              </Grid>
-            )}
+                          style={{ color: "#a9c2ff" }}
+                        >
+                          {uniqueCnames.map((cname) => (
+                            <MenuItem key={cname} value={cname}>
+                              {cname}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    </Box>
+                  </Grid>
+                </Grid>
+              </FormControl>
+            </Box>
+          </Grid>
+          <Grid xs={3}>
+            <Box className="nokia">
+              <FormControl
+                fullWidth
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <Grid container spacing={2}>
+                  <Grid item xs={2}>
+                    <AccountTreeRoundedIcon
+                      style={{
+                        marginRight: 8,
+                        color: "#8ba5e1",
+                        width: "53px",
+                        height: "50px",
+                      }}
+                      fontSize="small"
+                    />
+                  </Grid>
+                  <Grid item xs={10}>
+                    <Box>
+                      <FormControl variant="filled" sx={{ minWidth: 246 }}>
+                        <InputLabel
+                          style={{ color: "#a9c2ff" }}
+                          id="demo-simple-select-label"
+                        >
+                          Project
+                        </InputLabel>
+                        <Select
+                          labelId="demo-simple-select-label"
+                          id="demo-simple-select-filled"
+                          value={selectedPname}
+                          onChange={(e) => {
+                            setSelectedPname(e.target.value);
+                            setSelectedTname([]);
+                          }}
+                          style={{ color: "#a9c2ff" }}
+                        >
+                          {uniquePnames.map((pname) => (
+                            <MenuItem key={pname} value={pname}>
+                              {pname}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    </Box>
+                  </Grid>
+                </Grid>
+              </FormControl>
+            </Box>
+          </Grid>
+          <Grid xs={3}>
+            <Box className="nokia">
+              <FormControl
+                fullWidth
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <Grid container spacing={2}>
+                  <Grid item xs={2}>
+                    <ConstructionRoundedIcon
+                      style={{
+                        marginRight: 8,
+                        color: "#8ba5e1",
+                        width: "53px",
+                        height: "50px",
+                      }}
+                      fontSize="small"
+                    />
+                  </Grid>
+                  <Grid item xs={10}>
+                    <Box>
+                      <FormControl variant="filled" sx={{ minWidth: 246 }}>
+                        <InputLabel
+                          style={{ color: "#a9c2ff" }}
+                          id="demo-simple-select-label"
+                        >
+                          Tools to populate
+                        </InputLabel>
+                        <Select
+                          labelId="demo-simple-select-label"
+                          id="demo-simple-select-filled"
+                          multiple
+                          value={selectedTname}
+                          onChange={handleTnameChange}
+                          renderValue={(selected) => selected.join(", ")}
+                          style={{ color: "#a9c2ff" }}
+                        >
+                          {uniqueTnames.map((tname) => (
+                            <MenuItem key={tname} value={tname}>
+                              <Checkbox
+                                checked={selectedTname.indexOf(tname) > -1}
+                              />
+                              <ListItemText primary={tname} />
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    </Box>
+                  </Grid>
+                </Grid>
+              </FormControl>
+            </Box>
+          </Grid>
+          <Grid xs={3}>
+            <StyledButton className="reset" onClick={handleClear}>
+              RESET
+            </StyledButton>
 
-            {schedulerType === "timeDuration" && (
-              <Grid xs={6}>
-                <Box className="timeDur">
-                  <FormControl
-                    fullWidth
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Grid sx={{ minWidth: 236 }}>
-                      <Grid
-                        container
-                        direction="row"
-                        spacing={{ xs: 1 }}
-                        // columns={{ xs: 4, sm: 8, md: 12 }}
-                      >
-                        <Grid item xs={2}>
-                          <TextField
-                            label="Year"
-                            value={year}
-                            onChange={handleYearChange}
-                            type="number"
-                            variant="filled"
-                          />
-                        </Grid>
-                        <Grid item xs={2}>
-                          <TextField
-                            label="Month"
-                            value={month}
-                            onChange={handleMonthChange}
-                            type="number"
-                            variant="filled"
-                          />
-                        </Grid>
-                        <Grid item xs={2}>
-                          <TextField
-                            label="Day"
-                            value={day}
-                            onChange={handleDayChange}
-                            type="number"
-                            variant="filled"
-                          />
-                        </Grid>
-                        <Grid item xs={2}>
-                          <TextField
-                            label="Hour"
-                            value={hour}
-                            onChange={handleHourChange}
-                            type="number"
-                            variant="filled"
-                          />
-                        </Grid>
-                        <Grid item xs={2}>
-                          <TextField
-                            label="Minute"
-                            value={minute}
-                            onChange={handleMinuteChange}
-                            type="number"
-                            variant="filled"
-                          />
-                        </Grid>
-                        <Grid item xs={2}>
-                          <TextField
-                            label="Second"
-                            value={second}
-                            onChange={handleSecondChange}
-                            type="number"
-                            variant="filled"
-                          />
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                  </FormControl>
-                </Box>
-              </Grid>
-            )}
-            {schedulerType === "timeCycle" && (
-              <Grid xs={9}>
-                <Box>
-                  <FormControl
-                    fullWidth
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Grid sx={{ minWidth: 236 }}>
-                      <Grid
-                        container
-                        spacing={{ xs: 2, md: 1 }}
-                        // columns={{ xs: 1, sm: 1, md: 8 }}
-                      >
-                        <Cron value={timeCycle} onChange={handleCronChange} />
-                        {displayCron && (
-                          <div className="next-run-times">
-                            <h3>Next Run Times:</h3>
-                            <ul>
-                              {getNextRunTimes(timeCycle).map((time, index) => (
-                                <li key={index}>{time}</li>
-                              ))}
-                            </ul>
-                          </div>
+            <StyledButton
+              // className="execute"
+              className={isClicked ? "execute-clicked" : "execute"}
+              // onClick={handleExecuteClick()}
+              onClick={handleExecuteClick({
+                vertical: "top",
+                horizontal: "right",
+              })}
+              disabled={isExecuteButtonDisabled}
+            >
+              {isExecuting ? (
+                <CircularProgress size={24} sx={{ color: "#FFF" }} />
+              ) : (
+                "EXECUTE"
+              )}
+            </StyledButton>
+
+            <Snackbar
+              anchorOrigin={{ vertical, horizontal }}
+              open={open}
+              onClose={handleClose}
+              message={preSelectedMessage()}
+              key={vertical + horizontal}
+              autoHideDuration={3000}
+            />
+          </Grid>
+          <Grid xs={3}>
+            <Box className="nokia">
+              <FormControl
+                fullWidth
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <Grid container spacing={2}>
+                  <Grid item xs={2}>
+                    <AccessAlarmIcon
+                      style={{
+                        marginRight: 8,
+                        color: "#8ba5e1",
+                        width: "53px",
+                        height: "50px",
+                      }}
+                      fontSize="small"
+                    />
+                  </Grid>
+                  <Grid item xs={10}>
+                    <Box>
+                      <FormControl variant="filled" sx={{ minWidth: 246 }}>
+                        <InputLabel
+                          style={{ color: "#a9c2ff" }}
+                          id="demo-simple-select-label"
+                        >
+                          Scheduler Type
+                        </InputLabel>
+                        <Select
+                          labelId="demo-simple-select-label"
+                          id="demo-simple-select-filled"
+                          value={schedulerType}
+                          onChange={(e) => setSchedulerType(e.target.value)}
+                          style={{ color: "#a9c2ff" }}
+                        >
+                          <MenuItem value="manual">Manual</MenuItem>
+                          <MenuItem value="scheduledTime">
+                            scheduled Time
+                          </MenuItem>
+                          <MenuItem value="timeDuration">
+                            Time Duration
+                          </MenuItem>
+                          <MenuItem value="timeCycle">Time Cycle</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Box>
+                  </Grid>
+                </Grid>
+                <Grid></Grid>
+              </FormControl>
+            </Box>
+          </Grid>
+          {schedulerType === "scheduledTime" && (
+            <Grid xs={3}>
+              <Box className="dateTime">
+                <FormControl
+                  fullWidth
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <Grid sx={{ minWidth: 236 }}>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <DateTimePicker
+                        // label="Scheduled Time"
+                        value={parse(
+                          scheduledTime,
+                          "yyyy-MM-dd'T'HH:mm:ssxxx",
+                          new Date()
                         )}
+                        onChange={(newValue) => {
+                          const formattedDate = format(
+                            newValue,
+                            "yyyy-MM-dd'T'HH:mm:ssxxx"
+                          );
+                          setscheduledTime(formattedDate);
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            fullWidth
+                            sx={{
+                              // Remove the default border from the TextField
+                              "& .MuiOutlinedInput-root": {
+                                border: "none !important", // Remove the default border
+                                "&.Mui-focused .MuiOutlinedInput-notchedOutline":
+                                  {
+                                    borderWidth: "0 !important", // Remove the focused border
+                                  },
+                              },
+                            }}
+                          />
+                        )}
+                      />
+                    </LocalizationProvider>
+                  </Grid>
+                </FormControl>
+              </Box>
+            </Grid>
+          )}
+
+          {schedulerType === "timeDuration" && (
+            <Grid xs={6}>
+              <Box className="timeDur">
+                <FormControl
+                  fullWidth
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <Grid sx={{ minWidth: 236 }}>
+                    <Grid
+                      container
+                      direction="row"
+                      spacing={{ xs: 1 }}
+                      // columns={{ xs: 4, sm: 8, md: 12 }}
+                    >
+                      <Grid item xs={2}>
+                        <TextField
+                          autoComplete="off"
+                          label="Year"
+                          value={year}
+                          onChange={handleYearChange}
+                          type="number"
+                          variant="filled"
+                        />
+                      </Grid>
+                      <Grid item xs={2}>
+                        <TextField
+                          autoComplete="off"
+                          label="Month"
+                          value={month}
+                          onChange={handleMonthChange}
+                          type="number"
+                          variant="filled"
+                        />
+                      </Grid>
+                      <Grid item xs={2}>
+                        <TextField
+                          autoComplete="off"
+                          label="Day"
+                          value={day}
+                          onChange={handleDayChange}
+                          type="number"
+                          variant="filled"
+                        />
+                      </Grid>
+                      <Grid item xs={2}>
+                        <TextField
+                          autoComplete="off"
+                          label="Hour"
+                          value={hour}
+                          onChange={handleHourChange}
+                          type="number"
+                          variant="filled"
+                        />
+                      </Grid>
+                      <Grid item xs={2}>
+                        <TextField
+                          autoComplete="off"
+                          label="Minute"
+                          value={minute}
+                          onChange={handleMinuteChange}
+                          type="number"
+                          variant="filled"
+                        />
+                      </Grid>
+                      <Grid item xs={2}>
+                        <TextField
+                          autoComplete="off"
+                          label="Second"
+                          value={second}
+                          onChange={handleSecondChange}
+                          type="number"
+                          variant="filled"
+                        />
                       </Grid>
                     </Grid>
-                  </FormControl>
-                </Box>
-              </Grid>
-            )}
-          </Grid>
-          <Grid
-            container
-            spacing={2}
-            style={{ marginTop: "38px", marginLeft: "40px" }}
-          >
-            <Grid xs={3}>
-              <span style={textStyle}>Pre Process Instance Configuration:</span>
+                  </Grid>
+                </FormControl>
+              </Box>
             </Grid>
-            <Grid xs={3}>
-              {selectedTname.map((tname) => (
-                <Chip
-                  label={tname}
-                  key={tname}
-                  style={{ marginRight: "5px" }}
-                  color="primary"
-                />
-              ))}
+          )}
+          {schedulerType === "timeCycle" && (
+            <Grid xs={9}>
+              <Box>
+                <FormControl
+                  fullWidth
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <Grid sx={{ minWidth: 236 }}>
+                    <Grid
+                      container
+                      spacing={{ xs: 2, md: 1 }}
+                      // columns={{ xs: 1, sm: 1, md: 8 }}
+                    >
+                      <Cron value={timeCycle} onChange={handleCronChange} />
+                      {displayCron && (
+                        <div className="next-run-times">
+                          <h3>Next Run Times:</h3>
+                          <ul>
+                            {getNextRunTimes(timeCycle).map((time, index) => (
+                              <li key={index}>{time}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </Grid>
+                  </Grid>
+                </FormControl>
+              </Box>
             </Grid>
+          )}
+        </Grid>
+        <Grid
+          container
+          spacing={2}
+          style={{ marginTop: "38px", marginLeft: "40px" }}
+        >
+          <Grid xs={3}>
+            <span style={textStyle}>Pre Process Instance Configuration:</span>
           </Grid>
+          <Grid xs={3}>
+            {selectedTname.map((tname) => (
+              <Chip
+                label={tname}
+                key={tname}
+                style={{ margin: "5px" }}
+                color="primary"
+              />
+            ))}
+          </Grid>
+        </Grid>
 
-          <Grid
-            container
-            spacing={2}
-            style={{ marginTop:" 200px",marginLeft: "5px" }}
-          >            
-            <Grid xs={12}>
-              {/* <FailedTransactions/>  */}
-            </Grid>
-          </Grid>
-        </StyledContainerDropDown>
-      </Box>
-      
-      
+        <Grid
+          container
+          spacing={2}
+          style={{ marginTop: " 200px", marginLeft: "5px" }}
+        >
+          <Grid xs={12}>{/* <FailedTransactions/>  */}</Grid>
+        </Grid>
+      </StyledContainerDropDown>
+    </Box>
   );
 }
 

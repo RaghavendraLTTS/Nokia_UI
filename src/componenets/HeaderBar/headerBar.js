@@ -165,8 +165,8 @@ function HeaderBar({ handleLogoutApp, selectedChip}) {
       };
 
       const response = await fetch(
-        "http://localhost:8085/api/users/signup",
-        // "http://wfm-user-mgmnt.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/users/signup",
+        // "http://localhost:8085/api/users/signup",
+        "http://wfm-user-mgmnt.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/users/signup",
          {
         method: "POST",
         headers: {
@@ -220,8 +220,8 @@ function HeaderBar({ handleLogoutApp, selectedChip}) {
       };
 
       const response = await fetch(
-        "http://localhost:8085/api/users/logout",
-        // "http://wfm-user-mgmnt.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/users/logout",
+        // "http://localhost:8085/api/users/logout",
+        "http://wfm-user-mgmnt.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/users/logout",
          {
         method: "POST",
         headers: {
@@ -299,7 +299,7 @@ function HeaderBar({ handleLogoutApp, selectedChip}) {
   )}
 </div>
             </div>
-            <div style={{color:"#8BA5E1", font: "normal normal normal 12px/16px Roboto",marginRight:"5px", opacity:1}}>
+            <div style={{color:"#8BA5E1", font: "Roboto, Helvetica, Arial, sans-serif",marginRight:"5px", opacity:1}}>
             <Stack spacing={2}>
                 <span>Welcome {roleLoc}</span>
               </Stack>

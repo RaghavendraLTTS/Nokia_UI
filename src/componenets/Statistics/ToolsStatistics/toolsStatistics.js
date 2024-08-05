@@ -37,7 +37,7 @@ const data = [
     toolName:"PCI",    
     onExecuteTimestamp: "03-07-2024 13:00:10",
     responseRecievedTimestamp: "03-07-2024 14:00:00",
-    processingTime: "03-07-2024 13:00:00",
+    processingTime: "00:30:00",
     processingInstanceId:"adafderef87979-bdskjbf4d",
     transactionId:12
   },
@@ -49,7 +49,7 @@ const data = [
     toolName:"RSI",    
     onExecuteTimestamp: "03-07-2024 13:00:10",
     responseRecievedTimestamp: "03-07-2024 14:00:00",
-    processingTime: "03-07-2024 13:00:00",
+    processingTime: "00:30:00",
     processingInstanceId:"adafderef87979-bdskjbf4d",
     transactionId:14
   },
@@ -61,7 +61,7 @@ const data = [
     toolName:"Output Merged",    
     onExecuteTimestamp: "03-07-2024 13:00:10",
     responseRecievedTimestamp: "03-07-2024 14:00:00",
-    processingTime: "03-07-2024 13:00:00",
+    processingTime: "00:30:00",
     processingInstanceId:"adafderef87979-bdskjbf4d",
     transactionId:16
   },
@@ -73,7 +73,7 @@ const data = [
     toolName:"RSI",    
     onExecuteTimestamp: "03-07-2024 13:00:10",
     responseRecievedTimestamp: "03-07-2024 14:00:00",
-    processingTime: "03-07-2024 13:00:00",
+    processingTime: "00:30:00",
     processingInstanceId:"adafderef87979-bdskjbf4d",
     transactionId:19
   },
@@ -85,7 +85,7 @@ const data = [
     toolName:"PCI",    
     onExecuteTimestamp: "03-07-2024 13:00:10",
     responseRecievedTimestamp: "03-07-2024 14:00:00",
-    processingTime: "03-07-2024 13:00:00",
+    processingTime: "00:30:00",
     processingInstanceId:"adafderef87979-bdskjbf4d",
     transactionId:21
   },
@@ -97,7 +97,7 @@ const data = [
     toolName:"RSI",    
     onExecuteTimestamp: "03-07-2024 13:00:10",
     responseRecievedTimestamp: "03-07-2024 14:00:00",
-    processingTime: "03-07-2024 13:00:00",
+    processingTime: "00:30:00",
     processingInstanceId:"adafderef87979-bdskjbf4d",
     transactionId:23
   },
@@ -109,7 +109,7 @@ const data = [
     toolName:"Output Merged",    
     onExecuteTimestamp: "03-07-2024 13:00:10",
     responseRecievedTimestamp: "03-07-2024 14:00:00",
-    processingTime: "03-07-2024 13:00:00",
+    processingTime: "00:30:00",
     processingInstanceId:"adafderef87979-bdskjbf4d",
     transactionId:36
   },
@@ -121,7 +121,7 @@ const data = [
     toolName:"PCI",    
     onExecuteTimestamp: "03-07-2024 13:00:10",
     responseRecievedTimestamp: "03-07-2024 14:00:00",
-    processingTime: "03-07-2024 13:00:00",
+    processingTime: "00:30:00",
     processingInstanceId:"adafderef87979-bdskjbf4d",
     transactionId:37
   },
@@ -133,7 +133,7 @@ const data = [
     toolName:"RSI",    
     onExecuteTimestamp: "03-07-2024 13:00:10",
     responseRecievedTimestamp: "03-07-2024 14:00:00",
-    processingTime: "03-07-2024 13:00:00",
+    processingTime: "00:30:00",
     processingInstanceId:"adafderef87979-bdskjbf4d",
     transactionId:43
   },
@@ -144,7 +144,6 @@ const filterOptions = Object.keys(data[0]).reduce((acc, key) => {
   return acc;
 }, {});
 
-console.log(filterOptions);
 const ToolsStatistics = () => {
   const [searchTerms, setSearchTerms] = useState({});
   const [filterConditions, setFilterConditions] = useState({});
@@ -264,7 +263,7 @@ const ToolsStatistics = () => {
 
 
 <TableContainer>
-  <Table>
+  <Table className="tableStyle">
     <TableHead
       sx={{
         textTransform: "capitalize",
@@ -279,7 +278,7 @@ const ToolsStatistics = () => {
         {Object.keys(data[0]).map((column) => (
           <TableCell
           sx={{
-            color: "#7994D1",
+            color: "#fff !important",
             opacity: 1,
             font: "16px Robotonormal normal medium 16px/19px Roboto",
             border: "1px solid #4d5987",
@@ -306,7 +305,7 @@ const ToolsStatistics = () => {
                 {column === "userName" || column === "project" || column === "toolName" || column === "client" ? (
                   <Grid item xs={4} mt={1}>
                     <IconButton
-                      sx={{ color: "#6477b1" }}
+                      sx={{ color: "#fff !important" }}
                       onClick={() => handleFilterToggle(column)}
                     >
                       <FilterListIcon />
@@ -321,7 +320,7 @@ const ToolsStatistics = () => {
                         style={{ minWidth: 120, marginLeft: "10px" }}
                       >
                         <InputLabel
-                          sx={{ color: "#6477b1", minWidth: "100px" }}
+                          sx={{ color: "#fff !important", minWidth: "100px" }}
                         >
                           Filter
                         </InputLabel>
@@ -363,7 +362,7 @@ const ToolsStatistics = () => {
           {Object.values(row).map((cell, cellIndex) => (
             <TableCell
             sx={{
-              color: "#6477b1",
+              color: "#fff !important",
               border: "1px solid #4d5987",
               padding: '4px 8px', // reduce padding
               fontSize: 14, // reduce font size
@@ -379,7 +378,7 @@ const ToolsStatistics = () => {
   </Table>
 </TableContainer>
 <TablePagination
-  sx={{ color: "#6477b1" }}
+  sx={{ color: "#fff !important" }}
   rowsPerPageOptions={[5, 10, 25]}
   component="div"
   count={sortedData.length}

@@ -105,8 +105,8 @@ const OutputCell = ({ value, row ,onViewClick }) => {
         };
   
         const response = await fetch(
-          "http://localhost:8084/api/getToolOutputFromDB",
-          // "http://wfm-tool-data-to-db.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/getToolOutputFromDB",
+          // "http://localhost:8084/api/getToolOutputFromDB",
+          "http://wfm-tool-data-to-db.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/getToolOutputFromDB",
            {
           method: "POST",
           headers: {
@@ -133,7 +133,7 @@ const OutputCell = ({ value, row ,onViewClick }) => {
     <TableCell sx={{ color: "#6477b1", border: "1px solid #4d5987" }}>
       <Box sx={{ flexGrow: 1 }}>
         <Grid container direction="row" spacing={0}>
-          <Grid sx={{cursor:"pointer"}}item xs={8}>
+          <Grid sx={{cursor:"pointer" , color:"#fff !important"}}item xs={8}>
             <Typography sx={{fontSize:"0.875rem"}}>
             <u onClick={handleClick}>{value}</u>
             </Typography>
@@ -198,7 +198,7 @@ const ListofTools = () => {
           <TableRow>
             {Object.keys(data[0]).map((column) => (
               <TableCell
-                sx={{ color: "#8BA5E1", opacity: 1, font: "16px Roboto", border: "1px solid #4d5987" }}
+                sx={{ color: "#fff !important", opacity: 1, font: "16px Roboto", border: "1px solid #4d5987" }}
                 key={column}
               >
                 <Box sx={{ flexGrow: 1 }}>
@@ -222,7 +222,7 @@ const ListofTools = () => {
                 } else {
                   return (
                     <TableCell
-                      sx={{ color: "#6477b1", border: "1px solid #4d5987" }}
+                      sx={{ color: "#fff !important", border: "1px solid #4d5987" }}
                       key={cellIndex}
                     >
                       {cell}
