@@ -1,3 +1,9 @@
+.dropDown-selection {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 .nokia {
   top: 140px;
   left: 45px;
@@ -10,6 +16,7 @@
 }
 
 .dateTime {
+  margin: 15px;
   left: 45px;
   /* width: 300px; */
   width: 259px;
@@ -21,6 +28,7 @@
 }
 
 .timeDur {
+  margin: 15px;
   width: 520px;
   background: transparent linear-gradient(180deg, #403480 0%, #141653 100%) 0%
     0% no-repeat padding-box;
@@ -132,4 +140,50 @@ color: #fff !important;
 
 .css-ht032f{
   margin-top: 0px;
+}
+
+.StyledContainerDropDown {
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.StyledButton {
+  margin: 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  background-color: #4CAF50;
+  color: #fff;
+  cursor: pointer;
+}
+
+.StyledButton:hover {
+  background-color: #3e8e41;
+}
+
+.StyledButton:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.StyledContainerSnackBar {
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.userStyle{
+  background-color: #1c1444;
+  margin-bottom: 25px;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px;
+  height: 100%;
+  min-height: 100vh;
+}
+
+.css-jx36s5-MuiGrid-root{
+  margin-left: 20px !important;
 }

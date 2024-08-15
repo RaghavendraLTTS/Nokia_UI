@@ -31,6 +31,7 @@ const LoginPage = (props) => {
   const [showPassword, setShowPassword] = useState(false);
   // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [error, setError] = useState(null);
+  const [userData, setUserData] =useState({})
 
   const handleEmailChange = (event) => {
     setUsername(event.target.value);
@@ -67,8 +68,8 @@ const LoginPage = (props) => {
   const handleSignIn = async () => {
     try {
       const response = await fetch(
-        // "http://localhost:8085/api/users/login",
-        "http://wfm-user-mgmnt.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/users/login",
+        "http://localhost:8085/api/users/login",
+        // "http://wfm-user-mgmnt.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/users/login",
          {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -81,8 +82,13 @@ const LoginPage = (props) => {
         const newtoken = localStorage.getItem("token");
         if (newtoken) {
           const parsedToken = JSON.parse(newtoken); 
-          props.handleLoginSuccess(parsedToken.username, parsedToken.role); 
-          navigate("/home");
+          props.handleLoginSuccess(parsedToken.username, parsedToken.role);          
+          if(parsedToken.role === "Normal User" ){
+            navigate("/dashboard");
+          }else{
+            navigate("/home");
+          }
+             
         }
       } else {
         setError("Invalid username or password");

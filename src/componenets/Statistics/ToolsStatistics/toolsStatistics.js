@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useMemo } from "react";
 import {
   Table,
   TableBody,
@@ -28,143 +28,53 @@ import SearchIcon from "@mui/icons-material/Search";
 import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutlined";
 import "../ToolsStatistics/toolsStatistics.css";
 
-const data = [
-  {
-    id: 1,
-    userName: "Raghavendra",
-    client: "BSNL",
-    project: "Project 02",
-    toolName:"PCI",    
-    onExecuteTimestamp: "03-07-2024 13:00:10",
-    responseRecievedTimestamp: "03-07-2024 14:00:00",
-    processingTime: "00:30:00",
-    processingInstanceId:"adafderef87979-bdskjbf4d",
-    transactionId:12
-  },
-  {
-    id: 2,
-    userName: "Santhosh",
-    client: "Samsung",
-    project: "Project 03",
-    toolName:"RSI",    
-    onExecuteTimestamp: "03-07-2024 13:00:10",
-    responseRecievedTimestamp: "03-07-2024 14:00:00",
-    processingTime: "00:30:00",
-    processingInstanceId:"adafderef87979-bdskjbf4d",
-    transactionId:14
-  },
-  {
-    id: 3,
-    userName: "Mayur",
-    client: "Motorala",
-    project: "Project 03",
-    toolName:"Output Merged",    
-    onExecuteTimestamp: "03-07-2024 13:00:10",
-    responseRecievedTimestamp: "03-07-2024 14:00:00",
-    processingTime: "00:30:00",
-    processingInstanceId:"adafderef87979-bdskjbf4d",
-    transactionId:16
-  },
-  {
-    id: 4,
-    userName: "Rajesh",
-    client: "Nokia",
-    project: "Project 04",
-    toolName:"RSI",    
-    onExecuteTimestamp: "03-07-2024 13:00:10",
-    responseRecievedTimestamp: "03-07-2024 14:00:00",
-    processingTime: "00:30:00",
-    processingInstanceId:"adafderef87979-bdskjbf4d",
-    transactionId:19
-  },
-  {
-    id: 5,
-    userName: "Arif",
-    client: "Airtel",
-    project: "Project 05",
-    toolName:"PCI",    
-    onExecuteTimestamp: "03-07-2024 13:00:10",
-    responseRecievedTimestamp: "03-07-2024 14:00:00",
-    processingTime: "00:30:00",
-    processingInstanceId:"adafderef87979-bdskjbf4d",
-    transactionId:21
-  },
-  {
-    id: 6,
-    userName: "Raghavendra",
-    client: "Samsung",
-    project: "Project 06",
-    toolName:"RSI",    
-    onExecuteTimestamp: "03-07-2024 13:00:10",
-    responseRecievedTimestamp: "03-07-2024 14:00:00",
-    processingTime: "00:30:00",
-    processingInstanceId:"adafderef87979-bdskjbf4d",
-    transactionId:23
-  },
-  {
-    id: 7,
-    userName: "Santhosh",
-    client: "T-mobile",
-    project: "Project 07",
-    toolName:"Output Merged",    
-    onExecuteTimestamp: "03-07-2024 13:00:10",
-    responseRecievedTimestamp: "03-07-2024 14:00:00",
-    processingTime: "00:30:00",
-    processingInstanceId:"adafderef87979-bdskjbf4d",
-    transactionId:36
-  },
-  {
-    id: 8,
-    userName: "Nishant",
-    client: "Motorala",
-    project: "Project 08",
-    toolName:"PCI",    
-    onExecuteTimestamp: "03-07-2024 13:00:10",
-    responseRecievedTimestamp: "03-07-2024 14:00:00",
-    processingTime: "00:30:00",
-    processingInstanceId:"adafderef87979-bdskjbf4d",
-    transactionId:37
-  },
-  {
-    id: 9,
-    userName: "Shabaz",
-    client: "Airtel",
-    project: "Project 10",
-    toolName:"RSI",    
-    onExecuteTimestamp: "03-07-2024 13:00:10",
-    responseRecievedTimestamp: "03-07-2024 14:00:00",
-    processingTime: "00:30:00",
-    processingInstanceId:"adafderef87979-bdskjbf4d",
-    transactionId:43
-  },
-];
 
-const filterOptions = Object.keys(data[0]).reduce((acc, key) => {
-  acc[key] = [...new Set(data.map((item) => String(item[key]).toLowerCase()))];
-  return acc;
-}, {});
 
-const ToolsStatistics = () => {
+const ToolsStatistics = ({data}) => {
+
   const [searchTerms, setSearchTerms] = useState({});
   const [filterConditions, setFilterConditions] = useState({});
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [search, setSearch] = useState("");
 
   const handleSearchFilter = (event) => {
     setSearch(event.target.value);
   };
 
-  // const handleSearch = (key, value) => {
-  //     setSearchTerms(prevSearchTerms => ({
-  //         ...prevSearchTerms,
-  //         [key]: value,
-  //     }));
-  //     setPage(0);
-  // };
+  const filterOptions = useMemo(() => {
+    const filteredData = data.filter((item) => {
+      return Object.keys(searchTerms).every((searchKey) => {
+        const searchTerm = searchTerms[searchKey]?.toLowerCase() || "";
+        const itemValue = item[searchKey].toString().toLowerCase();
+        const filterCondition = filterConditions[searchKey] || "includes";
+        if (filterCondition === "includes") {
+          return itemValue.includes(searchTerm);
+        } else if (filterCondition === "equals") {
+          return itemValue === searchTerm;
+        } else if (filterCondition === "startsWith") {
+          return itemValue.startsWith(searchTerm);
+        } else if (filterCondition === "endsWith") {
+          return itemValue.endsWith(searchTerm);
+        }
+        return true;
+      });
+    });
+  
+    return Object.keys(data[0]).reduce((acc, key) => {
+      acc[key] = [...new Set(filteredData.map((item) => String(item[key]).toLowerCase()))];
+      return acc;
+    }, {});
+  }, [searchTerms, filterConditions, data]);
+
   const handleSearch = (key, value) => {
-    if (key === 'userName' || key === 'client'||key === 'project' || key === 'toolName') {
+    if (
+      key === "userName" ||
+      key === "client" ||
+      key === "project" ||
+      key === "toolName"
+    ) {
       setSearchTerms((prevSearchTerms) => ({
         ...prevSearchTerms,
         [key]: value,
@@ -241,153 +151,155 @@ const ToolsStatistics = () => {
   );
   return (
     <>
-     
-       
-    {/* <Grid item xs={1}>
-      <Box display="flex" alignItems="flex-end" mt={2}>
-        <Grid
-          container
-          sx={{ color: "#545e99" }}
-          direction="row"
-          spacing={0}
-        >
-          <Grid item xs={6}>
-            Export
-          </Grid>
-          <Grid item xs={6}>
-            <InsertDriveFileOutlinedIcon />
-          </Grid>
-        </Grid>
-      </Box>
-    </Grid> */}
-
-
-<TableContainer>
-  <Table className="tableStyle">
-    <TableHead
-      sx={{
-        textTransform: "capitalize",
-        border: "1px solid #4d5987",
-        '& th': {
-          padding: '4px 8px', // reduce padding
-          fontSize: 14, // reduce font size
-        },
-      }}
-    >
-      <TableRow>
-        {Object.keys(data[0]).map((column) => (
-          <TableCell
-          sx={{
-            color: "#fff !important",
-            opacity: 1,
-            font: "16px Robotonormal normal medium 16px/19px Roboto",
-            border: "1px solid #4d5987",
-            padding: '4px 8px', // reduce padding
-            fontSize: 14, // reduce font size
-          }}
-            key={column}
-          >
-            <Box sx={{ flexGrow: 1 }}>
-              <Grid container direction="row" spacing={0}>
-                <Grid mt={2} item xs={8}>
-                  {column !== "password" ? (
-                    <TableSortLabel
-                      active={sortConfig.key === column}
-                      direction={sortConfig.direction}
-                      onClick={() => handleSort(column)}
-                    >
-                      {column}
-                    </TableSortLabel>
-                  ) : (
-                    <Typography>{column}</Typography>
-                  )}
-                </Grid>
-                {column === "userName" || column === "project" || column === "toolName" || column === "client" ? (
-                  <Grid item xs={4} mt={1}>
-                    <IconButton
-                      sx={{ color: "#fff !important" }}
-                      onClick={() => handleFilterToggle(column)}
-                    >
-                      <FilterListIcon />
-                    </IconButton>
-                  </Grid>
-                ) : null}
-                {column === "userName" || column === "project" || column === "toolName" || column === "client" ? (
-                  <Grid item xs={12}>
-                    {filterOptions[column] && isFilterEnabled[column] && (
-                      <FormControl
-                        variant="standard"
-                        style={{ minWidth: 120, marginLeft: "10px" }}
-                      >
-                        <InputLabel
-                          sx={{ color: "#fff !important", minWidth: "100px" }}
-                        >
-                          Filter
-                        </InputLabel>
-                        <Select
-                          sx={{ backgroundColor: "#1c1447" }}
-                          value={searchTerms[column] || ""}
-                          onChange={(e) =>
-                            handleSearch(column, e.target.value)
-                          }
-                        >
-                          <MenuItem value="">All</MenuItem>
-                          {filterOptions[column].map((option, idx) => (
-                            <MenuItem
-                              key={idx}
-                              value={option.toLowerCase()}
-                            >
-                              {option}
-                            </MenuItem>
-                          ))}
-                        </Select>
-                      </FormControl>
-                    )}
-                  </Grid>
-                ) : null}
-              </Grid>
-            </Box>
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
-    <TableBody>
-      {currentRows.map((row, index) => (
-        <TableRow sx={{
-          '& td': {
-            padding: '4px 8px', // reduce padding
-            fontSize: 14, // reduce font size
-          },
-        }} key={index}>
-          {Object.values(row).map((cell, cellIndex) => (
-            <TableCell
+      <TableContainer
+        style={{
+          // overflowY: "auto",
+          display: "flex",
+          flexDirection: "column",
+          // height: "400px",
+        }}
+      >
+        <Table className="tableStyle">
+          <TableHead
             sx={{
-              color: "#fff !important",
+              position: "sticky",
+              top: 0,
+              backgroundColor: "#282468",
+              zIndex: 1,
+              textTransform: "capitalize",
               border: "1px solid #4d5987",
-              padding: '4px 8px', // reduce padding
-              fontSize: 14, // reduce font size
+              "& th": {
+                padding: "4px 8px",
+                fontSize: 14,
+              },
             }}
-              key={cellIndex}
-            >
-              {cell}
-            </TableCell>
-          ))}
-        </TableRow>
-      ))}
-    </TableBody>
-  </Table>
-</TableContainer>
-<TablePagination
-  sx={{ color: "#fff !important" }}
-  rowsPerPageOptions={[5, 10, 25]}
-  component="div"
-  count={sortedData.length}
-  rowsPerPage={rowsPerPage}
-  page={page}
-  onPageChange={handleChangePage}
-  onRowsPerPageChange={handleChangeRowsPerPage}
-/>
-</>
+          >
+            <TableRow>
+              {Object.keys(data[0]).map((column) => (
+                <TableCell
+                  sx={{
+                    color: "#fff !important",
+                    opacity: 1,
+                    font: "16px Robotonormal normal medium 16px/19px Roboto",
+                    border: "1px solid #4d5987",
+                    padding: "4px 8px",
+                    fontSize: 14,
+                  }}
+                  key={column}
+                >
+                  <Box sx={{ flexGrow: 1 }}>
+                    <Grid container direction="row" spacing={0}>
+                      <Grid mt={2} item xs={8}>
+                        {column !== "password" ? (
+                          <TableSortLabel
+                            active={sortConfig.key === column}
+                            direction={sortConfig.direction}
+                            onClick={() => handleSort(column)}
+                          >
+                            {column}
+                          </TableSortLabel>
+                        ) : (
+                          <Typography>{column}</Typography>
+                        )}
+                      </Grid>
+                      {column === "userName" ||
+                      column === "project" ||
+                      column === "toolName" ||
+                      column === "client" ? (
+                        <Grid item xs={4} mt={1}>
+                          <IconButton
+                            sx={{ color: "#fff !important" }}
+                            onClick={() => handleFilterToggle(column)}
+                          >
+                            <FilterListIcon />
+                          </IconButton>
+                        </Grid>
+                      ) : null}
+                      {column === "userName" ||
+                      column === "project" ||
+                      column === "toolName" ||
+                      column === "client" ? (
+                        <Grid item xs={12}>
+                          {filterOptions[column] && isFilterEnabled[column] && (
+                            <FormControl
+                              variant="standard"
+                              style={{ minWidth: 120, marginLeft: "10px" }}
+                            >
+                              <InputLabel
+                                sx={{
+                                  color: "#fff !important",
+                                  minWidth: "100px",
+                                }}
+                              >
+                                Filter
+                              </InputLabel>
+                              <Select
+                                sx={{ backgroundColor: "#1c1447" }}
+                                value={searchTerms[column] || ""}
+                                onChange={(e) =>
+                                  handleSearch(column, e.target.value)
+                                }
+                              >
+                                <MenuItem value="">All</MenuItem>
+                                {filterOptions[column].map((option, idx) => (
+                                  <MenuItem
+                                    key={idx}
+                                    value={option.toLowerCase()}
+                                  >
+                                    {option}
+                                  </MenuItem>
+                                ))}
+                              </Select>
+                            </FormControl>
+                          )}
+                        </Grid>
+                      ) : null}
+                    </Grid>
+                  </Box>
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {currentRows.map((row, index) => (
+              <TableRow
+                sx={{
+                  "& td": {
+                    padding: "4px 8px",
+                    fontSize: 14,
+                  },
+                }}
+                key={index}
+              >
+                {Object.values(row).map((cell, cellIndex) => (
+                  <TableCell
+                    sx={{
+                      color: "#fff !important",
+                      border: "1px solid #4d5987",
+                      padding: "4px 8px",
+                      fontSize: 14,
+                    }}
+                    key={cellIndex}
+                  >
+                    {cell}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>        
+      </TableContainer>
+      <TablePagination
+          sx={{ color: "#fff !important" }}
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={sortedData.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+    </>
   );
 };
 export default ToolsStatistics;

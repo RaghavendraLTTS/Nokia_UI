@@ -44,12 +44,13 @@ function Dashboard() {
   };
 
   return (
-    <Box mt={2} sx={{ flexGrow: 1 }}>
-      <StyledContainerDropDown
-        style={{ maxWidth: "100%", height: "85vh", marginTop: "10px" }}
+    <div className="userStyle">
+    {/* // <Box mt={2} sx={{ flexGrow: 1 }}> */}
+      {/* <StyledContainerDropDown
+        style={{ maxWidth: "100%", height:"auto", marginTop: "10px", }}
         className="dropDown-selection"
-      >
-        
+      > */}
+      
         <Grid container spacing={2}>
           <Grid item xs={12}>
         
@@ -57,8 +58,10 @@ function Dashboard() {
               <ListofTools/>            
            </Grid>
         </Grid> 
-      </StyledContainerDropDown>
-    </Box>
+     
+      {/* </StyledContainerDropDown> */}
+    {/* // </Box> */}
+    </div>  
   );
 }
 

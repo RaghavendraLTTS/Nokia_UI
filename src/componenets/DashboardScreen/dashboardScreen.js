@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   Table,
   TableBody,
@@ -49,13 +49,15 @@ import {
   YAxis,
   LineChart,
   Line,
+  BarChart,
+  Bar
 } from "recharts";
 import GaugeChart from "react-gauge-chart";
 import { styled } from "@mui/system";
 import Container from "@mui/material/Container";
-import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutlined";
-import * as XLSX from "xlsx";
+import { useLocation } from "react-router-dom";
 import "../DashboardScreen/dashboardScreen.css";
+import ExcelJS from "exceljs";
 
 const custom = {
   textAlign: "left",
@@ -72,6 +74,10 @@ const stopStyle = {
   opacity: 1,
 };
 
+const tooltipStyle = {
+  fontFamily: "'Open Sans', sans-serif",
+};
+
 const StyledContainerDropDown = styled(Container)({
   width: "100%",
   maxWidthh: "100%",
@@ -85,424 +91,6 @@ const StyledContainerDropDown = styled(Container)({
   marginTop: "20px",
   position: "relative",
 });
-
-const initialData = {
-  data: [
-    {
-      S_PCI: 189,
-      S_RSI: 450,
-      T_PCI: 189,
-      T_RSI: 450,
-      S_site: 18620,
-      T_cell: 4024102,
-      T_site: 18621,
-      s_cell: 4023622,
-      S_MRBTS: 402362,
-      T_MRBTS: 402410,
-      T_lcrID: 2,
-      s_range: 450,
-      t_range: 450,
-      S_prachCS: 12,
-      T_prachCS: 12,
-      S_earfcnDL: 1325,
-      T_earfcnDL: 1325,
-      S_RSperCell: 10,
-      T_RSperCell: 10,
-      RSI_Conflict: true,
-      S_prachConfIndex: 3,
-      T_prachConfIndex: 3,
-    },
-    {
-      S_PCI: 255,
-      S_RSI: 120,
-      T_PCI: 255,
-      T_RSI: 120,
-      S_site: 18621,
-      T_cell: 4024121,
-      T_site: 18622,
-      s_cell: 4023655,
-      S_MRBTS: 402365,
-      T_MRBTS: 402412,
-      T_lcrID: 5,
-      s_range: 120,
-      t_range: 120,
-      S_prachCS: 12,
-      T_prachCS: 12,
-      S_earfcnDL: 325,
-      T_earfcnDL: 325,
-      S_RSperCell: 10,
-      T_RSperCell: 10,
-      PCI_Conflict: true,
-      S_prachConfIndex: 3,
-      T_prachConfIndex: 3,
-    },
-    {
-      S_PCI: 144,
-      S_RSI: 210,
-      T_PCI: 144,
-      T_RSI: 210,
-      S_site: 18622,
-      T_cell: 4024140,
-      T_site: 18623,
-      s_cell: 4023688,
-      S_MRBTS: 402368,
-      T_MRBTS: 402414,
-      T_lcrID: 6,
-      s_range: 210,
-      t_range: 210,
-      S_prachCS: 12,
-      T_prachCS: 12,
-      S_earfcnDL: 3774,
-      T_earfcnDL: 3774,
-      S_RSperCell: 10,
-      T_RSperCell: 10,
-      RSI_Conflict: true,
-      S_prachConfIndex: 3,
-      T_prachConfIndex: 3,
-    },
-    {
-      S_PCI: 216,
-      S_RSI: 180,
-      T_PCI: 216,
-      T_RSI: 180,
-      S_site: 18623,
-      T_cell: 4024159,
-      T_site: 18624,
-      s_cell: 4023712,
-      S_MRBTS: 402371,
-      T_MRBTS: 402415,
-      T_lcrID: 8,
-      s_range: 180,
-      t_range: 180,
-      S_prachCS: 12,
-      T_prachCS: 12,
-      S_earfcnDL: 1325,
-      T_earfcnDL: 1325,
-      S_RSperCell: 10,
-      T_RSperCell: 10,
-      PCI_Conflict: true,
-      S_prachConfIndex: 3,
-      T_prachConfIndex: 3,
-    },
-    {
-      S_PCI: 288,
-      S_RSI: 360,
-      T_PCI: 288,
-      T_RSI: 360,
-      S_site: 18625,
-      T_cell: 4024188,
-      T_site: 18626,
-      s_cell: 4023736,
-      S_MRBTS: 402373,
-      T_MRBTS: 402418,
-      T_lcrID: 9,
-      s_range: 360,
-      t_range: 360,
-      S_prachCS: 12,
-      T_prachCS: 12,
-      S_earfcnDL: 325,
-      T_earfcnDL: 325,
-      S_RSperCell: 10,
-      T_RSperCell: 10,
-      RSI_Conflict: true,
-      S_prachConfIndex: 3,
-      T_prachConfIndex: 3,
-    },
-    {
-      S_PCI: 108,
-      S_RSI: 240,
-      T_PCI: 108,
-      T_RSI: 240,
-      S_site: 18626,
-      T_cell: 4024207,
-      T_site: 18627,
-      s_cell: 4023760,
-      S_MRBTS: 402376,
-      T_MRBTS: 402420,
-      T_lcrID: 10,
-      s_range: 240,
-      t_range: 240,
-      S_prachCS: 12,
-      T_prachCS: 12,
-      S_earfcnDL: 3774,
-      T_earfcnDL: 3774,
-      S_RSperCell: 10,
-      T_RSperCell: 10,
-      PCI_Conflict: true,
-      S_prachConfIndex: 3,
-      T_prachConfIndex: 3,
-    },
-    {
-      S_PCI: 192,
-      S_RSI: 300,
-      T_PCI: 192,
-      T_RSI: 300,
-      S_site: 18627,
-      T_cell: 4024226,
-      T_site: 18628,
-      s_cell: 4023784,
-      S_MRBTS: 402378,
-      T_MRBTS: 402422,
-      T_lcrID: 11,
-      s_range: 300,
-      t_range: 300,
-      S_prachCS: 12,
-      T_prachCS: 12,
-      S_earfcnDL: 1325,
-      T_earfcnDL: 1325,
-      S_RSperCell: 10,
-      T_RSperCell: 10,
-      RSI_Conflict: true,
-      S_prachConfIndex: 3,
-      T_prachConfIndex: 3,
-    },
-    {
-      S_PCI: 264,
-      S_RSI: 420,
-      T_PCI: 264,
-      T_RSI: 420,
-      S_site: 18628,
-      T_cell: 4024245,
-      T_site: 18629,
-      s_cell: 4023808,
-      S_MRBTS: 402380,
-      T_MRBTS: 402424,
-      T_lcrID: 12,
-      s_range: 420,
-      t_range: 420,
-      S_prachCS: 12,
-      T_prachCS: 12,
-      S_earfcnDL: 325,
-      T_earfcnDL: 325,
-      S_RSperCell: 10,
-      T_RSperCell: 10,
-      PCI_Conflict: true,
-      S_prachConfIndex: 3,
-      T_prachConfIndex: 3,
-    },
-    {
-      S_PCI: 189,
-      S_RSI: 450,
-      T_PCI: 189,
-      T_RSI: 450,
-      S_site: 18620,
-      T_cell: 4024102,
-      T_site: 18621,
-      s_cell: 4023622,
-      S_MRBTS: 402362,
-      T_MRBTS: 402410,
-      T_lcrID: 2,
-      s_range: 450,
-      t_range: 450,
-      S_prachCS: 12,
-      T_prachCS: 12,
-      S_earfcnDL: 1325,
-      T_earfcnDL: 1325,
-      S_RSperCell: 10,
-      T_RSperCell: 10,
-      RSI_Conflict: true,
-      S_prachConfIndex: 3,
-      T_prachConfIndex: 3,
-    },
-    {
-      S_PCI: 255,
-      S_RSI: 120,
-      T_PCI: 255,
-      T_RSI: 120,
-      S_site: 18621,
-      T_cell: 4024121,
-      T_site: 18622,
-      s_cell: 4023655,
-      S_MRBTS: 402365,
-      T_MRBTS: 402412,
-      T_lcrID: 5,
-      s_range: 120,
-      t_range: 120,
-      S_prachCS: 12,
-      T_prachCS: 12,
-      S_earfcnDL: 325,
-      T_earfcnDL: 325,
-      S_RSperCell: 10,
-      T_RSperCell: 10,
-      PCI_Conflict: true,
-      S_prachConfIndex: 3,
-      T_prachConfIndex: 3,
-    },
-    {
-      S_PCI: 144,
-      S_RSI: 210,
-      T_PCI: 144,
-      T_RSI: 210,
-      S_site: 18622,
-      T_cell: 4024140,
-      T_site: 18623,
-      s_cell: 4023688,
-      S_MRBTS: 402368,
-      T_MRBTS: 402414,
-      T_lcrID: 6,
-      s_range: 210,
-      t_range: 210,
-      S_prachCS: 12,
-      T_prachCS: 12,
-      S_earfcnDL: 3774,
-      T_earfcnDL: 3774,
-      S_RSperCell: 10,
-      T_RSperCell: 10,
-      RSI_Conflict: true,
-      S_prachConfIndex: 3,
-      T_prachConfIndex: 3,
-    },
-    {
-      S_PCI: 216,
-      S_RSI: 180,
-      T_PCI: 216,
-      T_RSI: 180,
-      S_site: 18623,
-      T_cell: 4024159,
-      T_site: 18624,
-      s_cell: 4023712,
-      S_MRBTS: 402371,
-      T_MRBTS: 402415,
-      T_lcrID: 8,
-      s_range: 180,
-      t_range: 180,
-      S_prachCS: 12,
-      T_prachCS: 12,
-      S_earfcnDL: 1325,
-      T_earfcnDL: 1325,
-      S_RSperCell: 10,
-      T_RSperCell: 10,
-      PCI_Conflict: true,
-      S_prachConfIndex: 3,
-      T_prachConfIndex: 3,
-    },
-    {
-      S_PCI: 288,
-      S_RSI: 360,
-      T_PCI: 288,
-      T_RSI: 360,
-      S_site: 18625,
-      T_cell: 4024188,
-      T_site: 18626,
-      s_cell: 4023736,
-      S_MRBTS: 402373,
-      T_MRBTS: 402418,
-      T_lcrID: 9,
-      s_range: 360,
-      t_range: 360,
-      S_prachCS: 12,
-      T_prachCS: 12,
-      S_earfcnDL: 325,
-      T_earfcnDL: 325,
-      S_RSperCell: 10,
-      T_RSperCell: 10,
-      RSI_Conflict: true,
-      S_prachConfIndex: 3,
-      T_prachConfIndex: 3,
-    },
-    {
-      S_PCI: 108,
-      S_RSI: 240,
-      T_PCI: 108,
-      T_RSI: 240,
-      S_site: 18626,
-      T_cell: 4024207,
-      T_site: 18627,
-      s_cell: 4023760,
-      S_MRBTS: 402376,
-      T_MRBTS: 402420,
-      T_lcrID: 10,
-      s_range: 240,
-      t_range: 240,
-      S_prachCS: 12,
-      T_prachCS: 12,
-      S_earfcnDL: 3774,
-      T_earfcnDL: 3774,
-      S_RSperCell: 10,
-      T_RSperCell: 10,
-      PCI_Conflict: true,
-      S_prachConfIndex: 3,
-      T_prachConfIndex: 3,
-    },
-    {
-      S_PCI: 192,
-      S_RSI: 300,
-      T_PCI: 92,
-      T_RSI: 300,
-      S_site: 18627,
-      T_cell: 4024226,
-      T_site: 18628,
-      s_cell: 4023784,
-      S_MRBTS: 402378,
-      T_MRBTS: 402422,
-      T_lcrID: 11,
-      s_range: 300,
-      t_range: 300,
-      S_prachCS: 12,
-      T_prachCS: 12,
-      S_earfcnDL: 1325,
-      T_earfcnDL: 1325,
-      S_RSperCell: 10,
-      T_RSperCell: 10,
-      RSI_Conflict: true,
-      S_prachConfIndex: 3,
-      T_prachConfIndex: 3,
-    },
-    {
-      S_PCI: 264,
-      S_RSI: 420,
-      T_PCI: 24,
-      T_RSI: 420,
-      S_site: 18628,
-      T_cell: 4024245,
-      T_site: 18629,
-      s_cell: 4023808,
-      S_MRBTS: 402380,
-      T_MRBTS: 402424,
-      T_lcrID: 12,
-      s_range: 420,
-      t_range: 420,
-      S_prachCS: 12,
-      T_prachCS: 12,
-      S_earfcnDL: 325,
-      T_earfcnDL: 325,
-      S_RSperCell: 10,
-      T_RSperCell: 10,
-      PCI_Conflict: true,
-      S_prachConfIndex: 3,
-      T_prachConfIndex: 3,
-    },
-    {
-      S_PCI: 321,
-      S_RSI: 630,
-      T_PCI: 285,
-      T_RSI: 630,
-      S_site: 18618,
-      T_cell: 4024034,
-      T_site: 18619,
-      s_cell: 4023604,
-      S_MRBTS: 402360,
-      T_MRBTS: 402403,
-      T_lcrID: 4,
-      s_range: 640,
-      t_range: 640,
-      S_prachCS: 12,
-      T_prachCS: 12,
-      S_earfcnDL: 1325,
-      T_earfcnDL: 1325,
-      S_RSperCell: 10,
-      T_RSperCell: 10,
-      RSI_Conflict: true,
-      S_prachConfIndex: 3,
-      T_prachConfIndex: 3,
-    },
-  ],
-  report: {
-    RSI_Conflict: 4220,
-    PCI_Conflict: 3210,
-    Total_Conflict: 7430,
-  },
-};
 
 const StyledInputLabel = styled(InputLabel)({
   color: "#97b5f9",
@@ -528,21 +116,28 @@ const StyledSelect = styled(Select)({
   },
 });
 
-const filterOptions = Object.keys(initialData.data[0]).reduce((acc, key) => {
-  acc[key] = [
-    ...new Set(initialData.data.map((item) => String(item[key]).toLowerCase())),
-  ];
-  return acc;
-}, {});
+// const filterOptions = Object.keys(initialData.data[0]).reduce((acc, key) => {
+//   acc[key] = [
+//     ...new Set(initialData.data.map((item) => String(item[key]).toLowerCase())),
+//   ];
+//   return acc;
+// }, {});
 
 const DashboardScreen = () => {
+  const location = useLocation();
+  const responsesData = location.state.responsesData.toolData;
+  useEffect(() => {
+    console.log(responsesData.data.data[0]);
+    console.log(responsesData.data.report);
+  }, [responsesData]);
+
   const [searchTerms, setSearchTerms] = useState({});
   const [filterConditions, setFilterConditions] = useState({});
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [selectedColumns, setSelectedColumns] = useState(
-    Object.keys(initialData.data[0])
+    Object.keys(responsesData.data.data[0])
   );
   const [selectedChart, setSelectedChart] = useState("");
   const [isFilterVisible, setIsFilterVisible] = useState(false);
@@ -555,6 +150,38 @@ const DashboardScreen = () => {
   const [timePeriod, setTimePeriod] = useState("");
   const [chartData, setChartData] = useState([]);
   const [columnAction, setColumnAction] = useState({});
+
+  // const filters = Object.keys(responsesData.data.data[0]).reduce((acc, key) => {
+  //   acc[key] = responsesData.data.data.map((item) => String(item[key]).toLowerCase());
+  //   return acc;
+  // }, {});
+
+  const filterOptions = useMemo(() => {
+    const filteredData = responsesData.data.data.filter((item) => {
+      return Object.keys(searchTerms).every((searchKey) => {
+        const searchTerm = searchTerms[searchKey]?.toLowerCase() || "";
+        const itemValue = item[searchKey].toString().toLowerCase();
+        const filterCondition = filterConditions[searchKey] || "includes";
+        if (filterCondition === "includes") {
+          return itemValue.includes(searchTerm);
+        } else if (filterCondition === "equals") {
+          return itemValue === searchTerm;
+        } else if (filterCondition === "startsWith") {
+          return itemValue.startsWith(searchTerm);
+        } else if (filterCondition === "endsWith") {
+          return itemValue.endsWith(searchTerm);
+        }
+        return true;
+      });
+    });
+
+    return Object.keys(responsesData.data.data[0]).reduce((acc, key) => {
+      acc[key] = [
+        ...new Set(filteredData.map((item) => String(item[key]).toLowerCase())),
+      ];
+      return acc;
+    }, {});
+  }, [searchTerms, filterConditions]);
 
   const timePeriodOptions = [
     { value: "yesterday", label: "Yesterday" },
@@ -674,7 +301,7 @@ const DashboardScreen = () => {
     setSortConfig({ key, direction });
   };
 
-  const filteredData = initialData.data.filter((item) =>
+  const filteredData = responsesData.data.data.filter((item) =>
     Object.keys(searchTerms).every((key) => {
       const searchTerm = searchTerms[key]?.toLowerCase() || "";
       const itemValue = item[key].toString().toLowerCase();
@@ -691,6 +318,7 @@ const DashboardScreen = () => {
       return true;
     })
   );
+
   const handleSearchChange = (event) => {
     setSearchTerms({
       ...searchTerms,
@@ -726,12 +354,11 @@ const DashboardScreen = () => {
   };
 
   const handleSelectAllColumns = () => {
-    setSelectedColumns(Object.keys(initialData.data[0]));
+    setSelectedColumns(Object.keys(responsesData.data.data[0]));
   };
 
   const handleDeselectAllColumns = () => {
-    //setSelectedColumns([]);
-    const defaultColumns = Object.keys(initialData.data[0]).slice(0, 5);
+    const defaultColumns = Object.keys(responsesData.data.data[0]).slice(0, 5);
     setSelectedColumns(defaultColumns);
   };
 
@@ -797,55 +424,191 @@ const DashboardScreen = () => {
     window.close();
   };
 
-  const pieData = [
-    { name: "RSI Conflict", value: initialData.report.RSI_Conflict },
-    { name: "PCI Conflict", value: initialData.report.PCI_Conflict },
-    { name: "Total Conflict", value: initialData.report.Total_Conflict },
-  ];
+  let pieData = [];
+  switch (responsesData.toolName) {
+    case "RSI":
+      pieData = [
+        {
+          name: "RSI Conflict",
+          value: responsesData.data.report["RSI Anomaly Detected"],
+        },
+        {
+          name: "Total Conflict",
+          value: responsesData.data.report["Total Relations Analyzed"],
+        },
+      ];
+      break;
+    case "PCI":
+      pieData = [
+        {
+          name: "PCI Conflict",
+          value: responsesData.data.report["PCI Anomaly Detected"],
+        },
+        {
+          name: "Total Conflict",
+          value: responsesData.data.report["Total Relations Analyzed"],
+        },
+      ];
+      break;
+    case "Output":
+      pieData = [
+        {
+          name: "RSI Conflict",
+          value: responsesData.data.report["RSI Anomaly"],
+        },
+        {
+          name: "PCI Conflict",
+          value: responsesData.data.report["PCI Anomaly"],
+        },
+        {
+          name: "Total Conflict",
+          value: responsesData.data.report["Total Anomaly"],
+        },
+      ];
+      break;
+    default:
+      // handle unknown toolName
+      console.error(`Unknown toolName: ${responsesData.toolName}`);
+  }
 
-  const radialData = [
-    {
-      name: "RSI Conflict",
-      value: initialData.report.RSI_Conflict,
-      fill: "#C7B8EA",
-    },
-    {
-      name: "PCI Conflict",
-      value: initialData.report.PCI_Conflict,
-      fill: "#F7CAC9",
-    },
-    {
-      name: "Total Conflict",
-      value: initialData.report.Total_Conflict,
-      fill: "#87CEEB",
-    },
-  ];
+  let radialData = [];
+  switch (responsesData.toolName) {
+    case "RSI":
+      radialData = [
+        {
+          name: "RSI Conflict",
+          value: responsesData.data.report["RSI Anomaly Detected"],
+          fill: "#E23B3B",
+        },
+        {
+          name: "Total Conflict",
+          value: responsesData.data.report["Total Relations Analyzed"],
+          fill: "#23ABB6",
+        },
+      ];
+      break;
+    case "PCI":
+      radialData = [
+        {
+          name: "PCI Conflict",
+          value: responsesData.data.report["PCI Anomaly Detected"],
+          fill: "#F7B737",
+        },
+        {
+          name: "Total Conflict",
+          value: responsesData.data.report["Total Relations Analyzed"],
+          fill: "#23ABB6",
+        },
+      ];
+      break;
+    case "Output":
+      radialData = [
+        {
+          name: "RSI Conflict",
+          value: responsesData.data.report["RSI Anomaly"],
+          fill: "#E23B3B",
+        },
+        {
+          name: "PCI Conflict",
+          value: responsesData.data.report["PCI Anomaly"],
+          fill: "#F7B737",
+        },
+        {
+          name: "Total Conflict",
+          value: responsesData.data.report["Total Anomaly"],
+          fill: "#23ABB6",
+        },
+      ];
+      break;
+    default:
+      console.error(`Unknown toolName: ${responsesData.toolName}`);
+  }
 
-  const areaData = Object.keys(initialData.report).map((key) => ({
-    name: key.replace("_", " "),
-    value: initialData.report[key],
-  }));
+  let areaData = [];
+  switch (responsesData.toolName) {
+    case "RSI":
+      areaData = Object.keys(responsesData.data.report)
+        .filter((key) => key.includes("RSI"))
+        .map((key) => ({
+          name: key.replace("_", " "),
+          value: responsesData.data.report[key],
+        }));
+      break;
+    case "PCI":
+      areaData = Object.keys(responsesData.data.report)
+        .filter((key) => key.includes("PCI"))
+        .map((key) => ({
+          name: key.replace("_", " "),
+          value: responsesData.data.report[key],
+        }));
+      break;
+    case "Output":
+      areaData = Object.keys(responsesData.data.report).map((key) => ({
+        name: key.replace("_", " "),
+        value: responsesData.data.report[key],
+      }));
+      break;
+    default:
+      console.error(`Unknown toolName: ${responsesData.toolName}`);
+  }
 
-  // const COLORS = ["#FF4500", "#008000", "#4D4DFF"];
-  // Lighter Shade Colors
-
-// #8B9467 (a light, muted gray-brown)
-// #C5C3C8 (a soft, pale gray-purple)
-// #E2E2EA (a light, airy white-gray)
-// #B2B8CF (a pale, serene blue-gray)
-// #D9D9D9 (a soft, muted gray-brown)
-// Pastel Colors with a Lighter Shade
-
-// #C9C3E6 (a light, pastel purple)
-// #F2C9C5 (a pale, pastel pink)
-// #87CEEB (a light, pastel blue)
-// #C9E4CA (a muted, pastel green)
-// #FFC499 (a warm, pastel orange)
+  let barData = [];
+  switch (responsesData.toolName) {
+    case "RSI":
+      barData = [
+        {
+          name: "RSI Conflict",
+          value: responsesData.data.report["RSI Anomaly Detected"],
+          fill: "#E23B3B",
+        },
+        {
+          name: "Total Conflict",
+          value: responsesData.data.report["Total Relations Analyzed"],
+          fill: "#23ABB6",
+        },
+      ];
+      break;
+    case "PCI":
+      barData = [
+        {
+          name: "PCI Conflict",
+          value: responsesData.data.report["PCI Anomaly Detected"],
+          fill: "#F7B737",
+        },
+        {
+          name: "Total Conflict",
+          value: responsesData.data.report["Total Relations Analyzed"],
+          fill: "#23ABB6",
+        },
+      ];
+      break;
+    case "Output":
+      barData = [
+        {
+          name: "RSI Conflict",
+          value: responsesData.data.report["RSI Anomaly"],
+          fill: "#E23B3B",
+        },
+        {
+          name: "PCI Conflict",
+          value: responsesData.data.report["PCI Anomaly"],
+          fill: "#F7B737",
+        },
+        {
+          name: "Total Conflict",
+          value: responsesData.data.report["Total Anomaly"],
+          fill: "#23ABB6",
+        },
+      ];
+      break;
+    default:
+      console.error(`Unknown toolName: ${responsesData.toolName}`);
+  }
+ 
   const COLORS = [
-    "#8B9467", // lighter shade of #8884d8
-    "#C9E4CA", // lighter shade of #e63f4d
-    "#FFC499", // lighter shade of #345243
-    //...
+    "#E23B3B", 
+    "#F7B737", 
+    "#23ABB6",
   ];
 
   const handleFilterToggle = () => {
@@ -855,32 +618,84 @@ const DashboardScreen = () => {
     setColumnAction((prevAction) => ({ ...prevAction, [column]: action }));
   };
 
-  const xlsxDownload = (data) => {
-    const headers = Object.keys(data.data[0]);
-    const aoaData = [headers, ...data.data.map((row) => Object.values(row))];
-    //const aoaData = data.data.map((row) => Object.values(row));
-    const ws = XLSX.utils.aoa_to_sheet(aoaData);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
-    const workbookBuffer = XLSX.write(wb, {
-      bookType: "xlsx",
-      type: "array",
+  
+  const handleExport = () => {
+    if (
+      !responsesData.data ||
+      !responsesData.data.data ||
+      !responsesData.data.report
+    ) {
+      alert("No data to export!");
+      return;
+    }
+
+    const workbook = new ExcelJS.Workbook();
+    const sheet1 = workbook.addWorksheet("Data");
+    const sheet2 = workbook.addWorksheet("Report");
+
+    const headers1 = Object.keys(responsesData.data.data[0]);
+    sheet1.addRow(headers1);
+
+    sheet1.getRow(1).fill = {
+      type: "pattern",
+      pattern: "solid",
+      fgColor: { argb: "FFADD8E6" },
+    }; // Light blue
+
+    responsesData.data.data.forEach((row) => {
+      sheet1.addRow(Object.values(row));
     });
-    const blob = new Blob([new Uint8Array(workbookBuffer)], {
-      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+
+    headers1.forEach((header, columnIndex) => {
+      const maxLength = Math.max(
+        header.length,
+        ...responsesData.data.data.map(
+          (row) => Object.values(row)[columnIndex].toString().length
+        )
+      );
+      sheet1.getColumn(columnIndex + 1).width = maxLength < 10 ? 10 : maxLength;
     });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "dashboardexcel.xlsx";
-    a.click();
+
+    const headers2 = Object.keys(responsesData.data.report);
+    sheet2.addRow(headers2);
+    // sheet2.getRow(1).font = { bold: true, color: { argb: 'FF000080' } }; // Light blue
+    sheet2.getRow(1).fill = {
+      type: "pattern",
+      pattern: "solid",
+      fgColor: { argb: "FFADD8E6" },
+    }; // Light blue
+
+    sheet2.addRow(Object.values(responsesData.data.report));
+
+    headers2.forEach((header, columnIndex) => {
+      const maxLength = Math.max(
+        header.length,
+        ...Object.values(responsesData.data.report).map(
+          (value) => value.toString().length
+        )
+      );
+      sheet2.getColumn(columnIndex + 1).width = maxLength < 10 ? 10 : maxLength;
+    });
+
+    workbook.xlsx.writeBuffer().then((buffer) => {
+      const blob = new Blob([buffer], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "Dashboardexcel.xlsx";
+      a.click();
+      URL.revokeObjectURL(url);
+    });
   };
 
   return (
-    <StyledContainerDropDown
-      style={{ maxWidth: "100%", height: "950px", marginTop: "10px" }}
-      className="dropDown-selection"
-    >
+    // <StyledContainerDropDown
+    //   style={{ maxWidth: "100%", height: "950px", marginTop: "10px" }}
+    //   className="dropDown-selection"
+    // >
+    <div className="userStyle">
       <Grid container spacing={2}>
         <Grid item xs={8}>
           <Stack spacing={2} style={custom}>
@@ -896,21 +711,13 @@ const DashboardScreen = () => {
           <Stack spacing={2} style={custom}>
             <FormControl
               style={{
-                position: "absolute",
-                top: 2,
-                left: 1,
-                right: 2,
                 width: "1800",
-                margin: "2px",
-                // backgroundColor: "WHITE",
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "start",
                 alignItems: "center",
                 height: 20,
                 padding: 10,
-                // border: "1px solid #ccc",
-                // borderRadius: 10,
               }}
             >
               <div style={{ flex: 1 }} />
@@ -958,51 +765,10 @@ const DashboardScreen = () => {
               >
                 Stop
               </Button>
-              {/* <Button
-                variant="contained"
-                color="secondary"
-                onClick={handleClickOpen}
-                sx={{
-                  margin: "8px",
-                  color: "#EDF2F5",
-                  borderColor: "1px solid #150B35",
-                  boxShadow: "0px 0px 5px #00000029",
-                  borderRadius: "10px",
-                  background:
-                    "transparent linear-gradient(112deg, #7A045D 0%, #B135A1 52%, #9959EC 100%) 0% 0% no-repeat padding-box",
-                }}
-              >
-                Close
-              </Button>
-
-              <Dialog
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-              >
-                <DialogTitle id="alert-dialog-title">
-                  {"Exit Application"}
-                </DialogTitle>
-                <DialogContent>
-                  <DialogContentText id="alert-dialog-description">
-                    Are you sure you want to exit?
-                  </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleClose} color="primary">
-                    Cancel
-                  </Button>
-                  <Button onClick={handleExit} color="primary" autoFocus>
-                    Exit
-                  </Button>
-                </DialogActions>
-              </Dialog> */}
               <Button
-                onClick={() => xlsxDownload(initialData)}
+                onClick={handleExport}
                 variant="contained"
                 color="primary"
-                startIcon={<InsertDriveFileOutlinedIcon />}
                 hover={{
                   backgroundColor: "#545e99",
                   color: "white",
@@ -1038,6 +804,10 @@ const DashboardScreen = () => {
             <Table size="small" style={{ height: "100%" }}>
               <TableHead
                 sx={{
+                  position: "sticky",
+                  top: 0,
+                  backgroundColor: "#282468", // match the background color of the table
+                  zIndex: 1,
                   color: "#fff !important",
                   border: "1px solid #4d5987",
                   "& th": {
@@ -1075,6 +845,11 @@ const DashboardScreen = () => {
                         }}
                       >
                         {column}
+                        <TableSortLabel
+                          active={sortConfig.key === column}
+                          direction={sortConfig.direction}
+                          onClick={() => handleSort(column)}
+                        ></TableSortLabel>
                         <FormControl
                           variant="standard"
                           style={{
@@ -1112,7 +887,9 @@ const DashboardScreen = () => {
                                     InputLabelProps={{
                                       style: { color: "#fff !important" },
                                     }}
-                                    InputProps={{ style: { color: "#fff !important" } }}
+                                    InputProps={{
+                                      style: { color: "#fff !important" },
+                                    }}
                                     label="Search"
                                     value={searchTerms[column] || ""}
                                     onChange={(e) =>
@@ -1208,14 +985,16 @@ const DashboardScreen = () => {
                                       <Checkbox
                                         checked={
                                           selectedColumns.length ===
-                                          Object.keys(initialData.data[0])
-                                            .length
+                                          Object.keys(
+                                            responsesData.data.data[0]
+                                          ).length
                                         }
                                         indeterminate={
                                           selectedColumns.length > 0 &&
                                           selectedColumns.length <
-                                            Object.keys(initialData.data[0])
-                                              .length
+                                            Object.keys(
+                                              responsesData.data.data[0]
+                                            ).length
                                         }
                                         onChange={(event) => {
                                           if (event.target.checked) {
@@ -1227,19 +1006,18 @@ const DashboardScreen = () => {
                                       />
                                       <ListItemText primary="Select All" />
                                     </MenuItem>
-                                    {Object.keys(initialData.data[0]).map(
-                                      (column) => (
-                                        <MenuItem key={column} value={column}>
-                                          <Checkbox
-                                            checked={
-                                              selectedColumns.indexOf(column) >
-                                              -1
-                                            }
-                                          />
-                                          <ListItemText primary={column} />
-                                        </MenuItem>
-                                      )
-                                    )}
+                                    {Object.keys(
+                                      responsesData.data.data[0]
+                                    ).map((column) => (
+                                      <MenuItem key={column} value={column}>
+                                        <Checkbox
+                                          checked={
+                                            selectedColumns.indexOf(column) > -1
+                                          }
+                                        />
+                                        <ListItemText primary={column} />
+                                      </MenuItem>
+                                    ))}
                                   </StyledSelect>
                                 </MenuItem>
                               </StyledFormControl>
@@ -1327,6 +1105,7 @@ const DashboardScreen = () => {
                 }}
               >
                 <MenuItem value="Pie">Pie Chart</MenuItem>
+                <MenuItem value="Bar">Bar Chart</MenuItem>
                 <MenuItem value="Radial">Radial Chart</MenuItem>
                 <MenuItem value="Area">Area Chart</MenuItem>
                 <MenuItem value="Conflicts Distribution">
@@ -1343,9 +1122,9 @@ const DashboardScreen = () => {
                     cx="50%"
                     cy="50%"
                     outerRadius={150}
-                    fill="#8B9467"
+                    fill="#EO3DCD"
                     dataKey="value"
-                    label
+                    label={{fontFamily: "'Open Sans', sans-serif"}}
                   >
                     {pieData.map((entry, index) => (
                       <Cell
@@ -1354,11 +1133,52 @@ const DashboardScreen = () => {
                       />
                     ))}
                   </Pie>
-                  <Tooltip />
+                  <Tooltip contentStyle={tooltipStyle} />
                   <Legend />
                 </PieChart>
               </ResponsiveContainer>
             )}
+            {selectedChart === "Bar" && (
+            <ResponsiveContainer width="100%" height={370}>
+              <BarChart
+                data={barData}
+                margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis
+                  dataKey="name"
+                  style={{
+                    fontSize: 14,
+                    fontFamily: "'Open Sans', sans-serif",
+                    color: "#333",
+                  }}
+                />
+                <YAxis
+                  style={{
+                    fontSize: 14,
+                    fontFamily: "'Open Sans', sans-serif",
+                    color: "#333",
+                  }}
+                />
+                <Tooltip
+                  cursor={{ fill: "transparent" }}
+                  wrapperStyle={{ border: "1px solid #ccc", borderRadius: 4 }}
+                  labelStyle={{
+                    fontSize: 14,
+                    fontFamily: "'Open Sans', sans-serif",
+                    color: "#333",
+                  }}
+                  itemStyle={{
+                    fontSize: 14,
+                    color: "#666",
+                    fontFamily: "'Open Sans', sans-serif",
+                  }}
+                  separator={<span>: </span>}
+                />
+                <Bar dataKey="value" fill="#C9E4CA" />
+              </BarChart>
+            </ResponsiveContainer>
+          )}
             {selectedChart === "Radial" && (
               <ResponsiveContainer width="100%" height={400}>
                 <RadialBarChart
@@ -1378,7 +1198,7 @@ const DashboardScreen = () => {
                 >
                   <RadialBar
                     minAngle={15}
-                    label={{ position: "insideStart", fill: "#fff" }}
+                    label={{ position: "outside", offset: 10, fill: "#fff", fontFamily: "'Open Sans', sans-serif", }}
                     background
                     clockWise
                     dataKey="value"
@@ -1389,7 +1209,7 @@ const DashboardScreen = () => {
                     verticalAlign="middle"
                     align="right"
                   />
-                  <Tooltip />
+                  <Tooltip contentStyle={tooltipStyle} />
                 </RadialBarChart>
               </ResponsiveContainer>
             )}
@@ -1400,14 +1220,39 @@ const DashboardScreen = () => {
                   margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
                 >
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
+                  <XAxis dataKey="name" 
+                  style={{
+                    fontSize: 14,
+                    fontFamily: "'Open Sans', sans-serif",
+                    color: "#333",
+                  }}
+                  />
+                  <YAxis 
+                  style={{
+                      fontSize: 14,
+                      fontFamily: "'Open Sans', sans-serif",
+                      color: "#333",
+                    }} />
+                  <Tooltip
+                    cursor={{ fill: "#f5f5f5" }}
+                    wrapperStyle={{ border: "1px solid #ccc", borderRadius: 4 }}
+                    labelStyle={{
+                      fontSize: 14,
+                      fontFamily: "'Open Sans', sans-serif",
+                      color: "#333",
+                    }}
+                    itemStyle={{
+                      fontSize: 14,
+                      color: "#666",
+                      fontFamily: "'Open Sans', sans-serif",
+                    }}
+                    separator={<span>: </span>}
+                  />
                   <Area
                     type="monotone"
                     dataKey="value"
                     stroke="#C9E4CA"
-                    fill="#87CEEB"
+                    fill="#8B9467"
                   />
                 </AreaChart>
               </ResponsiveContainer>
@@ -1430,7 +1275,7 @@ const DashboardScreen = () => {
                       />
                     ))}
                   </Pie>
-                  <Tooltip />
+                  <Tooltip contentStyle={tooltipStyle} />
                   <Legend />
                 </PieChart>
               </ResponsiveContainer>
@@ -1442,60 +1287,123 @@ const DashboardScreen = () => {
                   justifyContent="space-around"
                   alignItems="center"
                 >
-                  <Box textAlign="center">
-                    <Typography variant="subtitle1" color={"white"}>
-                      RSI Conflict
-                    </Typography>
-                    <GaugeChart
-                      id="gauge-chart-rsi"
-                      nrOfLevels={20}
-                      percent={
-                        initialData.report.RSI_Conflict /
-                        initialData.report.Total_Conflict
-                      }
-                      textColor="white"
-                      needleColor="#345243"
-                      colors={["#00FF00", "#FF0000"]}
-                      arcWidth={0.3}
-                      cornerRadius={3}
-                    />
-                  </Box>
-                  <Box textAlign="center">
-                    <Typography variant="subtitle1" color={"white"}>
-                      PCI Conflict
-                    </Typography>
-                    <GaugeChart
-                      id="gauge-chart-pci"
-                      nrOfLevels={20}
-                      percent={
-                        initialData.report.PCI_Conflict /
-                        initialData.report.Total_Conflict
-                      }
-                      textColor="white"
-                      needleColor="#345243"
-                      colors={["#00FF00", "#FF0000"]}
-                      arcWidth={0.3}
-                      cornerRadius={3}
-                    />
-                  </Box>
-                  <Box textAlign="center">
-                    <Typography variant="subtitle1" color={"white"}>
-                      Total Conflict
-                    </Typography>
-                    <GaugeChart
-                      id="gauge-chart-total"
-                      nrOfLevels={20}
-                      percent={
-                        initialData.report.Total_Conflict /
-                        initialData.report.Total_Conflict
-                      }
-                      textColor="white"
-                      needleColor="#345243"
-                      colors={["#00FF00", "#FF0000"]}
-                      arcWidth={0.3}
-                      cornerRadius={3}
-                    />
-                  </Box>
+                  {responsesData.toolName === "RSI" ? (
+                    <Box textAlign="center">
+                      <Typography variant="subtitle1" color={"white"}>
+                        RSI Conflict
+                      </Typography>
+                      <GaugeChart
+                        id="gauge-chart-rsi"
+                        nrOfLevels={20}
+                        percent={
+                          responsesData.data.report["RSI Anomaly Detected"] /
+                          responsesData.data.report["Total Relations Analyzed"]
+                        }
+                        textColor="white"
+                        needleColor="#005AFF"
+                        colors={["#F47F31", "#F47F31"]}
+                        arcWidth={0.3}
+                        arcPadding={0.05} 
+                        needleStrokeWidth={0.05}
+                        needleAnimationDuration={1000}
+                        cornerRadius={3}
+                        animate={false}
+                        style={{width:'90%'}}
+                      />
+                    </Box>
+                  ) : responsesData.toolName === "PCI" ? (
+                    <Box textAlign="center">
+                      <Typography variant="subtitle1" color={"white"}>
+                        PCI Conflict
+                      </Typography>
+                      <GaugeChart
+                        id="gauge-chart-pci"
+                        nrOfLevels={20}
+                        percent={
+                          responsesData.data.report["PCI Anomaly Detected"] /
+                          responsesData.data.report["Total Relations Analyzed"]
+                        }
+                        textColor="white"
+                        needleColor="#005AFF"
+                        colors={["#F47F31", "#F47F31"]}
+                        arcWidth={0.3}
+                        needleStrokeWidth={0.05}
+                        needleAnimationDuration={1000}
+                        cornerRadius={3}
+                        animate={false}
+                        style={{width:'90%'}}
+                      />
+                    </Box>
+                  ) : responsesData.toolName === "Output" ? (
+                    <>
+                      <Box textAlign="center">
+                        <Typography variant="subtitle1" color={"white"}>
+                          RSI Conflict
+                        </Typography>
+                        <GaugeChart
+                          id="gauge-chart-total"
+                          nrOfLevels={20}
+                          percent={
+                            responsesData.data.report["RSI Anomaly"] /
+                            responsesData.data.report["Total Anomaly"]
+                          }
+                          textColor="white"
+                          needleColor="#005AFF"
+                          colors={["#F47F31", "#F47F31"]}
+                          arcWidth={0.3}
+                          needleStrokeWidth={0.05}
+                          needleAnimationDuration={1000}
+                          cornerRadius={3}
+                          animate={false}
+                          style={{width:'90%'}}
+                        />
+                      </Box>
+                      <Box textAlign="center">
+                        <Typography variant="subtitle1" color={"white"}>
+                          PCI Conflict
+                        </Typography>
+                        <GaugeChart
+                          id="gauge-chart-total"
+                          nrOfLevels={20}
+                          percent={
+                            responsesData.data.report["PCI Anomaly"] /
+                            responsesData.data.report["Total Anomaly"]
+                          }
+                          textColor="white"
+                          needleColor="#005AFF"
+                          colors={["#F47F31", "#F47F31"]}
+                          arcWidth={0.3}
+                          needleStrokeWidth={0.05}
+                          needleAnimationDuration={1000}
+                          cornerRadius={3}
+                          animate={false}
+                          style={{width:'90%'}}
+                        />
+                      </Box>
+                      <Box textAlign="center">
+                        <Typography variant="subtitle1" color={"white"}>
+                          Total Conflict
+                        </Typography>
+                        <GaugeChart
+                          id="gauge-chart-total"
+                          nrOfLevels={20}
+                          percent={
+                            responsesData.data.report["Total Anomaly"] /
+                            responsesData.data.report["Total Anomaly"]
+                          }
+                          textColor="white"
+                          needleColor="#005AFF"
+                          colors={["#F47F31", "#F47F31"]}
+                          arcWidth={0.3}
+                          needleStrokeWidth={0.05}
+                          needleAnimationDuration={1000}
+                          cornerRadius={3}
+                          animate={false}
+                          style={{width:'90%'}}
+                        />
+                      </Box>
+                    </>
+                  ) : null}
                 </Box>
               </ResponsiveContainer>
             )}
@@ -1581,7 +1489,8 @@ const DashboardScreen = () => {
           </ResponsiveContainer>
         </Grid>
       </Grid> */}
-    </StyledContainerDropDown>
+    {/* </StyledContainerDropDown> */}
+    </div>
   );
 };
 export default DashboardScreen;

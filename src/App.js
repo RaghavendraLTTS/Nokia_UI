@@ -14,7 +14,8 @@ import Dashboard from './componenets/Dashbaord/dashboard'
 import DashboardScreen from './componenets/DashboardScreen/dashboardScreen'
 import Statistics from './componenets/Statistics/statistics'
 
-function AppRouter({handleLoginSuccess,token,data,toolData,setSelectedChip, setRole}) {
+function AppRouter({handleLoginSuccess,token,data,toolData, toolExecuteData, setSelectedChip, setRole,isExecuting,
+  setIsExecuting,}) {
   // const [selectedChip, setSelectedChip] = useState('');
   const location = useLocation();
 
@@ -45,14 +46,6 @@ function AppRouter({handleLoginSuccess,token,data,toolData,setSelectedChip, setR
     setSelectedChip(chipValue); ;
   }, [location,setSelectedChip]);
 
- // Redirect to dashboard if user is a normal user
- useEffect(() => {
-  if (token && setRole === 'Normal User') {
-    setSelectedChip('dashboard');
-    <Navigate to="/dashboard" replace />;
-  }
-}, [token, setRole, setSelectedChip]);
-
   return (
     <Routes>
       <Route
@@ -61,7 +54,8 @@ function AppRouter({handleLoginSuccess,token,data,toolData,setSelectedChip, setR
       />
       {token ? (
         <>
-          <Route path="/home" element={<UserScreen data={data} setSelectedChip={setSelectedChip} />} />
+          <Route path="/home" element={<UserScreen data={data} executeData ={toolExecuteData} setSelectedChip={setSelectedChip} isExecuting={isExecuting}
+                setIsExecuting={setIsExecuting}  />} />
           <Route
             path="/onboard"
             element={<OnboardScreen data={data} dataAdd={toolData} setSelectedChip={setSelectedChip} />}
@@ -84,19 +78,20 @@ function AppRouter({handleLoginSuccess,token,data,toolData,setSelectedChip, setR
 function App() {
   const [data, setData] = useState([]);
   const [toolData, setToolData] = useState([]);
+  const [toolExecuteData, settoolExecuteData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [role, setRole] = useState(localStorage.getItem('role'));
   const [selectedChip, setSelectedChip] = useState('');
+  const [isExecuting, setIsExecuting] = useState(false); 
   // const navigate = useNavigate();
 
   useEffect(() => {
     if (token) {
       const fetchData = async () => {
         try {
-          // const response = await fetch('http://localhost:8081/api/getData');
-          // const response = await fetch ("http://ltts-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/getData")
-          const response = await fetch ("http://wfm-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/getData")
+          const response = await fetch('http://localhost:8090/api/getData');
+          // const response = await fetch ("http://wfm-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/getData")
           
           const result = await response.json();
           setData(result);
@@ -110,8 +105,8 @@ function App() {
       const fetchToolData = async () => {
         try {
           // const resp = await fetch('http://localhost:8081/api/getTools');
-          // const resp = await fetch("http://ltts-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/getTools")
-          const resp = await fetch("http://wfm-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/getTools")
+          const resp = await fetch('http://localhost:8083/api/getToolsAll'); // Unique All Tools
+          // const resp = await fetch("http://wfm-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/getTools")
           const res = await resp.json();
           setToolData(res);
           setLoading(false);
@@ -121,8 +116,22 @@ function App() {
         }
       };
 
+      const fetchExecuteToolData = async () => {
+        try {
+          const respExe = await fetch('http://localhost:8089/api/getexecutiondata');
+          // const resp = await fetch("http://wfm-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/getTools")
+          const resTool = await respExe.json();
+          settoolExecuteData(resTool);
+          setLoading(false);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+          setLoading(false);
+        }
+      };
+
       fetchData();
       fetchToolData();
+      fetchExecuteToolData();
     }
   }, [token]);
 
@@ -145,8 +154,11 @@ function App() {
         token={token}
         data={data}
         toolData={toolData}
+        toolExecuteData={toolExecuteData}
         setSelectedChip={setSelectedChip} 
-        setRole={setRole}      
+        setRole={setRole}  
+        isExecuting={isExecuting}
+        setIsExecuting={setIsExecuting}     
       />
     </Router>
   );

@@ -2,28 +2,12 @@
 table {
     width: 100%;
     border-collapse: collapse;
-    margin: 20px 0;
-    font-family: 'normal normal medium 16px/19px Roboto';
+    font-family: 'sans-serif';
 }
 
-/* th,
-td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-}  */
-
-/* th {
-    cursor: pointer;
-    background-color: #f2f2f2;
-} */
-
-/* input[type="text"] {
-    margin-bottom: 10px;
-    padding: 8px;
-    width: 100%;
-    box-sizing: border-box;
-} */
+.css-19kzrtu {
+    padding: 0px !important;
+}
 
 .pagination {
     margin-top: 10px;
@@ -49,13 +33,8 @@ button {
     opacity: 1;
   }
 
-/* .MuiInputBase-input.css-yz9k0d-MuiInputBase-input {
-    color: white;
-} */
+  .css-1rxz5jq-MuiSelect-select-MuiInputBase-input-MuiInput-input{
+    color: #fff !important;
+  }
 
-
-/* .MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation8.MuiPopover-paper.MuiMenu-paper.MuiMenu-paper.css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper{
-    background-color:transparent linear-gradient(245deg, #1C0D46 0%, #1C1C42 100%) 0% 0% no-repeat padding-box;
-    color: #1c1444;
-} */
 

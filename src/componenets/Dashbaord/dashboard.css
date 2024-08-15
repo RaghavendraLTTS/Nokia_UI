@@ -1,8 +1,9 @@
-
-body {
-  background: transparent linear-gradient(245deg, #1c0d46 0%, #1c1c42 100%) 0%
-    0% no-repeat padding-box;
-  box-shadow: 0px 0px 20px #0000004d;
-  border-radius: 20px;
-  opacity: 1;
+.userStyle{
+  background-color: #1c1444;
+  margin-bottom: 25px;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px;
+  height: 100%;
+  min-height: 100vh;
 }

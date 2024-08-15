@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useMemo } from "react";
 import {
   Table,
   TableBody,
@@ -28,159 +28,96 @@ import SearchIcon from "@mui/icons-material/Search";
 import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutlined";
 import "../UserStatistics/userStatistics.css";
 
-const data = [
-  {
-    id: 1,
-    userName: "Raghavendra",
-    client: "BSNL",
-    project: "Project 02",
-    toolName: "Tool3",
-    dashboardOpenTimestamp: "03-07-2024 13:00:10",
-    dashboardCloseTimestamp: "03-07-2024 14:00:00",
-    actualSpentTime: "00:30:00",
-  },
-  {
-    id: 2,
-    userName: "Santhosh",
-    client: "Samsung",
-    project: "Project 03",
-    toolName: "Tool2",
-    dashboardOpenTimestamp: "03-07-2024 15:00:55",
-    dashboardCloseTimestamp: "03-07-2024 15:30:45",
-    actualSpentTime: "00:20:45",
-  },
-  {
-    id: 3,
-    userName: "Mayur",
-    client: "Motorala",
-    project: "Project 03",
-    toolName: "Tool3",
-    dashboardOpenTimestamp: "03-07-2024 16:15:30",
-    dashboardCloseTimestamp: "03-07-2024 16:45:30",
-    actualSpentTime: "00:30",
-  },
-  {
-    id: 4,
-    userName: "Rajesh",
-    client: "Nokia",
-    project: "Project 04",
-    toolName: "Tool17",
-    dashboardOpenTimestamp: "03-07-2024 16:30:10",
-    dashboardCloseTimestamp: "03-07-2024 17:00:00",
-    actualSpentTime: "00:03:00",
-  },
-  {
-    id: 5,
-    userName: "Arif",
-    client: "Airtel",
-    project: "Project 05",
-    toolName: "Tool10",
-    dashboardOpenTimestamp: "03-07-2027 17:00:10",
-    dashboardCloseTimestamp: "03-07-2027 17:30:00",
-    actualSpentTime: "00:03:15",
-  },
-  {
-    id: 6,
-    userName: "Raghavendra",
-    client: "Samsung",
-    project: "Project 06",
-    toolName: "Tool1",
-    dashboardOpenTimestamp: "03-07-2024 13:00:10",
-    dashboardCloseTimestamp: "03-07-2024 14:00:00",
-    actualSpentTime: "00:30",
-  },
-  {
-    id: 7,
-    userName: "Santhosh",
-    client: "T-mobile",
-    project: "Project 07",
-    toolName: "Tool3",
-    dashboardOpenTimestamp: "03-07-2024 13:00:10",
-    dashboardCloseTimestamp: "03-07-2024 14:00:00",
-    actualSpentTime: "00:30",
-  },
-  {
-    id: 8,
-    userName: "Nishant",
-    client: "Motorala",
-    project: "Project 08",
-    toolName: "Tool 14",
-    dashboardOpenTimestamp: "03-07-2024 16:30:10",
-    dashboardCloseTimestamp: "03-07-2024 17:00:00",
-    actualSpentTime: "00:30",
-  },
-  {
-    id: 9,
-    userName: "Raghavendra",
-    client: "Airtel",
-    project: "Project 10",
-    toolName: "Tool10",
-    dashboardOpenTimestamp: "03-07-2024 13:00:10",
-    dashboardCloseTimestamp: "03-07-2024 14:00:00",
-    actualSpentTime: "00:30",
-  },
-];
 
-const filterOptions = Object.keys(data[0]).reduce((acc, key) => {
-  acc[key] = [...new Set(data.map(item => String(item[key]).toLowerCase()))];
-  return acc;
-}, {});
+const UserStatistics = ({data}) => {
 
+  const [searchTerms, setSearchTerms] = useState({});
+  const [filterConditions, setFilterConditions] = useState({});
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [search, setSearch] = useState("");
 
-const UserStatistics = () => {
-    const [searchTerms, setSearchTerms] = useState({});
-    const [filterConditions, setFilterConditions] = useState({});
-    const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [search, setSearch] = useState('');
+  // const filterOptions = Object.keys(data[0]).reduce((acc, key) => {
+  //   acc[key] = [...new Set(data.map((item) => String(item[key]).toLowerCase()))];
+  //   return acc;
+  // }, {});
+  
+  const filterOptions = useMemo(() => {
+    const filteredData = data.filter((item) => {
+      return Object.keys(searchTerms).every((searchKey) => {
+        const searchTerm = searchTerms[searchKey]?.toLowerCase() || "";
+        const itemValue = item[searchKey].toString().toLowerCase();
+        const filterCondition = filterConditions[searchKey] || "includes";
+        if (filterCondition === "includes") {
+          return itemValue.includes(searchTerm);
+        } else if (filterCondition === "equals") {
+          return itemValue === searchTerm;
+        } else if (filterCondition === "startsWith") {
+          return itemValue.startsWith(searchTerm);
+        } else if (filterCondition === "endsWith") {
+          return itemValue.endsWith(searchTerm);
+        }
+        return true;
+      });
+    });
+  
+    return Object.keys(data[0]).reduce((acc, key) => {
+      acc[key] = [...new Set(filteredData.map((item) => String(item[key]).toLowerCase()))];
+      return acc;
+    }, {});
+  }, [searchTerms, filterConditions, data]);
 
-    const handleSearchFilter = (event) => {
-        setSearch(event.target.value);
-    };
+  const handleSearchFilter = (event) => {
+    setSearch(event.target.value);
+  };
 
-    const handleSearch = (key, value) => {
-      if (key === 'userName' || key === 'client'||key === 'project' || key === 'toolName') {
-          setSearchTerms(prevSearchTerms => ({
-              ...prevSearchTerms,
-              [key]: value,
-          }));
-      }
-      setPage(0);
+  const handleSearch = (key, value) => {
+    if (
+      key === "userName" ||
+      key === "client" ||
+      key === "project" ||
+      key === "toolName"
+    ) {
+      setSearchTerms((prevSearchTerms) => ({
+        ...prevSearchTerms,
+        [key]: value,
+      }));
+    }
+    setPage(0);
   };
   const handleSort = (key) => {
-    let direction = 'asc';
-    if (sortConfig.key === key && sortConfig.direction === 'asc') {
-        direction = 'desc';
+    let direction = "asc";
+    if (sortConfig.key === key && sortConfig.direction === "asc") {
+      direction = "desc";
     }
     setSortConfig({ key, direction });
-};
+  };
 
- 
   const handleFilterChange = (key, condition) => {
     setFilterConditions((prevFilterConditions) => ({
       ...prevFilterConditions,
       [key]: condition,
     }));
   };
- 
-  const filteredData = data.filter(item =>
-    Object.keys(searchTerms).every(key => {
-        const searchTerm = searchTerms[key]?.toLowerCase() || '';
-        const itemValue = item[key].toString().toLowerCase();
-        const filterCondition = filterConditions[key] || 'includes';
-        if (filterCondition === 'includes') {
-            return itemValue.includes(searchTerm);
-        } else if (filterCondition === 'equals') {
-            return itemValue === searchTerm;
-        } else if (filterCondition === 'startsWith') {
-            return itemValue.startsWith(searchTerm);
-        } else if (filterCondition === 'endsWith') {
-            return itemValue.endsWith(searchTerm);
-        }
-        return true;
+
+  const filteredData = data.filter((item) =>
+    Object.keys(searchTerms).every((key) => {
+      const searchTerm = searchTerms[key]?.toLowerCase() || "";
+      const itemValue = item[key].toString().toLowerCase();
+      const filterCondition = filterConditions[key] || "includes";
+      if (filterCondition === "includes") {
+        return itemValue.includes(searchTerm);
+      } else if (filterCondition === "equals") {
+        return itemValue === searchTerm;
+      } else if (filterCondition === "startsWith") {
+        return itemValue.startsWith(searchTerm);
+      } else if (filterCondition === "endsWith") {
+        return itemValue.endsWith(searchTerm);
+      }
+      return true;
     })
-);
+  );
 
   const sortedData = filteredData.sort((a, b) => {
     if (sortConfig.key) {
@@ -213,17 +150,26 @@ const UserStatistics = () => {
   );
   return (
     <>
-      
-
-      <TableContainer>
-        <Table>
+      <TableContainer
+      style={{
+        // overflowY: "auto",
+        display: "flex",
+        flexDirection: "column",
+        // height:"400px"
+      }}
+      >
+        <Table className="tableStyle">
           <TableHead
             sx={{
+              position: "sticky",
+              top: 0,
+              backgroundColor: "#282468", // match the background color of the table
+              zIndex: 1,
               textTransform: "capitalize",
               border: "1px solid #4d5987",
               "& th": {
-                padding: "4px 8px", // reduce padding
-                fontSize: 14, // reduce font size
+                padding: "4px 8px", 
+                fontSize: 14, 
               },
             }}
           >
@@ -235,8 +181,8 @@ const UserStatistics = () => {
                     opacity: 1,
                     font: "16px Robotonormal normal medium 16px/19px Roboto",
                     border: "1px solid #4d5987",
-                    padding: "4px 8px", // reduce padding
-                    fontSize: 14, // reduce font size
+                    padding: "4px 8px", 
+                    fontSize: 14, 
                   }}
                   key={column}
                 >
@@ -255,7 +201,10 @@ const UserStatistics = () => {
                           <Typography>{column}</Typography>
                         )}
                       </Grid>
-                      {column === "userName" || column === "project" || column === "toolName" || column === "client" ? (
+                      {column === "userName" ||
+                      column === "project" ||
+                      column === "toolName" ||
+                      column === "client" ? (
                         <Grid item xs={4} mt={1}>
                           <IconButton
                             sx={{ color: "#fff !important" }}
@@ -265,7 +214,10 @@ const UserStatistics = () => {
                           </IconButton>
                         </Grid>
                       ) : null}
-                      { column === "userName" || column === "project" || column === "toolName" || column === "client" ? (
+                      {column === "userName" ||
+                      column === "project" ||
+                      column === "toolName" ||
+                      column === "client" ? (
                         <Grid item xs={12}>
                           {filterOptions[column] && isFilterEnabled[column] && (
                             <FormControl
@@ -273,7 +225,10 @@ const UserStatistics = () => {
                               style={{ minWidth: 120, marginLeft: "10px" }}
                             >
                               <InputLabel
-                                sx={{ color: "#fff !important", minWidth: "100px" }}
+                                sx={{
+                                  color: "#fff !important",
+                                  minWidth: "100px",
+                                }}
                               >
                                 Filter
                               </InputLabel>
@@ -309,8 +264,8 @@ const UserStatistics = () => {
               <TableRow
                 sx={{
                   "& td": {
-                    padding: "4px 8px", // reduce padding
-                    fontSize: 14, // reduce font size
+                    padding: "4px 8px", 
+                    fontSize: 14, 
                   },
                 }}
                 key={index}
@@ -320,8 +275,8 @@ const UserStatistics = () => {
                     sx={{
                       color: "#fff !important",
                       border: "1px solid #4d5987",
-                      padding: "4px 8px", // reduce padding
-                      fontSize: 14, // reduce font size
+                      padding: "4px 8px", 
+                      fontSize: 14, 
                     }}
                     key={cellIndex}
                   >
@@ -331,7 +286,7 @@ const UserStatistics = () => {
               </TableRow>
             ))}
           </TableBody>
-        </Table>
+        </Table>        
       </TableContainer>
       <TablePagination
         sx={{ color: "#fff !important" }}
@@ -343,6 +298,7 @@ const UserStatistics = () => {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+      
     </>
   );
 };

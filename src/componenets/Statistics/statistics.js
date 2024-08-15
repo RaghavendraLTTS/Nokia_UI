@@ -5,7 +5,6 @@ import ToolsStatistics from "../Statistics/ToolsStatistics/toolsStatistics";
 import Grid from "@mui/material/Grid";
 import { styled } from "@mui/system";
 import Container from "@mui/material/Container";
-import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutlined";
 import "../Statistics/statistics.css";
 import Button from "@mui/material/Button";
 import XLSXDownload from "../../Utilits/excelDownload";
@@ -18,231 +17,1023 @@ const tabStyle = {
   opacity: 1,
 };
 
-const StyledContainerDropDown = styled(Container)({
-  width: "97%",
-  maxWidthh: "97%",
-  backgroundColor: "#1c1444",
-  marginBottom: "25px",
-  borderRadius: "10px",
-  padding: "20px",
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  marginTop: "20px",
-  position: "relative",
-});
 
 const userStatisticsData = [
-
   {
     id: 1,
-    userName: "Raghavendra",
-    client: "BSNL",
-    project: "Project 02",
-    toolName: "Tool3",
-    loginTimestamp: "03-07-2024 13:00:00",
-    dashboardOpenTimestamp: "03-07-2024 13:00:10",
-    dashboardCloseTimestamp: "03-07-2024 14:00:00",
-    actualSpentTime: "00:30:00",
+    userName: "Rajesh",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "PCI Anomaly",
+    loginTimestamp: "01-08-2024 13:00:00",
+    dashboardOpenTimestamp:"01-08-2024 13:05:00",
+    dashboardCloseTimestamp: "01-08-2024 13:45:00",
+    actualSpentTime: "00:40:00"
   },
   {
     id: 2,
-    userName: "Santhosh",
-    client: "Samsung",
-    project: "Project 03",
-    toolName: "Tool2",
-    loginTimestamp: "03-07-2024 15:00:45",
-    dashboardOpenTimestamp: "03-07-2024 15:00:55",
-    dashboardCloseTimestamp: "03-07-2024 15:30:45",
-    actualSpentTime: "00:20:45",
+    userName: "Rajesh",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "PCI Anomaly",
+    loginTimestamp: "02-08-2024 14:00:00",
+    dashboardOpenTimestamp:"02-08-2024 14:07:00",
+    dashboardCloseTimestamp: "02-08-2024 14:52:00",
+    actualSpentTime: "00:45:00"
   },
   {
     id: 3,
-    userName: "Mayur",
-    client: "Motorala",
-    project: "Project 03",
-    toolName: "Tool3",
-    loginTimestamp: "03-07-2024 16:15:20",
-    dashboardOpenTimestamp: "03-07-2024 16:15:30",
-    dashboardCloseTimestamp: "03-07-2024 16:45:30",
-    actualSpentTime: "00:30",
+    userName: "Rajesh",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "PCI Anomaly",
+    loginTimestamp: "03-08-2024 13:00:00",
+    dashboardOpenTimestamp:"03-08-2024 13:09:00",
+    dashboardCloseTimestamp: "03-08-2024 13:43:00",
+    actualSpentTime: "00:34:00"
   },
   {
     id: 4,
     userName: "Rajesh",
-    client: "Nokia",
-    project: "Project 04",
-    toolName: "Tool17",
-    loginTimestamp: "03-07-2024 16:30:00",
-    dashboardOpenTimestamp: "03-07-2024 16:30:10",
-    dashboardCloseTimestamp: "03-07-2024 17:00:00",
-    actualSpentTime: "00:03:00",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "PCI Anomaly",
+    loginTimestamp: "04-08-2024 14:30:00",
+    dashboardOpenTimestamp:"04-08-2024 14:12:00",
+    dashboardCloseTimestamp: "04-08-2024 15:07:00",
+    actualSpentTime: "00:55:00"
   },
   {
     id: 5,
-    userName: "Arif",
-    client: "Airtel",
-    project: "Project 05",
-    toolName: "Tool10",
-    loginTimestamp: "03-07-2027 17:00:00",
-    dashboardOpenTimestamp: "03-07-2027 17:00:10",
-    dashboardCloseTimestamp: "03-07-2027 17:30:00",
-    actualSpentTime: "00:03:15",
+    userName: "Rajesh",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "PCI Anomaly",
+    loginTimestamp: "05-08-2024 15:00:00",
+    dashboardOpenTimestamp:"05-08-2024 15:04:00",
+    dashboardCloseTimestamp: "05-08-2024 15:52:00",
+    actualSpentTime: "00:48:00"
   },
   {
     id: 6,
-    userName: "Raghavendra",
-    client: "Samsung",
-    project: "Project 06",
-    toolName: "Tool1",
-    loginTimestamp: "03-07-2024 13:00:00",
-    dashboardOpenTimestamp: "03-07-2024 13:00:10",
-    dashboardCloseTimestamp: "03-07-2024 14:00:00",
-    actualSpentTime: "00:30",
+    userName: "Rajesh",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "PCI Anomaly",
+    loginTimestamp: "06-08-2024 14:00:00",
+    dashboardOpenTimestamp:"06-08-2024 14:02:00",
+    dashboardCloseTimestamp: "06-08-2024 14:49:00",
+    actualSpentTime: "00:47:00"
   },
   {
     id: 7,
-    userName: "Santhosh",
-    client: "T-mobile",
-    project: "Project 07",
-    toolName: "Tool3",
-    loginTimestamp: "03-07-2024 13:00:00",
-    dashboardOpenTimestamp: "03-07-2024 13:00:10",
-    dashboardCloseTimestamp: "03-07-2024 14:00:00",
-    actualSpentTime: "00:30",
+    userName: "Rajesh",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "PCI Anomaly",
+    loginTimestamp: "07-08-2024 13:00:00",
+    dashboardOpenTimestamp:"07-08-2024 13:01:00",
+    dashboardCloseTimestamp: "07-08-2024 13:45:00",
+    actualSpentTime: "00:44:00"
   },
   {
     id: 8,
-    userName: "Nishant",
-    client: "Motorala",
-    project: "Project 08",
-    toolName: "Tool 14",
-    loginTimestamp: "03-07-2024 16:30:00",
-    dashboardOpenTimestamp: "03-07-2024 16:30:10",
-    dashboardCloseTimestamp: "03-07-2024 17:00:00",
-    actualSpentTime: "00:30",
+    userName: "Rajesh",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "PCI Anomaly",
+    loginTimestamp: "08-08-2024 14:30:00",
+    dashboardOpenTimestamp:"08-08-2024 14:15:00",
+    dashboardCloseTimestamp: "08-08-2024 15:13:00",
+    actualSpentTime: "00:58:00"
   },
   {
     id: 9,
-    userName: "Raghavendra",
-    client: "Airtel",
-    project: "Project 10",
-    toolName: "Tool10",
-    loginTimestamp: "03-07-2024 13:00:00",
-    dashboardOpenTimestamp: "03-07-2024 13:00:10",
-    dashboardCloseTimestamp: "03-07-2024 14:00:00",
-    actualSpentTime: "00:30",
+    userName: "Rajesh",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "PCI Anomaly",
+    loginTimestamp: "09-08-2024 15:00:00",
+    dashboardOpenTimestamp:"09-08-2024 15:16:00",
+    dashboardCloseTimestamp: "09-08-2024 16:08:00",
+    actualSpentTime: "00:52:00"
   },
+  {
+    id: 10,
+    userName: "Rajesh",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "PCI Anomaly",
+    loginTimestamp: "10-08-2024 14:00:00",
+    dashboardOpenTimestamp:"10-08-2024 14:05:00",
+    dashboardCloseTimestamp: "10-08-2024 14:56:00",
+    actualSpentTime: "00:51:00"
+  },
+  {
+    id: 11,
+    userName: "Rajesh",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "PCI Anomaly",
+    loginTimestamp: "11-08-2024 13:00:00",
+    dashboardOpenTimestamp:"11-08-2024 13:02:00",
+    dashboardCloseTimestamp: "11-08-2024 13:42:00",
+    actualSpentTime: "00:40:00"
+  },
+  {
+    id: 12,
+    userName: "Pankaj",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "PCI Anomaly",
+    loginTimestamp: "01-08-2024 13:00:00",
+    dashboardOpenTimestamp:"01-08-2024 13:05:00",
+    dashboardCloseTimestamp: "01-08-2024 13:45:00",
+    actualSpentTime: "00:40:00"
+  },
+  {
+    id: 13,
+    userName: "Pankaj",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "PCI Anomaly",
+    loginTimestamp: "02-08-2024 14:00:00",
+    dashboardOpenTimestamp:"02-08-2024 14:07:00",
+    dashboardCloseTimestamp: "02-08-2024 14:52:00",
+    actualSpentTime: "00:45:00"
+  },
+  {
+    id: 14,
+    userName: "Pankaj",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "PCI Anomaly",
+    loginTimestamp: "03-08-2024 13:00:00",
+    dashboardOpenTimestamp:"03-08-2024 13:09:00",
+    dashboardCloseTimestamp: "03-08-2024 13:43:00",
+    actualSpentTime: "00:34:00"
+  },
+  {
+    id: 15,
+    userName: "Pankaj",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "PCI Anomaly",
+    loginTimestamp: "04-08-2024 14:30:00",
+    dashboardOpenTimestamp:"04-08-2024 14:12:00",
+    dashboardCloseTimestamp: "04-08-2024 15:07:00",
+    actualSpentTime: "00:55:00"
+  },
+  {
+    id: 16,
+    userName: "Pankaj",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "PCI Anomaly",
+    loginTimestamp: "05-08-2024 15:00:00",
+    dashboardOpenTimestamp:"05-08-2024 15:04:00",
+    dashboardCloseTimestamp: "05-08-2024 15:52:00",
+    actualSpentTime: "00:48:00"
+  },
+  {
+    id: 17,
+    userName: "Pankaj",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "PCI Anomaly",
+    loginTimestamp: "06-08-2024 14:00:00",
+    dashboardOpenTimestamp:"06-08-2024 14:02:00",
+    dashboardCloseTimestamp: "06-08-2024 14:49:00",
+    actualSpentTime: "00:47:00"
+  },
+  {
+    id: 18,
+    userName: "Pankaj",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "PCI Anomaly",
+    loginTimestamp: "07-08-2024 13:00:00",
+    dashboardOpenTimestamp:"07-08-2024 13:01:00",
+    dashboardCloseTimestamp: "07-08-2024 13:45:00",
+    actualSpentTime: "00:44:00"
+  },
+  {
+    id: 19,
+    userName: "Pankaj",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "PCI Anomaly",
+    loginTimestamp: "08-08-2024 14:30:00",
+    dashboardOpenTimestamp:"08-08-2024 14:15:00",
+    dashboardCloseTimestamp: "08-08-2024 15:13:00",
+    actualSpentTime: "00:58:00"
+  },
+  {
+    id: 20,
+    userName: "Pankaj",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "PCI Anomaly",
+    loginTimestamp: "09-08-2024 15:00:00",
+    dashboardOpenTimestamp:"09-08-2024 15:16:00",
+    dashboardCloseTimestamp: "09-08-2024 16:08:00",
+    actualSpentTime: "00:52:00"
+  },
+  {
+    id: 21,
+    userName: "Pankaj",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "PCI Anomaly",
+    loginTimestamp: "10-08-2024 14:00:00",
+    dashboardOpenTimestamp:"10-08-2024 14:05:00",
+    dashboardCloseTimestamp: "10-08-2024 14:56:00",
+    actualSpentTime: "00:51:00"
+  },
+  {
+    id: 22,
+    userName: "Pankaj",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "PCI Anomaly",
+    loginTimestamp: "11-08-2024 13:00:00",
+    dashboardOpenTimestamp:"11-08-2024 13:02:00",
+    dashboardCloseTimestamp: "11-08-2024 13:42:00",
+    actualSpentTime: "00:40:00"
+  },
+  {
+    id: 23,
+    userName: "Rajesh",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "RSI Anomaly",
+    loginTimestamp: "01-08-2024 13:00:00",
+    dashboardOpenTimestamp:"01-08-2024 13:05:00",
+    dashboardCloseTimestamp: "01-08-2024 13:45:00",
+    actualSpentTime: "00:40:00"
+  },
+  {
+    id: 24,
+    userName: "Rajesh",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "RSI Anomaly",
+    loginTimestamp: "02-08-2024 14:00:00",
+    dashboardOpenTimestamp:"02-08-2024 14:07:00",
+    dashboardCloseTimestamp: "02-08-2024 14:52:00",
+    actualSpentTime: "00:45:00"
+  },
+  {
+    id: 25,
+    userName: "Rajesh",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "RSI Anomaly",
+    loginTimestamp: "03-08-2024 13:00:00",
+    dashboardOpenTimestamp:"03-08-2024 13:09:00",
+    dashboardCloseTimestamp: "03-08-2024 13:43:00",
+    actualSpentTime: "00:34:00"
+  },
+  {
+    id: 26,
+    userName: "Rajesh",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "RSI Anomaly",
+    loginTimestamp: "04-08-2024 14:30:00",
+    dashboardOpenTimestamp:"04-08-2024 14:12:00",
+    dashboardCloseTimestamp: "04-08-2024 15:07:00",
+    actualSpentTime: "00:55:00"
+  },
+  {
+    id: 27,
+    userName: "Rajesh",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "RSI Anomaly",
+    loginTimestamp: "05-08-2024 15:00:00",
+    dashboardOpenTimestamp:"05-08-2024 15:04:00",
+    dashboardCloseTimestamp: "05-08-2024 15:52:00",
+    actualSpentTime: "00:48:00"
+  },
+  {
+    id: 28,
+    userName: "Rajesh",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "RSI Anomaly",
+    loginTimestamp: "06-08-2024 14:00:00",
+    dashboardOpenTimestamp:"06-08-2024 14:02:00",
+    dashboardCloseTimestamp: "06-08-2024 14:49:00",
+    actualSpentTime: "00:47:00"
+  },
+  {
+    id: 29,
+    userName: "Rajesh",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "RSI Anomaly",
+    loginTimestamp: "07-08-2024 13:00:00",
+    dashboardOpenTimestamp:"07-08-2024 13:01:00",
+    dashboardCloseTimestamp: "07-08-2024 13:45:00",
+    actualSpentTime: "00:44:00"
+  },
+  {
+    id: 30,
+    userName: "Rajesh",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "RSI Anomaly",
+    loginTimestamp: "08-08-2024 14:30:00",
+    dashboardOpenTimestamp:"08-08-2024 14:15:00",
+    dashboardCloseTimestamp: "08-08-2024 15:13:00",
+    actualSpentTime: "00:58:00"
+  },
+  {
+    id: 31,
+    userName: "Rajesh",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "RSI Anomaly",
+    loginTimestamp: "09-08-2024 15:00:00",
+    dashboardOpenTimestamp:"09-08-2024 15:16:00",
+    dashboardCloseTimestamp: "09-08-2024 16:08:00",
+    actualSpentTime: "00:52:00"
+  },
+  {
+    id: 32,
+    userName: "Rajesh",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "RSI Anomaly",
+    loginTimestamp: "10-08-2024 14:00:00",
+    dashboardOpenTimestamp:"10-08-2024 14:05:00",
+    dashboardCloseTimestamp: "10-08-2024 14:56:00",
+    actualSpentTime: "00:51:00"
+  },
+  {
+    id: 33,
+    userName: "Rajesh",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "RSI Anomaly",
+    loginTimestamp: "11-08-2024 13:00:00",
+    dashboardOpenTimestamp:"11-08-2024 13:02:00",
+    dashboardCloseTimestamp: "11-08-2024 13:42:00",
+    actualSpentTime: "00:40:00"
+  },
+  {
+    id: 34,
+    userName: "Pankaj",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "RSI Anomaly",
+    loginTimestamp: "01-08-2024 13:00:00",
+    dashboardOpenTimestamp:"01-08-2024 13:05:00",
+    dashboardCloseTimestamp: "01-08-2024 13:45:00",
+    actualSpentTime: "00:40:00"
+  },
+  {
+    id: 35,
+    userName: "Pankaj",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "RSI Anomaly",
+    loginTimestamp: "02-08-2024 14:00:00",
+    dashboardOpenTimestamp:"02-08-2024 14:07:00",
+    dashboardCloseTimestamp: "02-08-2024 14:52:00",
+    actualSpentTime: "00:45:00"
+  },
+  {
+    id: 36,
+    userName: "Pankaj",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "RSI Anomaly",
+    loginTimestamp: "03-08-2024 13:00:00",
+    dashboardOpenTimestamp:"03-08-2024 13:09:00",
+    dashboardCloseTimestamp: "03-08-2024 13:43:00",
+    actualSpentTime: "00:34:00"
+  },
+  {
+    id: 37,
+    userName: "Pankaj",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "RSI Anomaly",
+    loginTimestamp: "04-08-2024 14:30:00",
+    dashboardOpenTimestamp:"04-08-2024 14:12:00",
+    dashboardCloseTimestamp: "04-08-2024 15:07:00",
+    actualSpentTime: "00:55:00"
+  },
+  {
+    id: 38,
+    userName: "Pankaj",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "RSI Anomaly",
+    loginTimestamp: "05-08-2024 15:00:00",
+    dashboardOpenTimestamp:"05-08-2024 15:04:00",
+    dashboardCloseTimestamp: "05-08-2024 15:52:00",
+    actualSpentTime: "00:48:00"
+  },
+  {
+    id: 39,
+    userName: "Pankaj",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "RSI Anomaly",
+    loginTimestamp: "06-08-2024 14:00:00",
+    dashboardOpenTimestamp:"06-08-2024 14:02:00",
+    dashboardCloseTimestamp: "06-08-2024 14:49:00",
+    actualSpentTime: "00:47:00"
+  },
+  {
+    id: 40,
+    userName: "Pankaj",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "RSI Anomaly",
+    loginTimestamp: "07-08-2024 13:00:00",
+    dashboardOpenTimestamp:"07-08-2024 13:01:00",
+    dashboardCloseTimestamp: "07-08-2024 13:45:00",
+    actualSpentTime: "00:44:00"
+  },
+  {
+    id: 41,
+    userName: "Pankaj",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "RSI Anomaly",
+    loginTimestamp: "08-08-2024 14:30:00",
+    dashboardOpenTimestamp:"08-08-2024 14:15:00",
+    dashboardCloseTimestamp: "08-08-2024 15:13:00",
+    actualSpentTime: "00:58:00"
+  },
+  {
+    id: 42,
+    userName: "Pankaj",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "RSI Anomaly",
+    loginTimestamp: "09-08-2024 15:00:00",
+    dashboardOpenTimestamp:"09-08-2024 15:16:00",
+    dashboardCloseTimestamp: "09-08-2024 16:08:00",
+    actualSpentTime: "00:52:00"
+  },
+  {
+    id: 43,
+    userName: "Pankaj",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "RSI Anomaly",
+    loginTimestamp: "10-08-2024 14:00:00",
+    dashboardOpenTimestamp:"10-08-2024 14:05:00",
+    dashboardCloseTimestamp: "10-08-2024 14:56:00",
+    actualSpentTime: "00:51:00"
+  },
+  {
+    id: 44,
+    userName: "Pankaj",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "RSI Anomaly",
+    loginTimestamp: "11-08-2024 13:00:00",
+    dashboardOpenTimestamp:"11-08-2024 13:02:00",
+    dashboardCloseTimestamp: "11-08-2024 13:42:00",
+    actualSpentTime: "00:40:00"
+  },
+  
 ];
 const toolsStatisticsData = [
 
   {
     id: 1,
-    userName: "Raghavendra",
-    client: "BSNL",
-    project: "Project 02",
-    toolName:"PCI",    
-    onExecuteTimestamp: "03-07-2024 13:00:10",
-    responseRecievedTimestamp: "03-07-2024 14:00:00",
-    processingTime: "03-07-2024 13:00:00",
-    processingInstanceId:"adafderef87979-bdskjbf4d",
-    transactionId:12
+    userName: "Isha",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "PCI Anomaly",
+    onExecuteTimestamp:" 01-08-2024 08:00:00",
+    responseRecievedTimestamp: "01-08-2024 08:04:00",
+    processingTime: "00:04:00",
+    processingInstanceId: "asdfzxcvb12457-mnblkj4a",
+    transactionId: 12
   },
   {
     id: 2,
-    userName: "Santhosh",
-    client: "Samsung",
-    project: "Project 03",
-    toolName:"RSI",    
-    onExecuteTimestamp: "03-07-2024 13:00:10",
-    responseRecievedTimestamp: "03-07-2024 14:00:00",
-    processingTime: "03-07-2024 13:00:00",
-    processingInstanceId:"adafderef87979-bdskjbf4d",
-    transactionId:14
+    userName: "Isha",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "PCI Anomaly",
+    onExecuteTimestamp:" 02-08-2024 08:00:00",
+    responseRecievedTimestamp: "02-08-2024 08:04:00",
+    processingTime: "00:04:00",
+    processingInstanceId: "asdfzxcvb12580-mnblkj6a",
+    transactionId: 14
   },
   {
     id: 3,
-    userName: "Mayur",
-    client: "Motorala",
-    project: "Project 03",
-    toolName:"Output Merged",    
-    onExecuteTimestamp: "03-07-2024 13:00:10",
-    responseRecievedTimestamp: "03-07-2024 14:00:00",
-    processingTime: "03-07-2024 13:00:00",
-    processingInstanceId:"adafderef87979-bdskjbf4d",
-    transactionId:16
+    userName: "Isha",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "PCI Anomaly",
+    onExecuteTimestamp:" 03-08-2024 08:00:00",
+    responseRecievedTimestamp: "03-08-2024 08:04:00",
+    processingTime: "00:04:00",
+    processingInstanceId: "asdfzxcvb12703-mnblkj8a",
+    transactionId: 16
   },
   {
     id: 4,
-    userName: "Rajesh",
-    client: "Nokia",
-    project: "Project 04",
-    toolName:"RSI",    
-    onExecuteTimestamp: "03-07-2024 13:00:10",
-    responseRecievedTimestamp: "03-07-2024 14:00:00",
-    processingTime: "03-07-2024 13:00:00",
-    processingInstanceId:"adafderef87979-bdskjbf4d",
-    transactionId:19
+    userName: "Isha",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "PCI Anomaly",
+    onExecuteTimestamp:" 04-08-2024 08:00:00",
+    responseRecievedTimestamp: "04-08-2024 08:04:00",
+    processingTime: "00:04:00",
+    processingInstanceId: "asdfzxcvb12826-mnblkj1a",
+    transactionId: 19
   },
   {
     id: 5,
-    userName: "Arif",
-    client: "Airtel",
-    project: "Project 05",
-    toolName:"PCI",    
-    onExecuteTimestamp: "03-07-2024 13:00:10",
-    responseRecievedTimestamp: "03-07-2024 14:00:00",
-    processingTime: "03-07-2024 13:00:00",
-    processingInstanceId:"adafderef87979-bdskjbf4d",
-    transactionId:21
+    userName: "Isha",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "PCI Anomaly",
+    onExecuteTimestamp:" 05-08-2024 08:00:00",
+    responseRecievedTimestamp: "05-08-2024 08:04:00",
+    processingTime: "00:04:00",
+    processingInstanceId: "asdfzxcvb12949-mnblkj3a",
+    transactionId: 21
   },
   {
     id: 6,
-    userName: "Raghavendra",
-    client: "Samsung",
-    project: "Project 06",
-    toolName:"RSI",    
-    onExecuteTimestamp: "03-07-2024 13:00:10",
-    responseRecievedTimestamp: "03-07-2024 14:00:00",
-    processingTime: "03-07-2024 13:00:00",
-    processingInstanceId:"adafderef87979-bdskjbf4d",
-    transactionId:23
+    userName: "Isha",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "PCI Anomaly",
+    onExecuteTimestamp:" 06-08-2024 08:00:00",
+    responseRecievedTimestamp: "06-08-2024 08:04:00",
+    processingTime: "00:04:00",
+    processingInstanceId: "asdfzxcvb13072-mnblkj5a",
+    transactionId: 23
   },
   {
     id: 7,
-    userName: "Santhosh",
-    client: "T-mobile",
-    project: "Project 07",
-    toolName:"Output Merged",    
-    onExecuteTimestamp: "03-07-2024 13:00:10",
-    responseRecievedTimestamp: "03-07-2024 14:00:00",
-    processingTime: "03-07-2024 13:00:00",
-    processingInstanceId:"adafderef87979-bdskjbf4d",
-    transactionId:36
+    userName: "Isha",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "PCI Anomaly",
+    onExecuteTimestamp:" 07-08-2024 08:00:00",
+    responseRecievedTimestamp: "07-08-2024 08:04:00",
+    processingTime: "00:04:00",
+    processingInstanceId: "asdfzxcvb13195-mnblkj7a",
+    transactionId: 36
   },
   {
     id: 8,
-    userName: "Nishant",
-    client: "Motorala",
-    project: "Project 08",
-    toolName:"PCI",    
-    onExecuteTimestamp: "03-07-2024 13:00:10",
-    responseRecievedTimestamp: "03-07-2024 14:00:00",
-    processingTime: "03-07-2024 13:00:00",
-    processingInstanceId:"adafderef87979-bdskjbf4d",
-    transactionId:37
+    userName: "Isha",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "PCI Anomaly",
+    onExecuteTimestamp:" 08-08-2024 08:00:00",
+    responseRecievedTimestamp: "08-08-2024 08:04:00",
+    processingTime: "00:04:00",
+    processingInstanceId: "asdfzxcvb13318-mnblkj9a",
+    transactionId: 37
   },
   {
     id: 9,
-    userName: "Shabaz",
-    client: "Airtel",
-    project: "Project 10",
-    toolName:"RSI",    
-    onExecuteTimestamp: "03-07-2024 13:00:10",
-    responseRecievedTimestamp: "03-07-2024 14:00:00",
-    processingTime: "03-07-2024 13:00:00",
-    processingInstanceId:"adafderef87979-bdskjbf4d",
-    transactionId:43
+    userName: "Isha",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "PCI Anomaly",
+    onExecuteTimestamp:" 09-08-2024 08:00:00",
+    responseRecievedTimestamp: "09-08-2024 08:04:00",
+    processingTime: "00:04:00",
+    processingInstanceId: "asdfzxcvb13441-mnblkj1a",
+    transactionId: 43
+  },
+  {
+    id: 10,
+    userName: "Isha",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "PCI Anomaly",
+    onExecuteTimestamp:" 10-08-2024 08:00:00",
+    responseRecievedTimestamp: "10-08-2024 08:04:00",
+    processingTime: "00:04:00",
+    processingInstanceId: "asdfzxcvb13564-mnblkj3a",
+    transactionId: 32
+  },
+  {
+    id: 11,
+    userName: "Isha",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "PCI Anomaly",
+    onExecuteTimestamp:" 11-08-2024 08:00:00",
+    responseRecievedTimestamp: "11-08-2024 08:04:00",
+    processingTime: "00:04:00",
+    processingInstanceId: "asdfzxcvb13687-mnblkj5a",
+    transactionId: 34
+  },
+  {
+    id: 12,
+    userName: "Moulya",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "PCI Anomaly",
+    onExecuteTimestamp:" 01-08-2024 09:00:00",
+    responseRecievedTimestamp: "01-08-2024 09:06:00",
+    processingTime: "00:06:00",
+    processingInstanceId: "asdfzxcvb13810-mnblkj7a",
+    transactionId: 39
+  },
+  {
+    id: 13,
+    userName: "Moulya",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "PCI Anomaly",
+    onExecuteTimestamp:" 02-08-2024 09:00:00",
+    responseRecievedTimestamp: "02-08-2024 09:06:00",
+    processingTime: "00:06:00",
+    processingInstanceId: "asdfzxcvb13933-mnblkj9a",
+    transactionId: 41
+  },
+  {
+    id: 14,
+    userName: "Moulya",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "PCI Anomaly",
+    onExecuteTimestamp:" 03-08-2024 09:00:00",
+    responseRecievedTimestamp: "03-08-2024 09:06:00",
+    processingTime: "00:06:00",
+    processingInstanceId: "asdfzxcvb14056-mnblkj1a",
+    transactionId: 56
+  },
+  {
+    id: 15,
+    userName: "Moulya",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "PCI Anomaly",
+    onExecuteTimestamp:" 04-08-2024 09:00:00",
+    responseRecievedTimestamp: "04-08-2024 09:06:00",
+    processingTime: "00:06:00",
+    processingInstanceId: "asdfzxcvb14179-mnblkj3a",
+    transactionId: 57
+  },
+  {
+    id: 16,
+    userName: "Moulya",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "PCI Anomaly",
+    onExecuteTimestamp:" 05-08-2024 09:00:00",
+    responseRecievedTimestamp: "05-08-2024 09:06:00",
+    processingTime: "00:06:00",
+    processingInstanceId: "asdfzxcvb14302-mnblkj5a",
+    transactionId: 63
+  },
+  {
+    id: 17,
+    userName: "Moulya",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "PCI Anomaly",
+    onExecuteTimestamp:" 06-08-2024 09:00:00",
+    responseRecievedTimestamp: "06-08-2024 09:06:00",
+    processingTime: "00:06:00",
+    processingInstanceId: "asdfzxcvb14425-mnblkj7a",
+    transactionId: 52
+  },
+  {
+    id: 18,
+    userName: "Moulya",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "PCI Anomaly",
+    onExecuteTimestamp:" 07-08-2024 09:00:00",
+    responseRecievedTimestamp: "07-08-2024 09:06:00",
+    processingTime: "00:06:00",
+    processingInstanceId: "asdfzxcvb14548-mnblkj9a",
+    transactionId: 54
+  },
+  {
+    id: 19,
+    userName: "Moulya",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "PCI Anomaly",
+    onExecuteTimestamp:" 08-08-2024 09:00:00",
+    responseRecievedTimestamp: "08-08-2024 09:06:00",
+    processingTime: "00:06:00",
+    processingInstanceId: "asdfzxcvb14671-mnblkj1a",
+    transactionId: 59
+  },
+  {
+    id: 20,
+    userName: "Moulya",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "PCI Anomaly",
+    onExecuteTimestamp:" 09-08-2024 09:00:00",
+    responseRecievedTimestamp: "09-08-2024 09:06:00",
+    processingTime: "00:06:00",
+    processingInstanceId: "asdfzxcvb14794-mnblkj3a",
+    transactionId: 61
+  },
+  {
+    id: 21,
+    userName: "Moulya",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "PCI Anomaly",
+    onExecuteTimestamp:" 10-08-2024 09:00:00",
+    responseRecievedTimestamp: "10-08-2024 09:06:00",
+    processingTime: "00:06:00",
+    processingInstanceId: "asdfzxcvb14917-mnblkj5a",
+    transactionId: 76
+  },
+  {
+    id: 22,
+    userName: "Moulya",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "PCI Anomaly",
+    onExecuteTimestamp:" 11-08-2024 09:00:00",
+    responseRecievedTimestamp: "11-08-2024 09:06:00",
+    processingTime: "00:06:00",
+    processingInstanceId: "asdfzxcvb15040-mnblkj7a",
+    transactionId: 77
+  },
+  {
+    id: 23,
+    userName: "Isha",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "RSI Anomaly",
+    onExecuteTimestamp:" 01-08-2024 08:00:00",
+    responseRecievedTimestamp: "01-08-2024 08:06:00",
+    processingTime: "00:06:00",
+    processingInstanceId: "asdfzxcvb12457-mnblkj4a",
+    transactionId: 12
+  },
+  {
+    id: 24,
+    userName: "Isha",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "RSI Anomaly",
+    onExecuteTimestamp:" 02-08-2024 08:00:00",
+    responseRecievedTimestamp: "02-08-2024 08:06:00",
+    processingTime: "00:06:00",
+    processingInstanceId: "asdfzxcvb12580-mnblkj6a",
+    transactionId: 14
+  },
+  {
+    id: 25,
+    userName: "Isha",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "RSI Anomaly",
+    onExecuteTimestamp:" 03-08-2024 08:00:00",
+    responseRecievedTimestamp: "03-08-2024 08:06:00",
+    processingTime: "00:06:00",
+    processingInstanceId: "asdfzxcvb12703-mnblkj8a",
+    transactionId: 16
+  },
+  {
+    id: 26,
+    userName: "Isha",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "RSI Anomaly",
+    onExecuteTimestamp:" 04-08-2024 08:00:00",
+    responseRecievedTimestamp: "04-08-2024 08:06:00",
+    processingTime: "00:06:00",
+    processingInstanceId: "asdfzxcvb12826-mnblkj1a",
+    transactionId: 19
+  },
+  {
+    id: 27,
+    userName: "Isha",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "RSI Anomaly",
+    onExecuteTimestamp:" 05-08-2024 08:00:00",
+    responseRecievedTimestamp: "05-08-2024 08:06:00",
+    processingTime: "00:06:00",
+    processingInstanceId: "asdfzxcvb12949-mnblkj3a",
+    transactionId: 21
+  },
+  {
+    id: 28,
+    userName: "Isha",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "RSI Anomaly",
+    onExecuteTimestamp:" 06-08-2024 08:00:00",
+    responseRecievedTimestamp: "06-08-2024 08:06:00",
+    processingTime: "00:06:00",
+    processingInstanceId: "asdfzxcvb13072-mnblkj5a",
+    transactionId: 23
+  },
+  {
+    id: 29,
+    userName: "Isha",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "RSI Anomaly",
+    onExecuteTimestamp:" 07-08-2024 08:00:00",
+    responseRecievedTimestamp: "07-08-2024 08:06:00",
+    processingTime: "00:06:00",
+    processingInstanceId: "asdfzxcvb13195-mnblkj7a",
+    transactionId: 36
+  },
+  {
+    id: 30,
+    userName: "Isha",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "RSI Anomaly",
+    onExecuteTimestamp:" 08-08-2024 08:00:00",
+    responseRecievedTimestamp: "08-08-2024 08:06:00",
+    processingTime: "00:06:00",
+    processingInstanceId: "asdfzxcvb13318-mnblkj9a",
+    transactionId: 37
+  },
+  {
+    id: 31,
+    userName: "Isha",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "RSI Anomaly",
+    onExecuteTimestamp:" 09-08-2024 08:00:00",
+    responseRecievedTimestamp: "09-08-2024 08:04:00",
+    processingTime: "00:06:00",
+    processingInstanceId: "asdfzxcvb13441-mnblkj1a",
+    transactionId: 43
+  },
+  {
+    id: 32,
+    userName: "Isha",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "RSI Anomaly",
+    onExecuteTimestamp:" 10-08-2024 08:00:00",
+    responseRecievedTimestamp: "10-08-2024 08:06:00",
+    processingTime: "00:06:00",
+    processingInstanceId: "asdfzxcvb13564-mnblkj3a",
+    transactionId: 32
+  },
+  {
+    id: 33,
+    userName: "Isha",
+    client: "TMobile",
+    project: "Denver",
+    toolName: "RSI Anomaly",
+    onExecuteTimestamp:" 11-08-2024 08:00:00",
+    responseRecievedTimestamp: "11-08-2024 08:06:00",
+    processingTime: "00:06:00",
+    processingInstanceId: "asdfzxcvb13687-mnblkj5a",
+    transactionId: 34
+  },
+  {
+    id: 34,
+    userName: "Moulya",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "RSI Anomaly",
+    onExecuteTimestamp:" 01-08-2024 09:00:00",
+    responseRecievedTimestamp: "01-08-2024 09:08:00",
+    processingTime: "00:08:00",
+    processingInstanceId: "asdfzxcvb13810-mnblkj7a",
+    transactionId: 39
+  },
+  {
+    id: 35,
+    userName: "Moulya",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "RSI Anomaly",
+    onExecuteTimestamp:" 02-08-2024 09:00:00",
+    responseRecievedTimestamp: "02-08-2024 09:08:00",
+    processingTime: "00:08:00",
+    processingInstanceId: "asdfzxcvb13933-mnblkj9a",
+    transactionId: 41
+  },
+  {
+    id: 36,
+    userName: "Moulya",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "RSI Anomaly",
+    onExecuteTimestamp:" 03-08-2024 09:00:00",
+    responseRecievedTimestamp: "03-08-2024 09:08:00",
+    processingTime: "00:08:00",
+    processingInstanceId: "asdfzxcvb14056-mnblkj1a",
+    transactionId: 56
+  },
+  {
+    id: 37,
+    userName: "Moulya",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "RSI Anomaly",
+    onExecuteTimestamp:" 04-08-2024 09:00:00",
+    responseRecievedTimestamp: "04-08-2024 09:08:00",
+    processingTime: "00:08:00",
+    processingInstanceId: "asdfzxcvb14179-mnblkj3a",
+    transactionId: 57
+  },
+  {
+    id: 38,
+    userName: "Moulya",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "RSI Anomaly",
+    onExecuteTimestamp:" 05-08-2024 09:00:00",
+    responseRecievedTimestamp: "05-08-2024 09:08:00",
+    processingTime: "00:08:00",
+    processingInstanceId: "asdfzxcvb14302-mnblkj5a",
+    transactionId: 63
+  },
+  {
+    id: 39,
+    userName: "Moulya",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "RSI Anomaly",
+    onExecuteTimestamp:" 06-08-2024 09:00:00",
+    responseRecievedTimestamp: "06-08-2024 09:08:00",
+    processingTime: "00:08:00",
+    processingInstanceId: "asdfzxcvb14425-mnblkj7a",
+    transactionId: 52
+  },
+  {
+    id: 40,
+    userName: "Moulya",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "RSI Anomaly",
+    onExecuteTimestamp:" 07-08-2024 09:00:00",
+    responseRecievedTimestamp: "07-08-2024 09:08:00",
+    processingTime: "00:08:00",
+    processingInstanceId: "asdfzxcvb14548-mnblkj9a",
+    transactionId: 54
+  },
+  {
+    id: 41,
+    userName: "Moulya",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "RSI Anomaly",
+    onExecuteTimestamp:" 08-08-2024 09:00:00",
+    responseRecievedTimestamp: "08-08-2024 09:08:00",
+    processingTime: "00:08:00",
+    processingInstanceId: "asdfzxcvb14671-mnblkj1a",
+    transactionId: 59
+  },
+  {
+    id: 42,
+    userName: "Moulya",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "RSI Anomaly",
+    onExecuteTimestamp:" 09-08-2024 09:00:00",
+    responseRecievedTimestamp: "09-08-2024 09:08:00",
+    processingTime: "00:08:00",
+    processingInstanceId: "asdfzxcvb14794-mnblkj3a",
+    transactionId: 61
+  },
+  {
+    id: 43,
+    userName: "Moulya",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "RSI Anomaly",
+    onExecuteTimestamp:" 10-08-2024 09:00:00",
+    responseRecievedTimestamp: "10-08-2024 09:08:00",
+    processingTime: "00:08:00",
+    processingInstanceId: "asdfzxcvb14917-mnblkj5a",
+    transactionId: 76
+  },
+  {
+    id: 44,
+    userName: "Moulya",
+    client: "ATnT",
+    project: "Detroit",
+    toolName: "RSI Anomaly",
+    onExecuteTimestamp:" 11-08-2024 09:00:00",
+    responseRecievedTimestamp: "11-08-2024 09:08:00",
+    processingTime: "00:08:00",
+    processingInstanceId: "asdfzxcvb15040-mnblkj7a",
+    transactionId: 77
   },
 ];
 
@@ -252,9 +1043,9 @@ function Statistics() {
   const [currentData, setCurrentData] = useState([]);
   useEffect(() => {
     if (currentTabIndex === 0) {
-      setCurrentData(userStatisticsData); // Set the current data to user statistics data
+      setCurrentData(userStatisticsData); 
     } else if (currentTabIndex === 1) {
-      setCurrentData(toolsStatisticsData); // Set the current data to tools statistics data
+      setCurrentData(toolsStatisticsData); 
     }
   }, [currentTabIndex]);
 
@@ -267,11 +1058,7 @@ function Statistics() {
   };
 
   return (
-    <>
-      <StyledContainerDropDown
-        style={{ maxWidth: "100%", height: "85vh", marginTop: "10px" }}
-        className="dropDown-selection"
-      >
+    <div className="userStyle">
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <>
@@ -292,10 +1079,9 @@ function Statistics() {
                       onClick={handleExport}
                         variant="contained"
                         color="primary"
-                        startIcon={<InsertDriveFileOutlinedIcon />}
                         hover={{
                           backgroundColor: "#545e99",
-                          color: "white"
+                          color: "#fff"
                         }}
                         sx={{
                           margin: "8px",
@@ -316,24 +1102,21 @@ function Statistics() {
               </Tabs>
               
 
-              {/* TAB 1 Contents */}
               {currentTabIndex === 0 && (
-                <Box sx={{ p: 3 }}>
-                  <UserStatistics />
+                <Box sx={{ p: 3,}} >
+                  <UserStatistics  data = {userStatisticsData}/>
                 </Box>
               )}
 
-              {/* TAB 2 Contents */}
               {currentTabIndex === 1 && (
                 <Box sx={{ p: 3 }}>
-                  <ToolsStatistics />
+                  <ToolsStatistics data = {toolsStatisticsData}/>
                 </Box>
               )}
             </>
           </Grid>
         </Grid>
-      </StyledContainerDropDown>
-    </>
+    </div>
   );
 }
 

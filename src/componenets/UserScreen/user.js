@@ -27,9 +27,10 @@ import Container from "@mui/material/Container";
 import Tooltip from "@mui/material/Tooltip";
 import "../UserScreen/user.css";
 import FailedTransactions from "../FailedTransactions/failedTransations";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 import { CircularProgress } from "@mui/material";
+import ExecuteToolInfo from "./executeToolInfo";
+import { useNavigate } from "react-router-dom";
+import UserSummary from "./userSummary";
 
 const textStyle = {
   position: "relative",
@@ -39,21 +40,6 @@ const textStyle = {
   fontSize: "16px",
   opacity: 1,
 };
-
-const StyledContainerDropDown = styled(Container)({
-  width: "97%",
-  maxWidthh: "97%",
-  backgroundColor: "#1c1444",
-  marginBottom: "25px",
-  borderRadius: "10px",
-  padding: "20px",
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  marginTop: "20px",
-  position: "relative",
-
-});
 
 const StyledButton = styled(Button)({
   "&.reset": {
@@ -98,10 +84,9 @@ const StyledButton = styled(Button)({
     margin: "5px",
     color: "#EDF2F5",
   },
- 
 });
 
-function UserScreen({ data }) {
+function UserScreen({ data, executeData, isExecuting, setIsExecuting }) {
   const [selectedCname, setSelectedCname] = useState("");
   const [selectedPname, setSelectedPname] = useState("");
   const [selectedTname, setSelectedTname] = useState([]);
@@ -126,10 +111,11 @@ function UserScreen({ data }) {
   const [second, setSecond] = useState("");
   const [toolNames, setToolNames] = useState([]);
   const [isClicked, setIsClicked] = useState(false);
-  const [isExecuting, setIsExecuting] = useState(false);
-
+  // const [isExecuting, setIsExecuting] = useState(false);
+  const navigate = useNavigate();
+  const { username } = JSON.parse(localStorage.getItem('token'));
+  console.log(username);
   const handleYearChange = (event) => {
-    console.log(event.target.value);
     setYear(event.target.value);
   };
 
@@ -162,9 +148,9 @@ function UserScreen({ data }) {
     if (year > 0) duration.push(`P${year}Y`);
     if (month > 0) duration.push(`P${month}M`);
     if (day > 0) duration.push(`P${day}D`);
-    if (hour > 0) duration.push(`T${hour}H`);
-    if (minute > 0) duration.push(`T${minute}M`);
-    if (second > 0) duration.push(`T${second}S`);
+    if (hour > 0) duration.push(`PT${hour}H`);
+    if (minute > 0) duration.push(`PT${minute}M`);
+    if (second > 0) duration.push(`PT${second}S`);
     return duration;
   }, [year, month, day, hour, minute, second]);
 
@@ -193,7 +179,11 @@ function UserScreen({ data }) {
     ...new Set(
       data
         .filter((item) => item.pname === selectedPname)
-        .map((item) => item.tname)
+        .map((item) => {
+          console.log(item.tname);
+
+          return item.tname;
+        })
     ),
   ];
 
@@ -213,22 +203,15 @@ function UserScreen({ data }) {
       } = event;
       const newSelectedTname =
         typeof value === "string" ? value.split(",") : value;
-
-      // Ensure no empty strings are included
       const filteredNewSelectedTname = newSelectedTname.filter(
         (tool) => tool && tool.trim() !== ""
       );
-      console.log("Selected tools:", filteredNewSelectedTname); // Log the updated value
-
-      // Identify deselected tools
       const deselectedTools = selectedTname.filter(
         (tool) => !filteredNewSelectedTname.includes(tool)
       );
       if (mountedRef.current) {
         setSelectedTname(filteredNewSelectedTname);
       }
-
-      // Skip the post request if no tools are selected
       if (filteredNewSelectedTname.length === 0) {
         return;
       }
@@ -236,12 +219,11 @@ function UserScreen({ data }) {
       const postData = {
         toolname: filteredNewSelectedTname[0],
       };
-
       try {
         const response = await fetch(
-          // "http://localhost:8081/api/predefinedtools",
-          // "http://ltts-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/predefinedtools",
-          "http://wfm-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/predefinedtools",
+          "http://localhost:8090/api/predefinedtools",
+          // "http://wfm-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/predefinedtools",
+
           {
             method: "POST",
             headers: {
@@ -256,25 +238,48 @@ function UserScreen({ data }) {
         }
 
         const result = await response.json();
-        console.log("Success:", result);
 
-        // Auto-select pre-configured tools
-        const preConfiguredTools = result.map((item) => item.predefinedtools);
-        const allPreConfiguredTools = preConfiguredTools.flat();
-        const uniquePreConfiguredTools = [...new Set(allPreConfiguredTools)];
-
-        // Remove deselected tools from the list of pre-configured tools
-        const updatedSelectedTname = filteredNewSelectedTname.filter(
-          (tool) => !deselectedTools.includes(tool)
+        const trimmedResult = JSON.parse(
+          JSON.stringify(result),
+          (key, value) => {
+            if (typeof value === "string") {
+              return value.trim();
+            }
+            return value;
+          }
         );
 
-        // Ensure no duplicates in the final selected tools
-        const finalSelectedTname = [
-          ...new Set([...uniquePreConfiguredTools, ...updatedSelectedTname]),
-        ];
+        const filteredResult = trimmedResult.map((item) => {
+          const { predefinedtools, ...rest } = item;
+          return predefinedtools === null ? rest : item;
+        });
 
-        setSelectedTname(finalSelectedTname);
-        setToolNames(finalSelectedTname);
+        const toolConfigurations = filteredResult.reduce((acc, item) => {
+          acc[item.toolname] = item.predefinedtools;
+          return acc;
+        }, {});
+
+        const selectedToolname = filteredNewSelectedTname[0];
+        const predefinedToolsForSelectedTool =
+          toolConfigurations[selectedToolname];
+
+        if (predefinedToolsForSelectedTool) {
+          const updatedSelectedTname = [
+            ...predefinedToolsForSelectedTool,
+            ...filteredNewSelectedTname,
+          ];
+
+          const finalSelectedTname = [
+            ...new Set(
+              updatedSelectedTname.filter(
+                (tool) => !deselectedTools.includes(tool)
+              )
+            ),
+          ];
+
+          setSelectedTname(finalSelectedTname);
+          setToolNames(finalSelectedTname);
+        }
       } catch (error) {
         console.error("Error:", error);
       }
@@ -311,14 +316,15 @@ function UserScreen({ data }) {
   useEffect(() => {
     if (shouldExecute) {
       const postData = {
+        username:username,
         clientName: selectedCname,
         projectName: selectedPname,
-        tools: selectedTname,
+        tools: selectedTname.map((tool) => tool.trim()),
         schedulerType,
-        scheduledTime: schedulerType === "scheduledTime" ? scheduledTime : '',
+        scheduledTime: schedulerType === "scheduledTime" ? scheduledTime : null,
         timeDuration:
-          schedulerType === "timeDuration" ? timeDurationString : '',
-        timeCycle: schedulerType === "timeCycle" ? timeCycle : '',
+          schedulerType === "timeDuration" ? timeDurationString : null,
+        timeCycle: schedulerType === "timeCycle" ? timeCycle : null,
         isTimerSet:
           schedulerType === "" || schedulerType === "manual"
             ? isTimerSet
@@ -327,9 +333,8 @@ function UserScreen({ data }) {
       const executePostRequest = async () => {
         try {
           const response = await fetch(
-            // "http://localhost:8081/api/startProcess",
-            // "http://ltts-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/startProcess",
-            "http://wfm-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/startProcess",
+            "http://localhost:8090/api/startProcess",
+            // "http://wfm-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/startProcess",
             {
               method: "POST",
               headers: {
@@ -347,9 +352,9 @@ function UserScreen({ data }) {
 
           localStorage.setItem("processedData", JSON.stringify(result));
           localStorage.setItem("toolnames", JSON.stringify(selectedTname));
-          console.log("Data stored successfully:", result);
           setIsExecuting(false);
           setState({ ...state, open: true });
+          navigate(0);
         } catch (error) {
           setIsExecuting(false);
           console.error("Error storing data:", error);
@@ -390,18 +395,13 @@ function UserScreen({ data }) {
   }, [state]);
 
   return (
-   
-    <Box sx={{ flexGrow: 1 }}>
-      <StyledContainerDropDown
-        style={{ maxWidth: "100%", height: "85vh", marginTop: "10px" }}
-        className="dropDown-selection"
-      >
-        <Grid
+    <div className="userStyle">      
+        <Grid 
           container
           spacing={2}
-          style={{ marginTop: "10px", marginLeft: "33px" }}
+          style={{ marginTop: "10px", marginLeft: "2px" }}
         >
-          <Grid xs={3}>
+          <Grid item xs={12} sm={6} md={4} lg={3}>
             <Box className="nokia">
               <FormControl
                 fullWidth
@@ -456,7 +456,7 @@ function UserScreen({ data }) {
               </FormControl>
             </Box>
           </Grid>
-          <Grid xs={3}>
+          <Grid item xs={12} sm={6} md={4} lg={3}>
             <Box className="nokia">
               <FormControl
                 fullWidth
@@ -510,7 +510,7 @@ function UserScreen({ data }) {
               </FormControl>
             </Box>
           </Grid>
-          <Grid xs={3}>
+          <Grid item xs={12} sm={6} md={4} lg={3}>
             <Box className="nokia">
               <FormControl
                 fullWidth
@@ -547,15 +547,47 @@ function UserScreen({ data }) {
                           multiple
                           value={selectedTname}
                           onChange={handleTnameChange}
-                          renderValue={(selected) => selected.join(", ")}
-                          style={{ color: "#a9c2ff" }}
+                          renderValue={(selected) => (
+                            <div
+                              style={{
+                                whiteSpace: "break-spaces",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                              }}
+                            >
+                              {/* {selected.join(", ")} */}
+                              {selected
+                                .map((tname) =>
+                                  tname === "PCI"
+                                    ? "PCI-Anomaly"
+                                    : tname === "RSI"
+                                    ? "RSI-Anomaly"
+                                    : tname === "Output"
+                                    ? "PCI-RSI Anomaly"
+                                    : tname
+                                )
+                                .join(", ")}
+                            </div>
+                          )}
+                          // style={{ color: "#a9c2ff" }}
                         >
                           {uniqueTnames.map((tname) => (
                             <MenuItem key={tname} value={tname}>
                               <Checkbox
                                 checked={selectedTname.indexOf(tname) > -1}
                               />
-                              <ListItemText primary={tname} />
+                              {/* <ListItemText primary={tname} /> */}
+                              <ListItemText
+                                primary={
+                                  tname === "PCI"
+                                    ? "PCI-Anomaly"
+                                    : tname === "RSI"
+                                    ? "RSI-Anomaly"
+                                    : tname === "Output"
+                                    ? "PCI-RSI Anomaly"
+                                    : tname
+                                }
+                              />
                             </MenuItem>
                           ))}
                         </Select>
@@ -566,7 +598,7 @@ function UserScreen({ data }) {
               </FormControl>
             </Box>
           </Grid>
-          <Grid xs={3}>
+          <Grid item xs={12} sm={6} md={4} lg={3}>
             <StyledButton className="reset" onClick={handleClear}>
               RESET
             </StyledButton>
@@ -597,7 +629,7 @@ function UserScreen({ data }) {
               autoHideDuration={3000}
             />
           </Grid>
-          <Grid xs={3}>
+          <Grid item xs={3}>
             <Box className="nokia">
               <FormControl
                 fullWidth
@@ -825,32 +857,45 @@ function UserScreen({ data }) {
         <Grid
           container
           spacing={2}
-          style={{ marginTop: "38px", marginLeft: "40px" }}
+          style={{ marginTop: "38px", marginLeft: "26px" }}
         >
-          <Grid xs={3}>
+          <div style={textStyle}>
             <span style={textStyle}>Pre Process Instance Configuration:</span>
-          </Grid>
-          <Grid xs={3}>
             {selectedTname.map((tname) => (
               <Chip
-                label={tname}
+                // label={tname}
+                label={
+                  tname === 'PCI' ? 'PCI-Anomaly' :
+                  tname === 'RSI' ? 'RSI-Anomaly' :
+                  tname === 'Output' ? 'PCI-RSI Anomaly' : tname
+                }
                 key={tname}
                 style={{ margin: "5px" }}
                 color="primary"
               />
             ))}
-          </Grid>
+          </div>
         </Grid>
-
         <Grid
           container
           spacing={2}
-          style={{ marginTop: " 200px", marginLeft: "5px" }}
+          style={{margin: "10px" }}
         >
-          <Grid xs={12}>{/* <FailedTransactions/>  */}</Grid>
+          <Grid item xs={4} >
+          <UserSummary />
         </Grid>
-      </StyledContainerDropDown>
-    </Box>
+        </Grid>
+        <Grid
+          container
+          spacing={2}
+          style={{ margin: "10px" }}
+        >
+          <Grid item xs={11} >
+          <ExecuteToolInfo exeData = {executeData}/>
+        </Grid>
+        <Grid item xs={1} ></Grid>
+        </Grid>        
+    </div>
   );
 }
 

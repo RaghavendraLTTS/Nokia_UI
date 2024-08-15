@@ -17,8 +17,8 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/system";
 import ManageAccountsRoundedIcon from "@mui/icons-material/ManageAccountsRounded";
-import AccountTreeRoundedIcon from '@mui/icons-material/AccountTreeRounded';
-import ConstructionRoundedIcon from '@mui/icons-material/ConstructionRounded';
+import AccountTreeRoundedIcon from "@mui/icons-material/AccountTreeRounded";
+import ConstructionRoundedIcon from "@mui/icons-material/ConstructionRounded";
 import Container from "@mui/material/Container";
 import HandymanRoundedIcon from "@mui/icons-material/HandymanRounded";
 import "../OnboardingScreen/onBoarding.css";
@@ -41,20 +41,6 @@ const textStyle = {
   opacity: 1,
 };
 
-const StyledContainerDropDown = styled(Container)({
-  width: "97%",
-  maxWidthh: "97%",
-  backgroundColor: "#1c1444",
-  marginBottom: "25px",
-  borderRadius: "10px",
-  padding: "20px",
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  marginTop: "20px",
-  position: "relative",
-});
-
 const StyledTextField = styled(TextField)({
   textAlign: "left",
   color: "#FFFFFF",
@@ -62,8 +48,9 @@ const StyledTextField = styled(TextField)({
   fontSize: "16px",
   opacity: 0.6,
   left: "1px",
-  '& label': { // <--- Add this
-    color: '#FFFFFF',
+  "& label": {
+    // <--- Add this
+    color: "#FFFFFF",
   },
 });
 
@@ -195,9 +182,8 @@ function OnboardScreen({ dataAdd }) {
     const executePostRequest = async (payload) => {
       try {
         const response = await fetch(
-          // "http://localhost:8081/api/saveToolConfig",
-          // "http://ltts-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/saveToolConfig",
-          "http://wfm-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/saveToolConfig",
+          "http://localhost:8010/api/saveToolConfig",
+          // "http://wfm-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/saveToolConfig",
 
           {
             method: "POST",
@@ -209,7 +195,6 @@ function OnboardScreen({ dataAdd }) {
         );
         if (response.ok) {
           const result = await response.json();
-          console.log("Data executed successfully:", result);
         } else {
           const result = await response.text();
           console.log("Error executing data:", result);
@@ -239,9 +224,8 @@ function OnboardScreen({ dataAdd }) {
     const storePostRequest = async (payload) => {
       try {
         const response = await fetch(
-          // "http://localhost:8081/api/updatecpt",
-          // "http://ltts-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/updatecpt",
-          "http://wfm-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/updatecpt",
+          "http://localhost:8090/api/updatecpt",
+          // "http://wfm-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/updatecpt",
           {
             method: "POST",
             headers: {
@@ -252,7 +236,6 @@ function OnboardScreen({ dataAdd }) {
         );
         if (response.ok) {
           const result = await response.json();
-          console.log("Data stored successfully:", result);
         } else {
           const result = await response.text();
           console.log("Error storing data:", result);
@@ -329,28 +312,11 @@ function OnboardScreen({ dataAdd }) {
       : `${toolNames} were selected for configuration`;
   };
 
-  return (
-    // <div
-    //   style={{
-    //     position: "absolute",
-    //     top: " 75px",
-    //     left: 0,
-    //     width: "100%",
-    //     zIndex: 1,
-    //   }}
-    // >
-    //   <Card sx={{
-    //     backgroundColor: '#1c1444',
-    //     boxShadow: '0px 0px 20px #0000004D',
-    //     opacity: 1
-    // }}>
-    //     <CardContent>
-    <Box sx={{ flexGrow: 1 }}>
-      <StyledContainerDropDown
-        style={{ maxWidth: "100%", height: "85vh", marginTop: "10px" }}
-        className="dropDown-selection"
-      >
-        <Grid container spacing={2}>
+  return (    
+    <div className="onboardStyle">      
+        <Grid container
+          spacing={2}
+          style={{  marginLeft: "2px" }}>
           <Tabs
             value={state.selectedTab}
             onChange={handleTabChange}
@@ -358,17 +324,16 @@ function OnboardScreen({ dataAdd }) {
           >
             <Tab label="Addition-Client/Project/Tools" style={tabStyle} />
             <Tab label="Tools Configuration" style={tabStyle} />
-            
           </Tabs>
-        </Grid>
-        <Grid
+          </Grid>
+          <Grid
           container
           spacing={2}
-          style={{ marginTop: "30px", marginLeft: "33px" }}
+          style={{ marginTop: "30px", marginLeft: "0px" }}
         >
           {state.selectedTab === 0 && (
             <>
-              <Grid xs={3}>
+              <Grid item xs={12} sm={6} md={4} lg={3}>
                 <Box className="nokia">
                   <FormControl
                     fullWidth
@@ -391,34 +356,30 @@ function OnboardScreen({ dataAdd }) {
                         />
                       </Grid>
                       <Grid item xs={10}>
-                          <Box>
-                            <FormControl
+                        <Box>
+                          <FormControl variant="filled" sx={{ minWidth: 246 }}>
+                            <StyledTextField
+                              autoComplete="off"
+                              label="Client Name"
+                              value={state.addClientName}
+                              name="addClientName"
+                              onChange={handleChange}
                               variant="filled"
-                              sx={{ minWidth: 246 }}
-                            >
-                              <StyledTextField
-                                autoComplete="off"
-                                label="Client Name"
-                                value={state.addClientName}
-                                name="addClientName"
-                                onChange={handleChange}
-                                variant="filled"                               
-                                InputLabelProps={{
-                                  sx: {
-                                    color: '#FFFFF',
-                                  },
-                                }}
-                              >
-                              </StyledTextField>
-                            </FormControl>
-                          </Box>
-                        </Grid>
+                              InputLabelProps={{
+                                sx: {
+                                  color: "#FFFFF",
+                                },
+                              }}
+                            ></StyledTextField>
+                          </FormControl>
+                        </Box>
+                      </Grid>
                     </Grid>
                     <Grid></Grid>
                   </FormControl>
                 </Box>
               </Grid>
-              <Grid xs={3}>
+              <Grid item xs={12} sm={6} md={4} lg={3}>
                 <Box className="nokia">
                   <FormControl
                     fullWidth
@@ -452,7 +413,7 @@ function OnboardScreen({ dataAdd }) {
                               variant="filled"
                               InputLabelProps={{
                                 sx: {
-                                  color: '#FFFFF', 
+                                  color: "#FFFFF",
                                 },
                               }}
                             ></StyledTextField>
@@ -464,7 +425,7 @@ function OnboardScreen({ dataAdd }) {
                   </FormControl>
                 </Box>
               </Grid>
-              <Grid xs={3}>
+              <Grid item xs={12} sm={6} md={4} lg={3}>
                 <Box className="nokia">
                   <FormControl
                     fullWidth
@@ -501,12 +462,30 @@ function OnboardScreen({ dataAdd }) {
                               multiple
                               value={state.addPreSelectedTools}
                               onChange={handlePreToolChange}
-                              renderValue={(selected) =>
-                                selected.map((tool) => tool.name).join(", ")
-                              }
-                              style={{ color: "#a9c2ff" }}
+                              renderValue={(selected) => (
+                                <div
+                                  style={{
+                                    whiteSpace: "break-spaces",
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                  }}
+                                >
+                                  {/* {selected.map((tool) => tool.name).join(", ")} */}
+                                  {selected
+                                    .map((tool) => {
+                                      if (tool.name === "PCI")
+                                        return "PCI-Anomaly";
+                                      if (tool.name === "RSI")
+                                        return "RSI-Anomaly";
+                                      if (tool.name === "Output")
+                                        return "PCI-RSI Anomaly";
+                                      return tool.name;
+                                    })
+                                    .join(", ")}
+                                </div>
+                              )}
                             >
-                              {dataAdd.map((tool) => (
+                              {/* {dataAdd.map((tool) => (
                                 <MenuItem key={tool.id} value={tool}>
                                   <Checkbox
                                     checked={
@@ -515,6 +494,28 @@ function OnboardScreen({ dataAdd }) {
                                     }
                                   />
                                   <ListItemText primary={tool.name} />
+                                </MenuItem>
+                              ))} */}
+
+                              {dataAdd.map((tool) => (
+                                <MenuItem key={tool.id} value={tool}>
+                                  <Checkbox
+                                    checked={
+                                      state.addPreSelectedTools.indexOf(tool) >
+                                      -1
+                                    }
+                                  />
+                                  <ListItemText
+                                    primary={
+                                      tool.name === "PCI"
+                                        ? "PCI-Anomaly"
+                                        : tool.name === "RSI"
+                                        ? "RSI-Anomaly"
+                                        : tool.name === "Output"
+                                        ? "PCI-RSI Anomaly"
+                                        : tool.name
+                                    }
+                                  />
                                 </MenuItem>
                               ))}
                             </Select>
@@ -525,7 +526,7 @@ function OnboardScreen({ dataAdd }) {
                   </FormControl>
                 </Box>
               </Grid>
-              <Grid xs={3}>
+              <Grid item xs={12} sm={6} md={4} lg={3}>
                 <StyledButton className="execute" onClick={handleClear}>
                   RESET
                 </StyledButton>
@@ -552,13 +553,18 @@ function OnboardScreen({ dataAdd }) {
               <Grid
                 container
                 spacing={2}
-                style={{ marginTop: "38px", marginLeft: "5px" }}
+                style={{ marginTop: "38px", marginLeft: "18px" }}
               >
                 <div style={textStyle}>
                   <span>Pre Sequential Tools Selected: </span>
                   {state.addPreSelectedTools.map((tool) => (
                     <Chip
-                      label={tool.name}
+                      // label={tool.name}
+                      label={
+                        tool.name === 'PCI' ? 'PCI-Anomaly' :
+                        tool.name === 'RSI' ? 'RSI-Anomaly' :
+                        tool.name === 'Output' ? 'PCI-RSI Anomaly' : tool.name
+                      }
                       key={tool.id}
                       style={{ margin: "5px" }}
                       color="primary"
@@ -570,7 +576,7 @@ function OnboardScreen({ dataAdd }) {
           )}
           {state.selectedTab === 1 && (
             <>
-              <Grid xs={3}>
+              <Grid item xs={12} sm={6} md={4} lg={3}>
                 <Box className="nokia">
                   <FormControl
                     fullWidth
@@ -606,11 +612,22 @@ function OnboardScreen({ dataAdd }) {
                               id="demo-simple-select-filled"
                               value={state.selectedTool1}
                               onChange={handleSelectChange}
-                              style={{ color: "#a9c2ff" }}
+                              // style={{ color: "#a9c2ff" }}
                             >
-                              {dataAdd.map((tool) => (
+                              {/* {dataAdd.map((tool) => (
                                 <MenuItem key={tool.id} value={tool.name}>
                                   {tool.name}
+                                </MenuItem>
+                              ))} */}
+                              {dataAdd.map((tool) => (
+                                <MenuItem key={tool.id} value={tool.name}>
+                                  {tool.name === "PCI"
+                                    ? "PCI-Anomaly"
+                                    : tool.name === "RSI"
+                                    ? "RSI-Anomaly"
+                                    : tool.name === "Output"
+                                    ? "PCI-RSI Anomaly"
+                                    : tool.name}
                                 </MenuItem>
                               ))}
                             </Select>
@@ -621,7 +638,7 @@ function OnboardScreen({ dataAdd }) {
                   </FormControl>
                 </Box>
               </Grid>
-              <Grid xs={3}>
+              <Grid item xs={12} sm={6} md={4} lg={3}>
                 <Box className="nokia">
                   <FormControl
                     fullWidth
@@ -658,12 +675,30 @@ function OnboardScreen({ dataAdd }) {
                               multiple
                               value={state.addSelectedTools}
                               onChange={handleToolChange}
-                              renderValue={(selected) =>
-                                selected.map((tool) => tool.name).join(", ")
-                              }
-                              style={{ color: "#a9c2ff" }}
+                              renderValue={(selected) => (
+                                <div
+                                  style={{
+                                    whiteSpace: "break-spaces",
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                  }}
+                                >
+                                  {/* {selected.map((tool) => tool.name).join(", ")} */}
+                                  {selected
+                                    .map((tool) => {
+                                      if (tool.name === "PCI")
+                                        return "PCI-Anomaly";
+                                      if (tool.name === "RSI")
+                                        return "RSI-Anomaly";
+                                      if (tool.name === "Output")
+                                        return "PCI-RSI Anomaly";
+                                      return tool.name;
+                                    })
+                                    .join(", ")}
+                                </div>
+                              )}
                             >
-                              {dataAdd.map((t) => (
+                              {/* {dataAdd.map((t) => (
                                 <MenuItem key={t.id} value={t}>
                                   <Checkbox
                                     checked={
@@ -671,6 +706,26 @@ function OnboardScreen({ dataAdd }) {
                                     }
                                   />
                                   <ListItemText primary={t.name} />
+                                </MenuItem>
+                              ))} */}
+                              {dataAdd.map((t) => (
+                                <MenuItem key={t.id} value={t}>
+                                  <Checkbox
+                                    checked={
+                                      state.addSelectedTools.indexOf(t) > -1
+                                    }
+                                  />
+                                  <ListItemText
+                                    primary={
+                                      t.name === "PCI"
+                                        ? "PCI-Anomaly"
+                                        : t.name === "RSI"
+                                        ? "RSI-Anomaly"
+                                        : t.name === "Output"
+                                        ? "PCI-RSI Anomaly"
+                                        : t.name
+                                    }
+                                  />
                                 </MenuItem>
                               ))}
                             </Select>
@@ -681,8 +736,8 @@ function OnboardScreen({ dataAdd }) {
                   </FormControl>
                 </Box>
               </Grid>
-              <Grid xs={3}></Grid>
-              <Grid xs={3}>
+              <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+              <Grid item xs={12} sm={6} md={4} lg={3}>
                 <StyledButton className="execute" onClick={handleClear}>
                   RESET
                 </StyledButton>
@@ -709,14 +764,19 @@ function OnboardScreen({ dataAdd }) {
               <Grid
                 container
                 spacing={2}
-                style={{ marginTop: "38px", marginLeft: "5px" }}
+                style={{ marginTop: "38px", marginLeft: "18px" }}
               >
                 <div style={textStyle}>
                   <span style={textStyle}>Tools Selected to Configure:</span>
 
                   {state.selectedTool1 && (
                     <Chip
-                      label={state.selectedTool1}
+                      // label={state.selectedTool1}
+                      label={
+                        state.selectedTool1 === 'PCI' ? 'PCI-Anomaly' :
+                        state.selectedTool1 === 'RSI' ? 'RSI-Anomaly' :
+                        state.selectedTool1 === 'Output' ? 'PCI-RSI Anomaly' : state.selectedTool1
+                      }
                       key={state.selectedTool1}
                       style={{ margin: "5px" }}
                       color="primary"
@@ -727,13 +787,18 @@ function OnboardScreen({ dataAdd }) {
               <Grid
                 container
                 spacing={2}
-                style={{ marginTop: "38px", marginLeft: "5px" }}
+                style={{ marginTop: "38px", marginLeft: "18px" }}
               >
                 <div style={textStyle}>
                   <span>Pre Sequential Tools Selected: </span>
                   {state.addSelectedTools.map((tool) => (
                     <Chip
-                      label={tool.name}
+                      // label={tool.name}
+                      label={
+                        tool.name === 'PCI' ? 'PCI-Anomaly' :
+                        tool.name === 'RSI' ? 'RSI-Anomaly' :
+                        tool.name === 'Output' ? 'PCI-RSI Anomaly' : tool.name
+                      }
                       key={tool.id}
                       style={{ margin: "5px" }}
                       color="primary"
@@ -743,12 +808,8 @@ function OnboardScreen({ dataAdd }) {
               </Grid>
             </>
           )}
-          
-        </Grid>
-      </StyledContainerDropDown>
-    </Box>
-    // </CardContent>
-    // </Card>
+        </Grid>     
+    </div>
   );
 }
 

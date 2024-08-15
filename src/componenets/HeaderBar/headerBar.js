@@ -24,9 +24,9 @@ import Chip from "@mui/material/Chip";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
-import nokia_logo from "../../Assests/nokia_logo.svg"
+import nokia_logo from "../../Assests/nokia_logo.svg";
 import "../HeaderBar/headerBar.css";
-import { Link, useNavigate,useLocation} from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import Snackbar from "@mui/material/Snackbar";
 
 const homeChipStyle = {
@@ -57,8 +57,7 @@ const logocontent = {
   marginRight: "25px",
 };
 
-
-function HeaderBar({ handleLogoutApp, selectedChip}) {
+function HeaderBar({ handleLogoutApp, selectedChip }) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [open, setOpen] = useState(false);
@@ -72,7 +71,7 @@ function HeaderBar({ handleLogoutApp, selectedChip}) {
   const [roles, setRoles] = useState([
     { value: "Normal User", label: "Normal User" },
     { value: "Admin", label: "Admin" },
-    { value: "Super Admin", label: "Super Admin" },
+    // { value: "Super Admin", label: "Super Admin" },
   ]);
   const [usernameLoc, setUserNameLoc] = useState("");
   const [roleLoc, setRoleLoc] = useState("");
@@ -82,17 +81,16 @@ function HeaderBar({ handleLogoutApp, selectedChip}) {
   // const [showStatistics, setShowStatistics] = useState(false);
   const location = useLocation();
 
- 
   useEffect(() => {
     const userData = localStorage.getItem("token");
     if (userData) {
       const data = JSON.parse(userData);
       setUserNameLoc(data.username);
       setRoleLoc(data.role);
-      if (data.role === "Normal User") {
-        setSelectedChipState("dashboard");
-        navigate("/dashboard", { replace: true });
-      }
+      // if (data.role === "Normal User") {
+      //   setSelectedChipState("dashboard");
+      //   navigate("/dashboard", { replace: true });
+      // }
     } else {
       console.log("No User data found");
     }
@@ -165,21 +163,21 @@ function HeaderBar({ handleLogoutApp, selectedChip}) {
       };
 
       const response = await fetch(
-        // "http://localhost:8085/api/users/signup",
-        "http://wfm-user-mgmnt.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/users/signup",
-         {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestBody),
-      });
+        "http://localhost:8085/api/users/signup",
+        // "http://wfm-user-mgmnt.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/users/signup",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestBody),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`Error ${response.status}: ${response.statusText}`);
       }
       const result = await response.json();
-      // console.log("User added successfully:", result);
       setSnackbarMessage("User added successfully!");
       setOpenSnackbar(true);
       localStorage.setItem("username", result.username);
@@ -220,21 +218,24 @@ function HeaderBar({ handleLogoutApp, selectedChip}) {
       };
 
       const response = await fetch(
-        // "http://localhost:8085/api/users/logout",
-        "http://wfm-user-mgmnt.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/users/logout",
-         {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestBody),
-      });
+        "http://localhost:8085/api/users/logout",
+        // "http://wfm-user-mgmnt.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/users/logout",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestBody),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`Error ${response.status}: ${response.statusText}`);
       }
 
       localStorage.removeItem("token");
+      // localStorage.removeItem("processedData");
+      // localStorage.removeItem("toolnames");
       handleLogoutApp();
       navigate("/login");
     } catch (error) {
@@ -259,53 +260,67 @@ function HeaderBar({ handleLogoutApp, selectedChip}) {
             </div>
             <div style={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               <div>
-  <Box sx={{ flexGrow: 1 }} />
-  {roleLoc === "Super Admin" || roleLoc === "Admin"  ? (
-    <>
-      <HomeButton
-        to={location.pathname === "/home" ? "/home" : "/home"}
-        label="Home"
-        selected={selectedChipState === "home"}
-        onClick={() => handleChipClick("home", "/home")}
-      />
-      <AdminButton
-        to={location.pathname === "/onboard" ? "/onboard" : "/onboard"}
-        label="Onboarding"
-        selected={selectedChipState === "onboard"}
-        onClick={() => handleChipClick("onboard", "/onboard")}
-      />
-        <StatisticsButton
-          to={location.pathname === "/statistics" ? "/statistics" : "/statistics"}
-          label="Statistics"         
-          selected={selectedChipState === "statistics"}
-          onClick={() => handleChipClick("statistics", "/statistics")}
-        />
-      <DashboardButton
-        to={location.pathname === "/dashboard" ? "/dashboard" : "/dashboard"}
-        label="Dashboard"
-        selected={selectedChipState === "dashboard"}        
-        onClick={() => handleChipClick("dashboard", "/dashboard")}
-      />
-    </>
-  ) : (
-    <>
-      <DashboardButton
-        to={location.pathname === "/dashboard" ? "/dashboard" : "/dashboard"}
-        label="Dashboard"
-        selected={selectedChipState === "dashboard"}
-        onClick={() => handleChipClick("dashboard", "/dashboard")}
-      />
-    </>
-  )}
-</div>
+                <Box sx={{ flexGrow: 1 }} />
+                {roleLoc === "Super Admin" || roleLoc === "Admin" ? (
+                  <>
+                    <HomeButton
+                      to={location.pathname === "/home" ? "/home" : ""}
+                      label="Home"
+                      selected={location.pathname.substring(1) === "home"}
+                      onClick={() => handleChipClick("home", "/home")}
+                    />
+                    <AdminButton
+                      to={location.pathname === "/onboard" ? "/onboard" : ""}
+                      label="Onboarding"
+                      selected={location.pathname.substring(1) === "onboard"}
+                      onClick={() => handleChipClick("onboard", "/onboard")}
+                    />
+                    <StatisticsButton
+                      to={
+                        location.pathname === "/statistics" ? "/statistics" : ""
+                      }
+                      label="Statistics"
+                      selected={location.pathname.substring(1) === "statistics"}
+                      onClick={() =>
+                        handleChipClick("statistics", "/statistics")
+                      }
+                    />
+                    <DashboardButton
+                      to={
+                        location.pathname === "/dashboard" ? "/dashboard" : ""
+                      }
+                      label="Dashboard"
+                      selected={location.pathname.substring(1) === "dashboard"}
+                      onClick={() => handleChipClick("dashboard", "/dashboard")}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <DashboardButton
+                      to={
+                        location.pathname === "/dashboard" ? "/dashboard" : ""
+                      }
+                      label="Dashboard"
+                      selected={location.pathname.substring(1) === "dashboard"}
+                      onClick={() => handleChipClick("dashboard", "/dashboard")}
+                    />
+                  </>
+                )}
+              </div>
             </div>
-            <div style={{color:"#8BA5E1", font: "Roboto, Helvetica, Arial, sans-serif",marginRight:"5px", opacity:1}}>
-            <Stack spacing={2}>
+            <div
+              style={{
+                color: "#8BA5E1",
+                font: "Roboto, Helvetica, Arial, sans-serif",
+                marginRight: "5px",
+                opacity: 1,
+              }}
+            >
+              <Stack spacing={2}>
                 <span>Welcome {roleLoc}</span>
               </Stack>
             </div>
             <div style={{ flexGrow: 0 }}>
-              
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <AccountCircleIcon sx={{ color: "white" }} />
               </IconButton>
@@ -344,7 +359,7 @@ function HeaderBar({ handleLogoutApp, selectedChip}) {
                     <AccountCircleIcon color="inherit" />
                     Manage Users
                   </MenuItem>
-                ) : null}                
+                ) : null}
                 <Divider />
                 <MenuItem onClick={handleLogout}>
                   <LogoutRoundedIcon color="inherit" />
@@ -355,10 +370,24 @@ function HeaderBar({ handleLogoutApp, selectedChip}) {
           </Toolbar>
         </Container>
       </AppBar>
-      {/* <Drawer anchor="right" open={open} onClose={handleDrawerToggle}>
+      <Drawer
+        anchor="right"
+        open={open}
+        onClose={handleDrawerToggle}
+        sx={{
+          "& .MuiDrawer-paper": {
+            top: 0,
+            width: 500,
+            height: "100%",
+            background:
+              "transparent linear-gradient(90deg, #1c0f45 0%, #2e2a48 55%, #100d1f 100%) 0% 0% no-repeat padding-box",
+            boxShadow: "0px 10px 20px #00000029",
+            opacity: 1,
+          },
+        }}
+      >
         <div
           style={{
-            // width: "right" === "top" || "right" === "bottom" ? "auto" : 250,
             zIndex: 1,
           }}
           role="presentation"
@@ -368,7 +397,7 @@ function HeaderBar({ handleLogoutApp, selectedChip}) {
               <Grid container spacing={2}>
                 <Grid ml={2} item xs={12}>
                   <h3
-                    style={{
+                    sx={{
                       fontFamily: "normal normal bold Century Gothic",
                       letterSpacing: "0px",
                       color: "#FFFFFFCC",
@@ -389,6 +418,16 @@ function HeaderBar({ handleLogoutApp, selectedChip}) {
                     autoComplete="off"
                     value={username}
                     onChange={handleUserChange}
+                    sx={{
+                      width: "440px",
+                      height: "48px",
+                      background:
+                        "transparent linear-gradient(180deg, #403480 0%, #141653 100%) 0% 0% no-repeat padding-box",
+                      boxShadow: "0px 0px 5px #00000080",
+                      borderRadius: "8px",
+                      opacity: 1,
+                      color: "#4c5089",
+                    }}
                   />
                 </Grid>
                 <Grid sx={{ color: "#4c5089" }} ml={2} item xs={12}>
@@ -396,7 +435,16 @@ function HeaderBar({ handleLogoutApp, selectedChip}) {
                 </Grid>
                 <Grid ml={2} item xs={12}>
                   <Select
-                    sx={{ width: "100%" }}
+                    sx={{
+                      width: "440px",
+                      height: "48px",
+                      background:
+                        "transparent linear-gradient(180deg, #403480 0%, #141653 100%) 0% 0% no-repeat padding-box",
+                      boxShadow: "0px 0px 5px #00000080",
+                      borderRadius: "8px",
+                      opacity: 1,
+                      color: "#4c5089",
+                    }}
                     value={role}
                     onChange={handleChangeRole}
                   >
@@ -417,18 +465,31 @@ function HeaderBar({ handleLogoutApp, selectedChip}) {
                     autoComplete="off"
                     value={password}
                     onChange={handlePasswordChange}
+                    sx={{
+                      width: "440px",
+                      height: "48px",
+                      background:
+                        "transparent linear-gradient(180deg, #403480 0%, #141653 100%) 0% 0% no-repeat padding-box",
+                      boxShadow: "0px 0px 5px #00000080",
+                      borderRadius: "8px",
+                      opacity: 1,
+                      color: "#4c5089",
+                    }}
                   />
                 </Grid>
                 <Grid ml={2} item xs={12}>
                   <Button
                     sx={{
+                      width: "440px",
+                      height: "48px",
                       fontFamily:
                         "normal normal normal 16px/14px Century Gothic",
-                      backgroundColor:
-                        "transparent linear- gradient(96deg, #7A045D 0 %, #B135A1 52 %, #9959EC 100 %) 0% 0% no-repeat padding-box",
+                      background:
+                        "transparent linear-gradient(96deg, #7a045d 0%, #b135a1 52%, #9959ec 100%) 0% 0% no-repeat padding-box",
                       boxShadow: "0px 0px 5px #00000029",
                       borderRadius: "10px",
                       opacity: 1,
+                      textTransform: "capitalize",
                     }}
                     variant="contained"
                     onClick={handleAddUser}
@@ -448,141 +509,7 @@ function HeaderBar({ handleLogoutApp, selectedChip}) {
             </ListItem>
           </List>
         </div>
-      </Drawer> */}
-      <Drawer
-      anchor="right"
-      open={open}
-      onClose={handleDrawerToggle}
-      sx={{
-        '& .MuiDrawer-paper': {
-          top: 0,
-          width: 500,
-          height: '100%',
-          background: 'transparent linear-gradient(90deg, #1c0f45 0%, #2e2a48 55%, #100d1f 100%) 0% 0% no-repeat padding-box',
-          boxShadow: '0px 10px 20px #00000029',
-          opacity: 1,
-        },
-      }}
-    >
-      <div
-        style={{
-          zIndex: 1,
-        }}
-        role="presentation"
-      >
-        <List>
-          <ListItem disablePadding>
-            <Grid container spacing={2}>
-              <Grid ml={2} item xs={12}>
-                <h3
-                  sx={{
-                    fontFamily: 'normal normal bold Century Gothic',
-                    letterSpacing: '0px',
-                    color: '#FFFFFFCC',
-                    opacity: 1,
-                  }}
-                >
-                  Add User
-                </h3>
-                <hr style={{ width: '440px' }}></hr>
-              </Grid>
-              <Grid sx={{ color: '#4c5089' }} ml={2} item xs={12}>
-                User Email ID
-              </Grid>
-              <Grid ml={2} item xs={12}>
-                <TextField
-                  id="outlined-basic"
-                  variant="outlined"
-                  autoComplete="off"
-                  value={username}
-                  onChange={handleUserChange}
-                  sx={{
-                    width: '440px',
-                    height: '48px',
-                    background: 'transparent linear-gradient(180deg, #403480 0%, #141653 100%) 0% 0% no-repeat padding-box',
-                    boxShadow: '0px 0px 5px #00000080',
-                    borderRadius: '8px',
-                    opacity: 1,
-                    color: '#4c5089',
-                  }}
-                />
-              </Grid>
-              <Grid sx={{ color: '#4c5089' }} ml={2} item xs={12}>
-                Role
-              </Grid>
-              <Grid ml={2} item xs={12}>
-                <Select
-                  sx={{
-                    width: '440px',
-                    height: '48px',
-                    background: 'transparent linear-gradient(180deg, #403480 0%, #141653 100%) 0% 0% no-repeat padding-box',
-                    boxShadow: '0px 0px 5px #00000080',
-                    borderRadius: '8px',
-                    opacity: 1,
-                    color: '#4c5089',
-                  }}
-                  value={role}
-                  onChange={handleChangeRole}
-                >
-                  {roles.map((roleOption) => (
-                    <MenuItem key={roleOption.value} value={roleOption.value}>
-                      {roleOption.label}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </Grid>
-              <Grid sx={{ color: '#4c5089' }} ml={2} item xs={12}>
-                New Password
-              </Grid>
-              <Grid ml={2} item xs={12}>
-                <TextField
-                  id="outlined-basic"
-                  variant="outlined"
-                  autoComplete="off"
-                  value={password}
-                  onChange={handlePasswordChange}
-                  sx={{
-                    width: '440px',
-                    height: '48px',
-                    background: 'transparent linear-gradient(180deg, #403480 0%, #141653 100%) 0% 0% no-repeat padding-box',
-                    boxShadow: '0px 0px 5px #00000080',
-                    borderRadius: '8px',
-                    opacity: 1,
-                    color: '#4c5089',
-                  }}
-                />
-              </Grid>
-              <Grid ml={2} item xs={12}>
-                <Button
-                  sx={{
-                    width: '440px',
-                    height: '48px',
-                    fontFamily: 'normal normal normal 16px/14px Century Gothic',
-                    background: 'transparent linear-gradient(96deg, #7a045d 0%, #b135a1 52%, #9959ec 100%) 0% 0% no-repeat padding-box',
-                    boxShadow: '0px 0px 5px #00000029',
-                    borderRadius: '10px',
-                    opacity: 1,
-                    textTransform: 'capitalize',
-                  }}
-                  variant="contained"
-                  onClick={handleAddUser}
-                  disabled={isButtonDisabled}
-                >
-                  ADD
-                </Button>
-                <Snackbar
-                  open={openSnackbar}
-                  onClose={handleCloseSnackbar}
-                  anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-                  message={snackbarMessage}
-                  autoHideDuration={3000}
-                ></Snackbar>
-              </Grid>
-            </Grid>
-          </ListItem>
-        </List>
-      </div>
-    </Drawer>
+      </Drawer>
     </div>
   );
 }

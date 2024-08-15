@@ -1,3 +1,9 @@
+.dropDown-selection {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 .nokia {
   top: 140px;
   left: 45px;
@@ -52,4 +58,14 @@
 }
 .MuiInputBase-root.MuiFilledInput-root.MuiFilledInput-underline.MuiInputBase-colorPrimary.MuiInputBase-formControl.css-batk84-MuiInputBase-root-MuiFilledInput-root{
   color: #FFFFFF !important;
+}
+
+.onboardStyle{
+  background-color: #1c1444;
+  margin-bottom: 25px;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px;
+  height: 100%;
+  min-height: 100vh;
 }
