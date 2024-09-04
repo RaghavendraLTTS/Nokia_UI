@@ -35,12 +35,11 @@ import {
 import { FaFilter } from "react-icons/fa";
 import {
   ResponsiveContainer,
-  PieChart,
-  Pie,
+
   Cell,
   RadialBarChart,
   RadialBar,
-  AreaChart,
+
   Area,
   CartesianGrid,
   Tooltip,
@@ -52,12 +51,17 @@ import {
   BarChart,
   Bar
 } from "recharts";
-import GaugeChart from "react-gauge-chart";
+
 import { styled } from "@mui/system";
 import Container from "@mui/material/Container";
 import { useLocation } from "react-router-dom";
 import "../DashboardScreen/dashboardScreen.css";
 import ExcelJS from "exceljs";
+import { useNavigate } from "react-router-dom";
+import CustomLineChart from "./lineChart";
+
+import Chart from "./charts";
+
 
 const custom = {
   textAlign: "left",
@@ -116,28 +120,18 @@ const StyledSelect = styled(Select)({
   },
 });
 
-// const filterOptions = Object.keys(initialData.data[0]).reduce((acc, key) => {
-//   acc[key] = [
-//     ...new Set(initialData.data.map((item) => String(item[key]).toLowerCase())),
-//   ];
-//   return acc;
-// }, {});
+
 
 const DashboardScreen = () => {
   const location = useLocation();
   const responsesData = location.state.responsesData.toolData;
-  useEffect(() => {
-    console.log(responsesData.data.data[0]);
-    console.log(responsesData.data.report);
-  }, [responsesData]);
-
   const [searchTerms, setSearchTerms] = useState({});
   const [filterConditions, setFilterConditions] = useState({});
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [selectedColumns, setSelectedColumns] = useState(
-    Object.keys(responsesData.data.data[0])
+    Object.keys(responsesData.jsonData.data[0])
   );
   const [selectedChart, setSelectedChart] = useState("");
   const [isFilterVisible, setIsFilterVisible] = useState(false);
@@ -150,14 +144,14 @@ const DashboardScreen = () => {
   const [timePeriod, setTimePeriod] = useState("");
   const [chartData, setChartData] = useState([]);
   const [columnAction, setColumnAction] = useState({});
+  const [sent, setSent] = useState(false);
+  const [exitDB, setexitDB] = useState({});
+  const navigate = useNavigate();
 
-  // const filters = Object.keys(responsesData.data.data[0]).reduce((acc, key) => {
-  //   acc[key] = responsesData.data.data.map((item) => String(item[key]).toLowerCase());
-  //   return acc;
-  // }, {});
+
 
   const filterOptions = useMemo(() => {
-    const filteredData = responsesData.data.data.filter((item) => {
+    const filteredData = responsesData.jsonData.data.filter((item) => {
       return Object.keys(searchTerms).every((searchKey) => {
         const searchTerm = searchTerms[searchKey]?.toLowerCase() || "";
         const itemValue = item[searchKey].toString().toLowerCase();
@@ -175,7 +169,7 @@ const DashboardScreen = () => {
       });
     });
 
-    return Object.keys(responsesData.data.data[0]).reduce((acc, key) => {
+    return Object.keys(responsesData.jsonData.data[0]).reduce((acc, key) => {
       acc[key] = [
         ...new Set(filteredData.map((item) => String(item[key]).toLowerCase())),
       ];
@@ -183,88 +177,10 @@ const DashboardScreen = () => {
     }, {});
   }, [searchTerms, filterConditions]);
 
-  const timePeriodOptions = [
-    { value: "yesterday", label: "Yesterday" },
-    { value: "lastWeek", label: "Last Week" },
-    { value: "last1Month", label: "Last 1 Month" },
-    { value: "last2Months", label: "Last 2 Months" },
-    { value: "last3Months", label: "Last 3 Months" },
-    { value: "today", label: "Today" },
-  ];
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const apiLink = "http://localhost:8083/api/report";
-    const postData = {
-      startTime: startTime.toString(),
-      endTime: endTime.toString(),
-      toolname: toolname.join(","),
-    };
 
-    try {
-      const response = await fetch(apiLink, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(postData),
-      });
-      const data = await response.json();
-      setChartData(data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
 
-  const getStartTime = () => {
-    const currentDate = new Date();
-    switch (timePeriod) {
-      case "yesterday":
-        return new Date(
-          currentDate.setDate(currentDate.getDate() - 1)
-        ).toISOString();
-      case "lastWeek":
-        return new Date(
-          currentDate.setDate(currentDate.getDate() - 7)
-        ).toISOString();
-      case "last1Month":
-        return new Date(
-          currentDate.setMonth(currentDate.getMonth() - 1)
-        ).toISOString();
-      case "last2Months":
-        return new Date(
-          currentDate.setMonth(currentDate.getMonth() - 2)
-        ).toISOString();
-      case "last3Months":
-        return new Date(
-          currentDate.setMonth(currentDate.getMonth() - 3)
-        ).toISOString();
-      case "today":
-        return new Date(currentDate).toISOString();
 
-      default:
-        return "";
-    }
-  };
 
-  const getEndTime = () => {
-    const currentDate = new Date();
-    switch (timePeriod) {
-      case "yesterday":
-        return new Date(currentDate).toISOString();
-      case "lastWeek":
-        return new Date(currentDate).toISOString();
-      case "last1Month":
-        return new Date(currentDate).toISOString();
-      case "last2Months":
-        return new Date(currentDate).toISOString();
-      case "last3Months":
-        return new Date(currentDate).toISOString();
-      case "today":
-
-      default:
-        return "";
-    }
-  };
 
   useEffect(() => {
     let interval;
@@ -272,11 +188,17 @@ const DashboardScreen = () => {
       interval = setInterval(() => {
         setStopwatchTime((prevTime) => prevTime + 1);
       }, 1000);
-    } else if (!isRunning && stopwatchTime !== 0) {
-      clearInterval(interval);
     }
-    return () => clearInterval(interval);
-  }, [isRunning, stopwatchTime]);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [isRunning]);
+
+  const handleClick = () => {
+    setIsRunning(false);
+    makeApiCall(stopwatchTime);
+    navigate('/dashboard', { state: { exitDB } });
+  };
 
   const handleSearch = (key, value) => {
     setSearchTerms((prevSearchTerms) => ({
@@ -286,12 +208,6 @@ const DashboardScreen = () => {
     setPage(0);
   };
 
-  const handleFilterChange = (key, condition) => {
-    setFilterConditions((prevFilterConditions) => ({
-      ...prevFilterConditions,
-      [key]: condition,
-    }));
-  };
 
   const handleSort = (key) => {
     let direction = "asc";
@@ -301,7 +217,7 @@ const DashboardScreen = () => {
     setSortConfig({ key, direction });
   };
 
-  const filteredData = responsesData.data.data.filter((item) =>
+  const filteredData = responsesData.jsonData.data.filter((item) =>
     Object.keys(searchTerms).every((key) => {
       const searchTerm = searchTerms[key]?.toLowerCase() || "";
       const itemValue = item[key].toString().toLowerCase();
@@ -319,12 +235,7 @@ const DashboardScreen = () => {
     })
   );
 
-  const handleSearchChange = (event) => {
-    setSearchTerms({
-      ...searchTerms,
-      [event.target.name]: event.target.value.toLowerCase(),
-    });
-  };
+
   const sortedData = filteredData.sort((a, b) => {
     if (sortConfig.key) {
       const aValue = a[sortConfig.key];
@@ -354,11 +265,11 @@ const DashboardScreen = () => {
   };
 
   const handleSelectAllColumns = () => {
-    setSelectedColumns(Object.keys(responsesData.data.data[0]));
+    setSelectedColumns(Object.keys(responsesData.jsonData.data[0]));
   };
 
   const handleDeselectAllColumns = () => {
-    const defaultColumns = Object.keys(responsesData.data.data[0]).slice(0, 5);
+    const defaultColumns = Object.keys(responsesData.jsonData.data[0]).slice(0, 5);
     setSelectedColumns(defaultColumns);
   };
 
@@ -424,193 +335,54 @@ const DashboardScreen = () => {
     window.close();
   };
 
-  let pieData = [];
-  switch (responsesData.toolName) {
-    case "RSI":
-      pieData = [
-        {
-          name: "RSI Conflict",
-          value: responsesData.data.report["RSI Anomaly Detected"],
-        },
-        {
-          name: "Total Conflict",
-          value: responsesData.data.report["Total Relations Analyzed"],
-        },
-      ];
-      break;
-    case "PCI":
-      pieData = [
-        {
-          name: "PCI Conflict",
-          value: responsesData.data.report["PCI Anomaly Detected"],
-        },
-        {
-          name: "Total Conflict",
-          value: responsesData.data.report["Total Relations Analyzed"],
-        },
-      ];
-      break;
-    case "Output":
-      pieData = [
-        {
-          name: "RSI Conflict",
-          value: responsesData.data.report["RSI Anomaly"],
-        },
-        {
-          name: "PCI Conflict",
-          value: responsesData.data.report["PCI Anomaly"],
-        },
-        {
-          name: "Total Conflict",
-          value: responsesData.data.report["Total Anomaly"],
-        },
-      ];
-      break;
-    default:
-      // handle unknown toolName
-      console.error(`Unknown toolName: ${responsesData.toolName}`);
+  const handleStopClick = () => {
+    setIsRunning(false);
+    makeApiCall(stopwatchTime);
+    navigate('/dashboard', { state: { exitDB } });
+  };
+
+  const makeApiCall = (time) => {
+    const hours = Math.floor(time / 3600);
+    const minutes = Math.floor((time % 3600) / 60);
+    const seconds = time % 60;
+    const viewTime = `${padZero(hours)}:${padZero(minutes)}:${padZero(seconds)}`;
+
+    const token = JSON.parse(localStorage.getItem('token'));
+    const username = token.username;
+
+    // const apiUrl = 'http://dts-api.production3.k-gsd.es-si-os-gsn-52.k8s.dyn.nesc.nokia.net/api/users/dtsexit';
+    const apiUrl = "http://localhost:9001/api/users/dtsexit";
+    const data = {
+      viewTime,
+      userName: username,
+      client: responsesData.client,
+      project: responsesData.project,
+      toolname: responsesData.toolName
+    };
+
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    };
+
+    fetch(apiUrl, requestOptions)
+      .then(response => response.json())
+      .then(data => setexitDB(data))
+      .catch(error => console.error(error));
+
+    setSent(true);
+  };
+
+  const padZero = (num) => {
+    return (num < 10 ? '0' : '') + num;
   }
 
-  let radialData = [];
-  switch (responsesData.toolName) {
-    case "RSI":
-      radialData = [
-        {
-          name: "RSI Conflict",
-          value: responsesData.data.report["RSI Anomaly Detected"],
-          fill: "#E23B3B",
-        },
-        {
-          name: "Total Conflict",
-          value: responsesData.data.report["Total Relations Analyzed"],
-          fill: "#23ABB6",
-        },
-      ];
-      break;
-    case "PCI":
-      radialData = [
-        {
-          name: "PCI Conflict",
-          value: responsesData.data.report["PCI Anomaly Detected"],
-          fill: "#F7B737",
-        },
-        {
-          name: "Total Conflict",
-          value: responsesData.data.report["Total Relations Analyzed"],
-          fill: "#23ABB6",
-        },
-      ];
-      break;
-    case "Output":
-      radialData = [
-        {
-          name: "RSI Conflict",
-          value: responsesData.data.report["RSI Anomaly"],
-          fill: "#E23B3B",
-        },
-        {
-          name: "PCI Conflict",
-          value: responsesData.data.report["PCI Anomaly"],
-          fill: "#F7B737",
-        },
-        {
-          name: "Total Conflict",
-          value: responsesData.data.report["Total Anomaly"],
-          fill: "#23ABB6",
-        },
-      ];
-      break;
-    default:
-      console.error(`Unknown toolName: ${responsesData.toolName}`);
-  }
-
-  let areaData = [];
-  switch (responsesData.toolName) {
-    case "RSI":
-      areaData = Object.keys(responsesData.data.report)
-        .filter((key) => key.includes("RSI"))
-        .map((key) => ({
-          name: key.replace("_", " "),
-          value: responsesData.data.report[key],
-        }));
-      break;
-    case "PCI":
-      areaData = Object.keys(responsesData.data.report)
-        .filter((key) => key.includes("PCI"))
-        .map((key) => ({
-          name: key.replace("_", " "),
-          value: responsesData.data.report[key],
-        }));
-      break;
-    case "Output":
-      areaData = Object.keys(responsesData.data.report).map((key) => ({
-        name: key.replace("_", " "),
-        value: responsesData.data.report[key],
-      }));
-      break;
-    default:
-      console.error(`Unknown toolName: ${responsesData.toolName}`);
-  }
-
-  let barData = [];
-  switch (responsesData.toolName) {
-    case "RSI":
-      barData = [
-        {
-          name: "RSI Conflict",
-          value: responsesData.data.report["RSI Anomaly Detected"],
-          fill: "#E23B3B",
-        },
-        {
-          name: "Total Conflict",
-          value: responsesData.data.report["Total Relations Analyzed"],
-          fill: "#23ABB6",
-        },
-      ];
-      break;
-    case "PCI":
-      barData = [
-        {
-          name: "PCI Conflict",
-          value: responsesData.data.report["PCI Anomaly Detected"],
-          fill: "#F7B737",
-        },
-        {
-          name: "Total Conflict",
-          value: responsesData.data.report["Total Relations Analyzed"],
-          fill: "#23ABB6",
-        },
-      ];
-      break;
-    case "Output":
-      barData = [
-        {
-          name: "RSI Conflict",
-          value: responsesData.data.report["RSI Anomaly"],
-          fill: "#E23B3B",
-        },
-        {
-          name: "PCI Conflict",
-          value: responsesData.data.report["PCI Anomaly"],
-          fill: "#F7B737",
-        },
-        {
-          name: "Total Conflict",
-          value: responsesData.data.report["Total Anomaly"],
-          fill: "#23ABB6",
-        },
-      ];
-      break;
-    default:
-      console.error(`Unknown toolName: ${responsesData.toolName}`);
-  }
- 
   const COLORS = [
-    "#E23B3B", 
-    "#F7B737", 
+    "#E23B3B",
+    "#F7B737",
     "#23ABB6",
   ];
-
   const handleFilterToggle = () => {
     setIsFilterVisible(!isFilterVisible);
   };
@@ -618,12 +390,12 @@ const DashboardScreen = () => {
     setColumnAction((prevAction) => ({ ...prevAction, [column]: action }));
   };
 
-  
+
   const handleExport = () => {
     if (
-      !responsesData.data ||
-      !responsesData.data.data ||
-      !responsesData.data.report
+      !responsesData ||
+      !responsesData.jsonData.data ||
+      !responsesData.jsonData.report
     ) {
       alert("No data to export!");
       return;
@@ -633,7 +405,7 @@ const DashboardScreen = () => {
     const sheet1 = workbook.addWorksheet("Data");
     const sheet2 = workbook.addWorksheet("Report");
 
-    const headers1 = Object.keys(responsesData.data.data[0]);
+    const headers1 = Object.keys(responsesData.jsonData.data[0]);
     sheet1.addRow(headers1);
 
     sheet1.getRow(1).fill = {
@@ -642,21 +414,21 @@ const DashboardScreen = () => {
       fgColor: { argb: "FFADD8E6" },
     }; // Light blue
 
-    responsesData.data.data.forEach((row) => {
+    responsesData.jsonData.data.forEach((row) => {
       sheet1.addRow(Object.values(row));
     });
 
     headers1.forEach((header, columnIndex) => {
       const maxLength = Math.max(
         header.length,
-        ...responsesData.data.data.map(
+        ...responsesData.jsonData.data.map(
           (row) => Object.values(row)[columnIndex].toString().length
         )
       );
       sheet1.getColumn(columnIndex + 1).width = maxLength < 10 ? 10 : maxLength;
     });
 
-    const headers2 = Object.keys(responsesData.data.report);
+    const headers2 = Object.keys(responsesData.jsonData.report);
     sheet2.addRow(headers2);
     // sheet2.getRow(1).font = { bold: true, color: { argb: 'FF000080' } }; // Light blue
     sheet2.getRow(1).fill = {
@@ -665,12 +437,12 @@ const DashboardScreen = () => {
       fgColor: { argb: "FFADD8E6" },
     }; // Light blue
 
-    sheet2.addRow(Object.values(responsesData.data.report));
+    sheet2.addRow(Object.values(responsesData.jsonData.report));
 
     headers2.forEach((header, columnIndex) => {
       const maxLength = Math.max(
         header.length,
-        ...Object.values(responsesData.data.report).map(
+        ...Object.values(responsesData.jsonData.report).map(
           (value) => value.toString().length
         )
       );
@@ -690,17 +462,16 @@ const DashboardScreen = () => {
     });
   };
 
+
+
+
   return (
-    // <StyledContainerDropDown
-    //   style={{ maxWidth: "100%", height: "950px", marginTop: "10px" }}
-    //   className="dropDown-selection"
-    // >
     <div className="userStyle">
       <Grid container spacing={2}>
         <Grid item xs={8}>
           <Stack spacing={2} style={custom}>
             <Breadcrumbs separator="›" aria-label="breadcrumb" style={custom}>
-              <Link underline="hover" key="1" href="/dashboard">
+              <Link underline="hover" key="1" onClick={handleClick}>
                 List of output tools
               </Link>
               <Typography style={custom}>Data Visualisation</Typography>
@@ -752,7 +523,7 @@ const DashboardScreen = () => {
               <Button
                 variant="contained"
                 color="secondary"
-                onClick={() => setStopwatchTime(0)}
+                onClick={handleStopClick}
                 sx={{
                   margin: "8px",
                   color: "#EDF2F5",
@@ -873,7 +644,7 @@ const DashboardScreen = () => {
                               },
                             }}
                           >
-                            <ClickAwayListener onClickAway={() => {}}>
+                            <ClickAwayListener onClickAway={() => { }}>
                               <MenuItem value="search">
                                 <FormControl
                                   variant="standard"
@@ -900,12 +671,11 @@ const DashboardScreen = () => {
                                       marginRight: "16px",
                                       color: "#fff !important",
                                     }}
-                                    //placeholder="TYPE HERE"
                                   />
                                 </FormControl>
                               </MenuItem>
                             </ClickAwayListener>
-                            <ClickAwayListener onClickAway={() => {}}>
+                            <ClickAwayListener onClickAway={() => { }}>
                               <MenuItem value="filter">
                                 <FormControl
                                   variant="standard"
@@ -952,7 +722,7 @@ const DashboardScreen = () => {
                                 </FormControl>
                               </MenuItem>
                             </ClickAwayListener>
-                            <ClickAwayListener onClickAway={() => {}}>
+                            <ClickAwayListener onClickAway={() => { }}>
                               <StyledFormControl variant="standard">
                                 <MenuItem value="selectedColumns">
                                   <StyledInputLabel
@@ -986,15 +756,15 @@ const DashboardScreen = () => {
                                         checked={
                                           selectedColumns.length ===
                                           Object.keys(
-                                            responsesData.data.data[0]
+                                            responsesData.jsonData.data[0]
                                           ).length
                                         }
                                         indeterminate={
                                           selectedColumns.length > 0 &&
                                           selectedColumns.length <
-                                            Object.keys(
-                                              responsesData.data.data[0]
-                                            ).length
+                                          Object.keys(
+                                            responsesData.jsonData.data[0]
+                                          ).length
                                         }
                                         onChange={(event) => {
                                           if (event.target.checked) {
@@ -1007,7 +777,7 @@ const DashboardScreen = () => {
                                       <ListItemText primary="Select All" />
                                     </MenuItem>
                                     {Object.keys(
-                                      responsesData.data.data[0]
+                                      responsesData.jsonData.data[0]
                                     ).map((column) => (
                                       <MenuItem key={column} value={column}>
                                         <Checkbox
@@ -1068,428 +838,12 @@ const DashboardScreen = () => {
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
-              //style={{ flexShrink: 0 }}
+            //style={{ flexShrink: 0 }}
             />
           </Grid>
         </Grid>
       </Grid>
-      <Grid container spacing={2}>
-        <Grid xs={4}>
-          <aside style={{ width: "100%" }}>
-            <FormControl
-              variant="outlined"
-              style={{
-                minWidth: 200,
-                justifyContent: "center",
-                backgroundColor: "#1c1444",
-                textColor: "#fff",
-              }}
-            >
-              <InputLabel style={{ backgroundColor: "#1c1444", color: "#fff" }}>
-                Select Chart
-              </InputLabel>
-              <Select
-                value={selectedChart}
-                onChange={(e) => setSelectedChart(e.target.value)}
-                label="Select Chart"
-                style={{
-                  color: "#fff", // Add this line to change the text color of the selected value
-                }}
-                MenuProps={{
-                  PaperProps: {
-                    style: {
-                      backgroundColor: "#1C0D46",
-                      color: "white",
-                    },
-                  },
-                }}
-              >
-                <MenuItem value="Pie">Pie Chart</MenuItem>
-                <MenuItem value="Bar">Bar Chart</MenuItem>
-                <MenuItem value="Radial">Radial Chart</MenuItem>
-                <MenuItem value="Area">Area Chart</MenuItem>
-                <MenuItem value="Conflicts Distribution">
-                  Conflicts Distribution
-                </MenuItem>
-                <MenuItem value="Gauge">Gauge Chart</MenuItem>
-              </Select>
-            </FormControl>
-            {selectedChart === "Pie" && (
-              <ResponsiveContainer width="100%" height={370}>
-                <PieChart>
-                  <Pie
-                    data={pieData}
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={150}
-                    fill="#EO3DCD"
-                    dataKey="value"
-                    label={{fontFamily: "'Open Sans', sans-serif"}}
-                  >
-                    {pieData.map((entry, index) => (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={COLORS[index % COLORS.length]}
-                      />
-                    ))}
-                  </Pie>
-                  <Tooltip contentStyle={tooltipStyle} />
-                  <Legend />
-                </PieChart>
-              </ResponsiveContainer>
-            )}
-            {selectedChart === "Bar" && (
-            <ResponsiveContainer width="100%" height={370}>
-              <BarChart
-                data={barData}
-                margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis
-                  dataKey="name"
-                  style={{
-                    fontSize: 14,
-                    fontFamily: "'Open Sans', sans-serif",
-                    color: "#333",
-                  }}
-                />
-                <YAxis
-                  style={{
-                    fontSize: 14,
-                    fontFamily: "'Open Sans', sans-serif",
-                    color: "#333",
-                  }}
-                />
-                <Tooltip
-                  cursor={{ fill: "transparent" }}
-                  wrapperStyle={{ border: "1px solid #ccc", borderRadius: 4 }}
-                  labelStyle={{
-                    fontSize: 14,
-                    fontFamily: "'Open Sans', sans-serif",
-                    color: "#333",
-                  }}
-                  itemStyle={{
-                    fontSize: 14,
-                    color: "#666",
-                    fontFamily: "'Open Sans', sans-serif",
-                  }}
-                  separator={<span>: </span>}
-                />
-                <Bar dataKey="value" fill="#C9E4CA" />
-              </BarChart>
-            </ResponsiveContainer>
-          )}
-            {selectedChart === "Radial" && (
-              <ResponsiveContainer width="100%" height={400}>
-                <RadialBarChart
-                  cx="50%"
-                  cy="50%"
-                  innerRadius="10%"
-                  outerRadius="80%"
-                  barSize={10}
-                  data={radialData}
-                  plotOptions={{
-                    pie: {
-                      dataLabels: {
-                        minAngleToShowLabel: 15,
-                      },
-                    },
-                  }}
-                >
-                  <RadialBar
-                    minAngle={15}
-                    label={{ position: "outside", offset: 10, fill: "#fff", fontFamily: "'Open Sans', sans-serif", }}
-                    background
-                    clockWise
-                    dataKey="value"
-                  />
-                  <Legend
-                    iconSize={10}
-                    layout="vertical"
-                    verticalAlign="middle"
-                    align="right"
-                  />
-                  <Tooltip contentStyle={tooltipStyle} />
-                </RadialBarChart>
-              </ResponsiveContainer>
-            )}
-            {selectedChart === "Area" && (
-              <ResponsiveContainer width="100%" height={370}>
-                <AreaChart
-                  data={areaData}
-                  margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" 
-                  style={{
-                    fontSize: 14,
-                    fontFamily: "'Open Sans', sans-serif",
-                    color: "#333",
-                  }}
-                  />
-                  <YAxis 
-                  style={{
-                      fontSize: 14,
-                      fontFamily: "'Open Sans', sans-serif",
-                      color: "#333",
-                    }} />
-                  <Tooltip
-                    cursor={{ fill: "#f5f5f5" }}
-                    wrapperStyle={{ border: "1px solid #ccc", borderRadius: 4 }}
-                    labelStyle={{
-                      fontSize: 14,
-                      fontFamily: "'Open Sans', sans-serif",
-                      color: "#333",
-                    }}
-                    itemStyle={{
-                      fontSize: 14,
-                      color: "#666",
-                      fontFamily: "'Open Sans', sans-serif",
-                    }}
-                    separator={<span>: </span>}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="value"
-                    stroke="#C9E4CA"
-                    fill="#8B9467"
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            )}
-            {selectedChart === "Conflicts Distribution" && (
-              <ResponsiveContainer width="100%" height={370}>
-                <PieChart>
-                  <Pie
-                    data={pieData}
-                    innerRadius={100}
-                    outerRadius={150}
-                    fill="#FFC499"
-                    paddingAngle={5}
-                    dataKey="value"
-                  >
-                    {pieData.map((entry, index) => (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={COLORS[index % COLORS.length]}
-                      />
-                    ))}
-                  </Pie>
-                  <Tooltip contentStyle={tooltipStyle} />
-                  <Legend />
-                </PieChart>
-              </ResponsiveContainer>
-            )}
-            {selectedChart === "Gauge" && (
-              <ResponsiveContainer width="100%" height={370}>
-                <Box
-                  display="flex"
-                  justifyContent="space-around"
-                  alignItems="center"
-                >
-                  {responsesData.toolName === "RSI" ? (
-                    <Box textAlign="center">
-                      <Typography variant="subtitle1" color={"white"}>
-                        RSI Conflict
-                      </Typography>
-                      <GaugeChart
-                        id="gauge-chart-rsi"
-                        nrOfLevels={20}
-                        percent={
-                          responsesData.data.report["RSI Anomaly Detected"] /
-                          responsesData.data.report["Total Relations Analyzed"]
-                        }
-                        textColor="white"
-                        needleColor="#005AFF"
-                        colors={["#F47F31", "#F47F31"]}
-                        arcWidth={0.3}
-                        arcPadding={0.05} 
-                        needleStrokeWidth={0.05}
-                        needleAnimationDuration={1000}
-                        cornerRadius={3}
-                        animate={false}
-                        style={{width:'90%'}}
-                      />
-                    </Box>
-                  ) : responsesData.toolName === "PCI" ? (
-                    <Box textAlign="center">
-                      <Typography variant="subtitle1" color={"white"}>
-                        PCI Conflict
-                      </Typography>
-                      <GaugeChart
-                        id="gauge-chart-pci"
-                        nrOfLevels={20}
-                        percent={
-                          responsesData.data.report["PCI Anomaly Detected"] /
-                          responsesData.data.report["Total Relations Analyzed"]
-                        }
-                        textColor="white"
-                        needleColor="#005AFF"
-                        colors={["#F47F31", "#F47F31"]}
-                        arcWidth={0.3}
-                        needleStrokeWidth={0.05}
-                        needleAnimationDuration={1000}
-                        cornerRadius={3}
-                        animate={false}
-                        style={{width:'90%'}}
-                      />
-                    </Box>
-                  ) : responsesData.toolName === "Output" ? (
-                    <>
-                      <Box textAlign="center">
-                        <Typography variant="subtitle1" color={"white"}>
-                          RSI Conflict
-                        </Typography>
-                        <GaugeChart
-                          id="gauge-chart-total"
-                          nrOfLevels={20}
-                          percent={
-                            responsesData.data.report["RSI Anomaly"] /
-                            responsesData.data.report["Total Anomaly"]
-                          }
-                          textColor="white"
-                          needleColor="#005AFF"
-                          colors={["#F47F31", "#F47F31"]}
-                          arcWidth={0.3}
-                          needleStrokeWidth={0.05}
-                          needleAnimationDuration={1000}
-                          cornerRadius={3}
-                          animate={false}
-                          style={{width:'90%'}}
-                        />
-                      </Box>
-                      <Box textAlign="center">
-                        <Typography variant="subtitle1" color={"white"}>
-                          PCI Conflict
-                        </Typography>
-                        <GaugeChart
-                          id="gauge-chart-total"
-                          nrOfLevels={20}
-                          percent={
-                            responsesData.data.report["PCI Anomaly"] /
-                            responsesData.data.report["Total Anomaly"]
-                          }
-                          textColor="white"
-                          needleColor="#005AFF"
-                          colors={["#F47F31", "#F47F31"]}
-                          arcWidth={0.3}
-                          needleStrokeWidth={0.05}
-                          needleAnimationDuration={1000}
-                          cornerRadius={3}
-                          animate={false}
-                          style={{width:'90%'}}
-                        />
-                      </Box>
-                      <Box textAlign="center">
-                        <Typography variant="subtitle1" color={"white"}>
-                          Total Conflict
-                        </Typography>
-                        <GaugeChart
-                          id="gauge-chart-total"
-                          nrOfLevels={20}
-                          percent={
-                            responsesData.data.report["Total Anomaly"] /
-                            responsesData.data.report["Total Anomaly"]
-                          }
-                          textColor="white"
-                          needleColor="#005AFF"
-                          colors={["#F47F31", "#F47F31"]}
-                          arcWidth={0.3}
-                          needleStrokeWidth={0.05}
-                          needleAnimationDuration={1000}
-                          cornerRadius={3}
-                          animate={false}
-                          style={{width:'90%'}}
-                        />
-                      </Box>
-                    </>
-                  ) : null}
-                </Box>
-              </ResponsiveContainer>
-            )}
-          </aside>
-        </Grid>
-      </Grid>
-      {/* <Grid container spacing={2}>
-        <Grid xs={12}>
-          <Typography>Line Chart</Typography>
-
-          <ResponsiveContainer width="100%" height={400}>
-            <form onSubmit={handleSubmit}>
-              <Grid container spacing={2}>
-                <Grid item xs={3}>
-                  <FormControl fullWidth>
-                    <InputLabel>Time Period</InputLabel>
-                    <Select
-                      value={timePeriod}
-                      onChange={(event) => setTimePeriod(event.target.value)}
-                    >
-                      {timePeriodOptions.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={3}>
-                  <FormControl fullWidth>
-                    <InputLabel>Tool Name</InputLabel>
-                    <Select
-                      multiple
-                      value={toolname}
-                      onChange={handelToolnameChange}
-                      input={<OutlinedInput label="Tool Name" />}
-                      renderValue={(selected) => selected.join(", ")}
-                    >
-                      <MenuItem value="PCI">
-                        <Checkbox checked={toolname.indexOf("PCI") > -1} />
-                        <ListItemText primary="PCI" />
-                      </MenuItem>
-                      <MenuItem value="RSI">
-                        <Checkbox checked={toolname.indexOf("RSI") > -1} />
-                        <ListItemText primary="RSI" />
-                      </MenuItem>
-                      <MenuItem value="Output">
-                        <Checkbox checked={toolname.indexOf("Output") > -1} />
-                        <ListItemText primary="Output" />
-                      </MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={3}>
-                  <Button type="submit" variant="contained" color="primary">
-                    Fetch Data
-                  </Button>
-                </Grid>
-              </Grid>
-            </form>
-            {chartData.length > 0 && (
-              <LineChart width={100} height={50} data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis
-                  dataKey="timestamp"
-                  stroke="#f5deb3"
-                  padding={{ left: 30, right: 30 }}
-                />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                {chartData.map((toolData, index) => (
-                  <Line
-                    key={index}
-                    type="monotone"
-                    dataKey={toolData.name}
-                    stroke={COLORS[index % COLORS.length]}
-                    data={toolData.data}
-                  />
-                ))}
-              </LineChart>
-            )}
-          </ResponsiveContainer>
-        </Grid>
-      </Grid> */}
-    {/* </StyledContainerDropDown> */}
+      <Grid xs={6}><Chart /></Grid>
     </div>
   );
 };
