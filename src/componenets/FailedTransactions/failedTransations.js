@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import "../FailedTransactions/failedTransactions.css";
+import "../FailedTransactions/FailedTransactions.css";
 import { createTheme, ThemeProvider } from "@mui/material";
 
 const theme = createTheme({

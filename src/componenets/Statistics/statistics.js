@@ -1,13 +1,13 @@
 import React, { useState,useEffect } from "react";
 import { Box, Tab, Tabs, Typography } from "@mui/material";
-import UserStatistics from "../Statistics/UserStatistics/userStatistics";
-import ToolsStatistics from "../Statistics/ToolsStatistics/toolsStatistics";
+import UserStatistics from "./UserStatistics/UserStatistics";
+import ToolsStatistics from "./ToolsStatistics/ToolsStatistics";
 import Grid from "@mui/material/Grid";
 import { styled } from "@mui/system";
 import Container from "@mui/material/Container";
-import "../Statistics/statistics.css";
+import "../Statistics/Statistics.css";
 import Button from "@mui/material/Button";
-import XLSXDownload from "../../Utilits/excelDownload";
+import XLSXDownload from "../../utilities/excelDownload";
 
 const tabStyle = {
   textAlign: "left",

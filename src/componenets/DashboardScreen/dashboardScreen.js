@@ -56,7 +56,7 @@ import GaugeChart from "react-gauge-chart";
 import { styled } from "@mui/system";
 import Container from "@mui/material/Container";
 import { useLocation } from "react-router-dom";
-import "../DashboardScreen/dashboardScreen.css";
+import "../DashboardScreen/DashboardScreen.css";
 import ExcelJS from "exceljs";
 
 const custom = {

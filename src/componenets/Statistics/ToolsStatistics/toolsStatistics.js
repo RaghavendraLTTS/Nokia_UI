@@ -26,7 +26,7 @@ import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutlined";
-import "../ToolsStatistics/toolsStatistics.css";
+import "../ToolsStatistics/ToolsStatistics.css";
 
 
 

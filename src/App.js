@@ -6,13 +6,13 @@ import {
   useLocation,
   Navigate
 } from 'react-router-dom';
-import HeaderBar from './componenets/HeaderBar/headerBar'
-import LoginPage from './componenets/LoginPage/login'
-import UserScreen from './componenets/UserScreen/user'
-import OnboardScreen from './componenets/OnboardingScreen/onBoarding'
-import Dashboard from './componenets/Dashbaord/dashboard'
-import DashboardScreen from './componenets/DashboardScreen/dashboardScreen'
-import Statistics from './componenets/Statistics/statistics'
+import HeaderBar from './componenets/HeaderBar/HeaderBar'
+import LoginPage from './pages/LoginPage/Login'
+import UserScreen from './pages/UserScreen/User'
+import DashboardScreen from './componenets/DashboardScreen/DashboardScreen'
+import Statistics from './componenets/Statistics/Statistics'
+import Dashboard from './pages/Dashbaord/Dashboard';
+import OnboardScreen from './pages/OnboardingScreen/OnBoarding';
 
 function AppRouter({handleLoginSuccess,token,data,toolData, toolExecuteData, setSelectedChip, setRole,isExecuting,
   setIsExecuting,}) {

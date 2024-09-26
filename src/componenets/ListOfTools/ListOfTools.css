@@ -1,0 +1,60 @@
+/* src/DataTable.css */
+ table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-family: 'normal normal medium 16px/19px Roboto';
+}
+
+/* th,
+td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}  */
+
+th {
+    cursor: pointer;
+}
+
+/* input[type="text"] {
+    margin-bottom: 10px;
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
+} */
+
+.pagination {
+    margin-top: 10px;
+}
+
+button {
+    margin: 5px;
+    padding: 5px 10px;
+}
+
+.search_button {
+    /* Layout Properties */
+    top: 159px;
+    left: 50px;
+    width: 350px;
+    height: 42px;
+    /* UI Properties */
+    background: transparent
+      linear-gradient(180deg, #403480 0%, #141653 100%) 0% 0% no-repeat
+      padding-box;
+    box-shadow: 0px 0px 5px #00000080;
+    border-radius: 8px;
+    opacity: 1;
+  }
+
+/* .MuiInputBase-input.css-yz9k0d-MuiInputBase-input {
+    color: white;
+} */
+
+
+/* .MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation8.MuiPopover-paper.MuiMenu-paper.MuiMenu-paper.css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper{
+    background-color:transparent linear-gradient(245deg, #1C0D46 0%, #1C1C42 100%) 0% 0% no-repeat padding-box;
+    color: #1c1444;
+} */
+
