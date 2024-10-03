@@ -24,8 +24,8 @@ import Chip from "@mui/material/Chip";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
-import nokia_logo from "../../assests/images/nokia_logo.svg";
-import "../HeaderBar/HeaderBar.css";
+import nokia_logo from "../../Assests/images/nokia_logo.svg";
+import "../HeaderBar/headerBar.css";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import Snackbar from "@mui/material/Snackbar";
 
@@ -71,14 +71,13 @@ function HeaderBar({ handleLogoutApp, selectedChip }) {
   const [roles, setRoles] = useState([
     { value: "Normal User", label: "Normal User" },
     { value: "Admin", label: "Admin" },
-    // { value: "Super Admin", label: "Super Admin" },
+    
   ]);
   const [usernameLoc, setUserNameLoc] = useState("");
   const [roleLoc, setRoleLoc] = useState("");
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
-  // const [showStatistics, setShowStatistics] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -87,10 +86,6 @@ function HeaderBar({ handleLogoutApp, selectedChip }) {
       const data = JSON.parse(userData);
       setUserNameLoc(data.username);
       setRoleLoc(data.role);
-      // if (data.role === "Normal User") {
-      //   setSelectedChipState("dashboard");
-      //   navigate("/dashboard", { replace: true });
-      // }
     } else {
       console.log("No User data found");
     }
@@ -106,9 +101,7 @@ function HeaderBar({ handleLogoutApp, selectedChip }) {
   const handleChipClick = (chip, path) => {
     setSelectedChipState(chip);
     navigate(path, { replace: true });
-    // if (chip === "dashboard") {
-    //   setShowStatistics(true);
-    // }
+
   };
 
   const handleDrawerToggle = () => {

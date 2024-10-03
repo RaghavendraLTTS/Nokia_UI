@@ -702,12 +702,12 @@ function UserScreen({ data, executeData, isExecuting, setIsExecuting }) {
                             {...params}
                             fullWidth
                             sx={{
-                              // Remove the default border from the TextField
+
                               "& .MuiOutlinedInput-root": {
-                                border: "none !important", // Remove the default border
+                                border: "none ", 
                                 "&.Mui-focused .MuiOutlinedInput-notchedOutline":
                                   {
-                                    borderWidth: "0 !important", // Remove the focused border
+                                    borderWidth: "0 ", 
                                   },
                               },
                             }}
@@ -847,7 +847,7 @@ function UserScreen({ data, executeData, isExecuting, setIsExecuting }) {
             <span style={textStyle}>Pre Process Instance Configuration:</span>
             {selectedTname.map((tname) => (
               <Chip
-                // label={tname}
+                
                 label={
                   tname === 'PCI' ? 'PCI-Anomaly' :
                   tname === 'RSI' ? 'RSI-Anomaly' :

@@ -16,21 +16,18 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import Cron from "react-cron-generator";
 import cronParser from "cron-parser";
-import "../CronGenerator/cronGenerator.css";
+import "../../componenets/CronGenerator/cronGenerator.css";
 import { format, parse } from "date-fns";
 import { styled } from "@mui/system";
 import ManageAccountsRoundedIcon from "@mui/icons-material/ManageAccountsRounded";
 import AccountTreeRoundedIcon from "@mui/icons-material/AccountTreeRounded";
 import AccessAlarmIcon from "@mui/icons-material/AccessAlarm";
 import ConstructionRoundedIcon from "@mui/icons-material/ConstructionRounded";
-import Container from "@mui/material/Container";
-import Tooltip from "@mui/material/Tooltip";
-import "../UserScreen/user.css";
-import FailedTransactions from "../FailedTransactions/failedTransations";
+import "./User.css";
 import { CircularProgress } from "@mui/material";
-import ExecuteToolInfo from "./executeToolInfo";
+import ExecuteToolInfo from "../../componenets/ExecuteToolInfo/ExecuteToolInfo";
 import { useNavigate } from "react-router-dom";
-import UserSummary from "./userSummary";
+import UserSummary from "../../componenets/UserSummary/UserSummary";
 
 const textStyle = {
   position: "relative",
@@ -99,7 +96,6 @@ function UserScreen({ data, executeData, isExecuting, setIsExecuting }) {
   const [scheduledTime, setscheduledTime] = useState(null);
   const { vertical, horizontal, open } = state;
   const [timeCycle, settimeCycle] = useState("");
-  // const [manual, setManual] = useState("");
   const [displayCron, setDisplayCron] = useState(false);
   const [schedulerType, setSchedulerType] = useState("manual");
   const [isTimerSet, setisTimerSet] = useState(false);
@@ -111,7 +107,6 @@ function UserScreen({ data, executeData, isExecuting, setIsExecuting }) {
   const [second, setSecond] = useState("");
   const [toolNames, setToolNames] = useState([]);
   const [isClicked, setIsClicked] = useState(false);
-  // const [isExecuting, setIsExecuting] = useState(false);
   const navigate = useNavigate();
   const { username } = JSON.parse(localStorage.getItem('token'));
   console.log(username);
@@ -381,13 +376,10 @@ function UserScreen({ data, executeData, isExecuting, setIsExecuting }) {
 
   const handleExecuteClick = useCallback(
     (newState) => () => {
-      // setState({ ...newState, open: true });
-      // setIsClicked(!isClicked);
       setIsExecuting(true);
       setShouldExecute(true);
     },
     []
-    // [isClicked]
   );
 
   const handleClose = useCallback(() => {
@@ -555,7 +547,6 @@ function UserScreen({ data, executeData, isExecuting, setIsExecuting }) {
                                 textOverflow: "ellipsis",
                               }}
                             >
-                              {/* {selected.join(", ")} */}
                               {selected
                                 .map((tname) =>
                                   tname === "PCI"
@@ -569,14 +560,12 @@ function UserScreen({ data, executeData, isExecuting, setIsExecuting }) {
                                 .join(", ")}
                             </div>
                           )}
-                          // style={{ color: "#a9c2ff" }}
                         >
                           {uniqueTnames.map((tname) => (
                             <MenuItem key={tname} value={tname}>
                               <Checkbox
                                 checked={selectedTname.indexOf(tname) > -1}
                               />
-                              {/* <ListItemText primary={tname} /> */}
                               <ListItemText
                                 primary={
                                   tname === "PCI"
@@ -604,9 +593,7 @@ function UserScreen({ data, executeData, isExecuting, setIsExecuting }) {
             </StyledButton>
 
             <StyledButton
-              // className="execute"
               className={isClicked ? "execute-clicked" : "execute"}
-              // onClick={handleExecuteClick()}
               onClick={handleExecuteClick({
                 vertical: "top",
                 horizontal: "right",
@@ -698,7 +685,6 @@ function UserScreen({ data, executeData, isExecuting, setIsExecuting }) {
                   <Grid sx={{ minWidth: 236 }}>
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                       <DateTimePicker
-                        // label="Scheduled Time"
                         value={parse(
                           scheduledTime,
                           "yyyy-MM-dd'T'HH:mm:ssxxx",
@@ -718,10 +704,10 @@ function UserScreen({ data, executeData, isExecuting, setIsExecuting }) {
                             sx={{
                               // Remove the default border from the TextField
                               "& .MuiOutlinedInput-root": {
-                                border: "none !important", // Remove the default border
+                                border: "none ", // Remove the default border
                                 "&.Mui-focused .MuiOutlinedInput-notchedOutline":
                                   {
-                                    borderWidth: "0 !important", // Remove the focused border
+                                    borderWidth: "0 ", // Remove the focused border
                                   },
                               },
                             }}
@@ -751,7 +737,6 @@ function UserScreen({ data, executeData, isExecuting, setIsExecuting }) {
                       container
                       direction="row"
                       spacing={{ xs: 1 }}
-                      // columns={{ xs: 4, sm: 8, md: 12 }}
                     >
                       <Grid item xs={2}>
                         <TextField
@@ -834,7 +819,6 @@ function UserScreen({ data, executeData, isExecuting, setIsExecuting }) {
                     <Grid
                       container
                       spacing={{ xs: 2, md: 1 }}
-                      // columns={{ xs: 1, sm: 1, md: 8 }}
                     >
                       <Cron value={timeCycle} onChange={handleCronChange} />
                       {displayCron && (

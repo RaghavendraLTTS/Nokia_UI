@@ -1,3 +1,4 @@
+
 import React, { useState,useEffect,useMemo } from "react";
 import {
   Table,
@@ -377,7 +378,6 @@ const data = [
   
 ];
 
-{/*--------------- { Please remove unused code}------------------- */}
 const filterOptions = Object.keys(data[0]).reduce((acc, key) => {
   acc[key] = [...new Set(data.map((item) => String(item[key]).toLowerCase()))];
   return acc;
@@ -575,10 +575,10 @@ const ListofTools = () => {
     <>
        <TableContainer
     style={{
-      // overflowY: "auto",
+
       display: "flex",
       flexDirection: "column",
-      // height:"400px"
+     
     }}
     >
       <Table>
@@ -586,7 +586,7 @@ const ListofTools = () => {
           sx={{
               position: "sticky",
               top: 0,
-              backgroundColor: "#282468", // match the background color of the table
+              backgroundColor: "#282468", 
               zIndex: 1,
               textTransform: "capitalize",
               border: "1px solid #4d5987",
@@ -695,7 +695,6 @@ const ListofTools = () => {
              key={index}>
               {Object.values(row).map((cell, cellIndex) => {
                 if (cellIndex === 5) {
-                  // Render OutputCell component for the output column
                   return <OutputCell value={cell} row={row} key={cellIndex} />;
                 } else {
                   return (
