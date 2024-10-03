@@ -1,9 +1,10 @@
+
 import React, { useState } from "react";
 import { Box, Tab, Tabs, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { styled } from "@mui/system";
 import Container from "@mui/material/Container";
-import "../Dashboard/dashboard.css";
+import "../Dashbaord/dashboard.css";
 import ListofTools from "./listofTools";
 
 const tabStyle = {
@@ -45,11 +46,7 @@ function Dashboard() {
 
   return (
     <div className="userStyle">
-    {/* // <Box mt={2} sx={{ flexGrow: 1 }}> */}
-      {/* <StyledContainerDropDown
-        style={{ maxWidth: "100%", height:"auto", marginTop: "10px", }}
-        className="dropDown-selection"
-      > */}
+    
       
         <Grid container spacing={2}>
           <Grid item xs={12}>
@@ -58,9 +55,7 @@ function Dashboard() {
               <ListofTools/>            
            </Grid>
         </Grid> 
-     
-      {/* </StyledContainerDropDown> */}
-    {/* // </Box> */}
+
     </div>  
   );
 }

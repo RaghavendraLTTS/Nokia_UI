@@ -116,13 +116,6 @@ const StyledSelect = styled(Select)({
   },
 });
 
-// const filterOptions = Object.keys(initialData.data[0]).reduce((acc, key) => {
-//   acc[key] = [
-//     ...new Set(initialData.data.map((item) => String(item[key]).toLowerCase())),
-//   ];
-//   return acc;
-// }, {});
-
 const DashboardScreen = () => {
   const location = useLocation();
   const responsesData = location.state.responsesData.toolData;
@@ -150,11 +143,6 @@ const DashboardScreen = () => {
   const [timePeriod, setTimePeriod] = useState("");
   const [chartData, setChartData] = useState([]);
   const [columnAction, setColumnAction] = useState({});
-
-  // const filters = Object.keys(responsesData.data.data[0]).reduce((acc, key) => {
-  //   acc[key] = responsesData.data.data.map((item) => String(item[key]).toLowerCase());
-  //   return acc;
-  // }, {});
 
   const filterOptions = useMemo(() => {
     const filteredData = responsesData.data.data.filter((item) => {
@@ -193,7 +181,7 @@ const DashboardScreen = () => {
   ];
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const apiLink = "http://localhost:8083/api/report";
+    const apiLink = "http://localhost:8091/api/report";
     const postData = {
       startTime: startTime.toString(),
       endTime: endTime.toString(),
@@ -467,7 +455,6 @@ const DashboardScreen = () => {
       ];
       break;
     default:
-      // handle unknown toolName
       console.error(`Unknown toolName: ${responsesData.toolName}`);
   }
 
@@ -640,7 +627,7 @@ const DashboardScreen = () => {
       type: "pattern",
       pattern: "solid",
       fgColor: { argb: "FFADD8E6" },
-    }; // Light blue
+    }; 
 
     responsesData.data.data.forEach((row) => {
       sheet1.addRow(Object.values(row));
@@ -658,12 +645,11 @@ const DashboardScreen = () => {
 
     const headers2 = Object.keys(responsesData.data.report);
     sheet2.addRow(headers2);
-    // sheet2.getRow(1).font = { bold: true, color: { argb: 'FF000080' } }; // Light blue
     sheet2.getRow(1).fill = {
       type: "pattern",
       pattern: "solid",
       fgColor: { argb: "FFADD8E6" },
-    }; // Light blue
+    }; 
 
     sheet2.addRow(Object.values(responsesData.data.report));
 
@@ -691,10 +677,6 @@ const DashboardScreen = () => {
   };
 
   return (
-    // <StyledContainerDropDown
-    //   style={{ maxWidth: "100%", height: "950px", marginTop: "10px" }}
-    //   className="dropDown-selection"
-    // >
     <div className="userStyle">
       <Grid container spacing={2}>
         <Grid item xs={8}>
@@ -806,33 +788,33 @@ const DashboardScreen = () => {
                 sx={{
                   position: "sticky",
                   top: 0,
-                  backgroundColor: "#282468", // match the background color of the table
+                  backgroundColor: "#282468", 
                   zIndex: 1,
-                  color: "#fff !important",
+                  color: "#fff",
                   border: "1px solid #4d5987",
                   "& th": {
-                    padding: "4px 8px", // reduce padding
-                    fontSize: 14, // reduce font size
-                    color: "#fff !important",
-                    borderBottom: "none!important",
+                    padding: "4px 8px", 
+                    fontSize: 14, 
+                    color: "#fff ",
+                    borderBottom: "none",
                     borderRight: "1px solid #4d5987",
                     "&:last-child": {
                       borderRight: "none",
                     },
                     "& .MuiTableSortLabel-icon": {
-                      color: "#fff !important",
+                      color: "#fff ",
                     },
                   },
                 }}
               >
                 <TableRow
                   sx={{
-                    color: "#fff !important",
+                    color: "#fff ",
                     opacity: 1,
                     font: "16px Robotonormal normal medium 16px/19px Roboto",
                     border: "1px solid #4d5987",
-                    padding: "4px 8px", // reduce padding
-                    fontSize: 14, // reduce font size
+                    padding: "4px 8px", 
+                    fontSize: 14, 
                   }}
                 >
                   {selectedColumns.map((column) => (
@@ -841,7 +823,7 @@ const DashboardScreen = () => {
                         style={{
                           display: "flex",
                           alignItems: "center",
-                          color: "#fff !important",
+                          color: "#fff ",
                         }}
                       >
                         {column}
@@ -856,7 +838,7 @@ const DashboardScreen = () => {
                             minWidth: 2,
                             marginLeft: "1px",
                             textAlign: "center",
-                            color: "#fff !important",
+                            color: "#fff ",
                           }}
                         >
                           <Select
@@ -868,7 +850,7 @@ const DashboardScreen = () => {
                               PaperProps: {
                                 style: {
                                   backgroundColor: "#282468",
-                                  color: "#fff !important",
+                                  color: "#fff ",
                                 },
                               },
                             }}
@@ -885,10 +867,10 @@ const DashboardScreen = () => {
                                 >
                                   <TextField
                                     InputLabelProps={{
-                                      style: { color: "#fff !important" },
+                                      style: { color: "#fff " },
                                     }}
                                     InputProps={{
-                                      style: { color: "#fff !important" },
+                                      style: { color: "#fff " },
                                     }}
                                     label="Search"
                                     value={searchTerms[column] || ""}
@@ -898,9 +880,8 @@ const DashboardScreen = () => {
                                     variant="standard"
                                     style={{
                                       marginRight: "16px",
-                                      color: "#fff !important",
+                                      color: "#fff ",
                                     }}
-                                    //placeholder="TYPE HERE"
                                   />
                                 </FormControl>
                               </MenuItem>
@@ -923,16 +904,16 @@ const DashboardScreen = () => {
                                     }
                                     style={{
                                       marginLeft: "1px",
-                                      color: "#fff !important",
+                                      color: "#fff ",
                                     }}
                                     InputLabelProps={{
-                                      style: { color: "#fff !important" },
+                                      style: { color: "#fff " },
                                     }}
                                     MenuProps={{
                                       PaperProps: {
                                         style: {
                                           backgroundColor: "#1C0D46",
-                                          color: "#fff !important",
+                                          color: "#fff",
                                         },
                                       },
                                     }}
@@ -958,7 +939,7 @@ const DashboardScreen = () => {
                                   <StyledInputLabel
                                     shrink={false}
                                     style={{
-                                      color: "#fff !important",
+                                      color: "#fff ",
                                       marginLeft: "15px",
                                     }}
                                   >
@@ -968,14 +949,12 @@ const DashboardScreen = () => {
                                     multiple
                                     value={selectedColumns}
                                     onChange={handleColumnChange}
-                                    //input={<OutlinedInput label="Columns" />}
-                                    //renderValue={(selected) => selected.join(", ")}
                                     renderValue={() => null}
                                     MenuProps={{
                                       PaperProps: {
                                         style: {
                                           backgroundColor: "#1C0D46",
-                                          color: "#fff !important",
+                                          color: "#fff ",
                                         },
                                       },
                                     }}
@@ -1034,8 +1013,8 @@ const DashboardScreen = () => {
                   <TableRow
                     sx={{
                       "& td": {
-                        padding: "4px 8px", // reduce padding
-                        fontSize: 14, // reduce font size
+                        padding: "4px 8px", 
+                        fontSize: 14, 
                       },
                     }}
                     key={index}
@@ -1043,10 +1022,10 @@ const DashboardScreen = () => {
                     {selectedColumns.map((column, cellIndex) => (
                       <TableCell
                         sx={{
-                          color: "#fff !important",
+                          color: "#fff ",
                           border: "1px solid #4d5987",
-                          padding: "4px 8px", // reduce padding
-                          fontSize: 14, // reduce font size
+                          padding: "4px 8px",
+                          fontSize: 14,
                         }}
                         key={cellIndex}
                       >
@@ -1062,13 +1041,12 @@ const DashboardScreen = () => {
           <Grid xs={12}>
             <TablePagination
               component="div"
-              sx={{ color: "#fff !important" }}
+              sx={{ color: "#fff" }}
               count={sortedData.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
-              //style={{ flexShrink: 0 }}
             />
           </Grid>
         </Grid>
@@ -1093,7 +1071,7 @@ const DashboardScreen = () => {
                 onChange={(e) => setSelectedChart(e.target.value)}
                 label="Select Chart"
                 style={{
-                  color: "#fff", // Add this line to change the text color of the selected value
+                  color: "#fff", 
                 }}
                 MenuProps={{
                   PaperProps: {

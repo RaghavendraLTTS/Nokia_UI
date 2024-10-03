@@ -1,3 +1,5 @@
+
+
 import React, { useState } from "react";
 import { Box, Tab, Tabs, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
@@ -6,7 +8,6 @@ import Container from "@mui/material/Container";
 import "../Dashbaord/Dashboard.css";
 import ListofTools from "../../componenets/ListOfTools/ListOfTools";
 
-{/*--------------- { Please remove unused code}------------------- */}
 const tabStyle = {
   textAlign: "left",
   color: "#FFFFFFCC",
@@ -23,7 +24,7 @@ const toolStyle = {
   opacity: 1,
 };
 
-{/*--------------- { Please remove unused code}------------------- */}
+
 const StyledContainerDropDown = styled(Container)({ 
   width: "97%",
   maxWidthh: "97%",
@@ -39,20 +40,14 @@ const StyledContainerDropDown = styled(Container)({
 });
 
 function Dashboard() {
-  const [currentTabIndex, setCurrentTabIndex] = useState(0); {/*--------------- { Please remove unused code}------------------- */}
+  const [currentTabIndex, setCurrentTabIndex] = useState(0); 
 
-  const handleTabChange = (e, tabIndex) => { {/*--------------- { Please remove unused code}------------------- */}
+  const handleTabChange = (e, tabIndex) => { 
     setCurrentTabIndex(tabIndex);
   };
 
   return (
     <div className="userStyle">
-      {/*--------------- { Please remove commented code}------------------- */}
-    {/* // <Box mt={2} sx={{ flexGrow: 1 }}> */}
-      {/* <StyledContainerDropDown
-        style={{ maxWidth: "100%", height:"auto", marginTop: "10px", }}
-        className="dropDown-selection"
-      > */}
       
         <Grid container spacing={2}>
           <Grid item xs={12}>
@@ -61,9 +56,6 @@ function Dashboard() {
               <ListofTools/>            
            </Grid>
         </Grid> 
-     
-      {/* </StyledContainerDropDown> */}
-    {/* // </Box> */}
     </div>  
   );
 }

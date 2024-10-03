@@ -1,3 +1,5 @@
+
+
 import React, { useState,useEffect,useMemo } from "react";
 import {
   Table,
@@ -456,7 +458,7 @@ const OutputCell = ({ value, row ,onViewClick }) => {
     <TableCell sx={{ color: "#6477b1", border: "1px solid #4d5987" }}>
       <Box sx={{ flexGrow: 1 }}>
         <Grid container direction="row" spacing={0}>
-          <Grid sx={{cursor:"pointer" , color:"#fff !important"}}item xs={8}>
+          <Grid sx={{cursor:"pointer" , color:"#fff"}}item xs={8}>
             <Typography sx={{fontSize:"0.875rem"}}>
             <u onClick={handleClick}>{value}</u>
             </Typography>
@@ -576,10 +578,8 @@ const ListofTools = () => {
     <>
        <TableContainer
     style={{
-      // overflowY: "auto",
       display: "flex",
-      flexDirection: "column",
-      // height:"400px"
+      flexDirection: "column"
     }}
     >
       <Table>
@@ -587,7 +587,7 @@ const ListofTools = () => {
           sx={{
               position: "sticky",
               top: 0,
-              backgroundColor: "#282468", // match the background color of the table
+              backgroundColor: "#282468", 
               zIndex: 1,
               textTransform: "capitalize",
               border: "1px solid #4d5987",
@@ -601,7 +601,7 @@ const ListofTools = () => {
             {Object.keys(data[0]).map((column) => (
               <TableCell
               sx={{
-                color: "#fff !important",
+                color: "#fff ",
                 opacity: 1,
                 font: "16px Robotonormal normal medium 16px/19px Roboto",
                 border: "1px solid #4d5987",
@@ -611,11 +611,6 @@ const ListofTools = () => {
                 key={column}
               >
                 <Box sx={{ flexGrow: 1 }}>
-                  {/* <Grid container direction="row" spacing={0}>
-                    <Grid item xs={8}>
-                      <Typography>{column}</Typography>
-                    </Grid>
-                  </Grid> */}
                   <Grid container direction="row" spacing={0}>
                       <Grid mt={2} item xs={8}>
                         {column !== "password" ? (
@@ -637,7 +632,7 @@ const ListofTools = () => {
                        (
                         <Grid item xs={4} mt={1}>
                           <IconButton
-                            sx={{ color: "#fff !important" }}
+                            sx={{ color: "#fff" }}
                             onClick={() => handleFilterToggle(column)}
                           >
                             <FilterListIcon />
@@ -656,7 +651,7 @@ const ListofTools = () => {
                             >
                               <InputLabel
                                 sx={{
-                                  color: "#fff !important",
+                                  color: "#fff ",
                                   minWidth: "100px",
                                 }}
                               >
@@ -701,13 +696,12 @@ const ListofTools = () => {
              key={index}>
               {Object.values(row).map((cell, cellIndex) => {
                 if (cellIndex === 5) {
-                  // Render OutputCell component for the output column
                   return <OutputCell value={cell} row={row} key={cellIndex} />;
                 } else {
                   return (
                     <TableCell
                     sx={{
-                      color: "#fff !important",
+                      color: "#fff",
                       border: "1px solid #4d5987",
                       padding: "4px 8px", 
                       fontSize: 14, 
@@ -725,7 +719,7 @@ const ListofTools = () => {
       </Table>
     </TableContainer>
     <TablePagination
-        sx={{ color: "#fff !important" }}
+        sx={{ color: "#fff " }}
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
         count={sortedData.length}
