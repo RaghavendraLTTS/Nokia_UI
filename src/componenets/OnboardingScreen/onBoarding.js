@@ -49,7 +49,7 @@ const StyledTextField = styled(TextField)({
   opacity: 0.6,
   left: "1px",
   "& label": {
-    // <--- Add this
+   
     color: "#FFFFFF",
   },
 });
@@ -83,20 +83,7 @@ const StyledButton = styled(Button)({
     margin: "5px",
     color: "#EDF2F5",
   },
-  // "&.execute-clicked": {
-  //   background:
-  //     "transparent linear-gradient(116deg, #7A045D 0%, #B135A1 52%, #9959EC 100%) 0% 0% no-repeat padding-box",
-  //   boxShadow: "0px 0px 5px #00000029",
-  //   border: "1px solid #150B35",
-  //   borderRadius: "10px",
-  //   opacity: 1,
-  //   top: "0px",
-  //   left: "50px",
-  //   width: "110px",
-  //   height: "49px",
-  //   margin: "5px",
-  //   color: "#EDF2F5",
-  // },
+ 
 });
 
 function OnboardScreen({ dataAdd }) {
@@ -130,7 +117,7 @@ function OnboardScreen({ dataAdd }) {
     setState((prevState) => ({
       ...prevState,
       selectedTool1: value,
-      // selectedTool1Label: label, // Update the label of the selected tool
+     
     }));
   };
 
@@ -183,7 +170,7 @@ function OnboardScreen({ dataAdd }) {
       try {
         const response = await fetch(
           "http://localhost:8010/api/saveToolConfig",
-          // "http://wfm-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/saveToolConfig",
+        
 
           {
             method: "POST",
@@ -225,7 +212,7 @@ function OnboardScreen({ dataAdd }) {
       try {
         const response = await fetch(
           "http://localhost:8090/api/updatecpt",
-          // "http://wfm-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/updatecpt",
+        
           {
             method: "POST",
             headers: {
@@ -470,7 +457,7 @@ function OnboardScreen({ dataAdd }) {
                                     textOverflow: "ellipsis",
                                   }}
                                 >
-                                  {/* {selected.map((tool) => tool.name).join(", ")} */}
+                               
                                   {selected
                                     .map((tool) => {
                                       if (tool.name === "PCI")
@@ -485,17 +472,7 @@ function OnboardScreen({ dataAdd }) {
                                 </div>
                               )}
                             >
-                              {/* {dataAdd.map((tool) => (
-                                <MenuItem key={tool.id} value={tool}>
-                                  <Checkbox
-                                    checked={
-                                      state.addPreSelectedTools.indexOf(tool) >
-                                      -1
-                                    }
-                                  />
-                                  <ListItemText primary={tool.name} />
-                                </MenuItem>
-                              ))} */}
+                             
 
                               {dataAdd.map((tool) => (
                                 <MenuItem key={tool.id} value={tool}>
@@ -532,7 +509,7 @@ function OnboardScreen({ dataAdd }) {
                 </StyledButton>
                 <StyledButton
                   className="execute"
-                  // className={state.isClicked ? "execute-clicked" : "execute"}
+                
                   onClick={handleStoreClick({
                     vertical: "top",
                     horizontal: "right",
@@ -559,7 +536,7 @@ function OnboardScreen({ dataAdd }) {
                   <span>Pre Sequential Tools Selected: </span>
                   {state.addPreSelectedTools.map((tool) => (
                     <Chip
-                      // label={tool.name}
+                     
                       label={
                         tool.name === 'PCI' ? 'PCI-Anomaly' :
                         tool.name === 'RSI' ? 'RSI-Anomaly' :
@@ -612,13 +589,9 @@ function OnboardScreen({ dataAdd }) {
                               id="demo-simple-select-filled"
                               value={state.selectedTool1}
                               onChange={handleSelectChange}
-                              // style={{ color: "#a9c2ff" }}
+                              
                             >
-                              {/* {dataAdd.map((tool) => (
-                                <MenuItem key={tool.id} value={tool.name}>
-                                  {tool.name}
-                                </MenuItem>
-                              ))} */}
+                             
                               {dataAdd.map((tool) => (
                                 <MenuItem key={tool.id} value={tool.name}>
                                   {tool.name === "PCI"
@@ -683,7 +656,7 @@ function OnboardScreen({ dataAdd }) {
                                     textOverflow: "ellipsis",
                                   }}
                                 >
-                                  {/* {selected.map((tool) => tool.name).join(", ")} */}
+                                
                                   {selected
                                     .map((tool) => {
                                       if (tool.name === "PCI")
@@ -698,16 +671,7 @@ function OnboardScreen({ dataAdd }) {
                                 </div>
                               )}
                             >
-                              {/* {dataAdd.map((t) => (
-                                <MenuItem key={t.id} value={t}>
-                                  <Checkbox
-                                    checked={
-                                      state.addSelectedTools.indexOf(t) > -1
-                                    }
-                                  />
-                                  <ListItemText primary={t.name} />
-                                </MenuItem>
-                              ))} */}
+                              
                               {dataAdd.map((t) => (
                                 <MenuItem key={t.id} value={t}>
                                   <Checkbox
@@ -743,7 +707,7 @@ function OnboardScreen({ dataAdd }) {
                 </StyledButton>
                 <StyledButton
                   className="execute"
-                  // className={state.isClicked ? "execute-clicked" : "execute"}
+                  
                   onClick={handleSubmitClick({
                     vertical: "top",
                     horizontal: "right",
@@ -771,7 +735,7 @@ function OnboardScreen({ dataAdd }) {
 
                   {state.selectedTool1 && (
                     <Chip
-                      // label={state.selectedTool1}
+                     
                       label={
                         state.selectedTool1 === 'PCI' ? 'PCI-Anomaly' :
                         state.selectedTool1 === 'RSI' ? 'RSI-Anomaly' :
@@ -793,7 +757,7 @@ function OnboardScreen({ dataAdd }) {
                   <span>Pre Sequential Tools Selected: </span>
                   {state.addSelectedTools.map((tool) => (
                     <Chip
-                      // label={tool.name}
+                     
                       label={
                         tool.name === 'PCI' ? 'PCI-Anomaly' :
                         tool.name === 'RSI' ? 'RSI-Anomaly' :

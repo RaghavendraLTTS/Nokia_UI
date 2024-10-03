@@ -6,14 +6,14 @@ import {
   useLocation,
   Navigate
 } from 'react-router-dom';
-import HeaderBar from './componenets/HeaderBar/HeaderBar'
+//import HeaderBar from './componenets/HeaderBar/HeaderBar';
+import HeaderBar from './componenets/HeaderBar/headerBar'
 import LoginPage from './pages/LoginPage/Login'
 import UserScreen from './pages/UserScreen/User'
-import DashboardScreen from './componenets/DashboardScreen/DashboardScreen'
-import Statistics from './componenets/Statistics/Statistics'
+import DashboardScreen from './componenets/DashboardScreen/dashboardScreen'
+import Statistics from './componenets/Statistics/statistics'
 import Dashboard from './pages/Dashbaord/Dashboard';
 import OnboardScreen from './pages/OnboardingScreen/OnBoarding';
-
 function AppRouter({handleLoginSuccess,token,data,toolData, toolExecuteData, setSelectedChip, setRole,isExecuting,
   setIsExecuting,}) {
   // const [selectedChip, setSelectedChip] = useState('');
