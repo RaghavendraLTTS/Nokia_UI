@@ -46,7 +46,7 @@ const StyledTextField = styled(TextField)({
   opacity: 0.6,
   left: "1px",
   "& label": {
-    // <--- Add this
+  
     color: "#FFFFFF",
   },
 });
@@ -113,7 +113,7 @@ function OnboardScreen({ dataAdd }) {
     setState((prevState) => ({
       ...prevState,
       selectedTool1: value,
-      // selectedTool1Label: label, // Update the label of the selected tool
+     
     }));
   };
 
@@ -166,7 +166,7 @@ function OnboardScreen({ dataAdd }) {
       try {
         const response = await fetch(
           "http://localhost:8010/api/saveToolConfig",
-          // "http://wfm-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/saveToolConfig",
+        
 
           {
             method: "POST",
@@ -208,7 +208,7 @@ function OnboardScreen({ dataAdd }) {
       try {
         const response = await fetch(
           "http://localhost:8090/api/updatecpt",
-          // "http://wfm-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/updatecpt",
+          
           {
             method: "POST",
             headers: {
@@ -581,7 +581,7 @@ function OnboardScreen({ dataAdd }) {
                               id="demo-simple-select-filled"
                               value={state.selectedTool1}
                               onChange={handleSelectChange}
-                              // style={{ color: "#a9c2ff" }}
+                              
                             >
                               {dataAdd.map((tool) => (
                                 <MenuItem key={tool.id} value={tool.name}>
@@ -647,7 +647,7 @@ function OnboardScreen({ dataAdd }) {
                                     textOverflow: "ellipsis",
                                   }}
                                 >
-                                  {/* {selected.map((tool) => tool.name).join(", ")} */}
+                                 
                                   {selected
                                     .map((tool) => {
                                       if (tool.name === "PCI")
@@ -697,7 +697,7 @@ function OnboardScreen({ dataAdd }) {
                 </StyledButton>
                 <StyledButton
                   className="execute"
-                  // className={state.isClicked ? "execute-clicked" : "execute"}
+                 
                   onClick={handleSubmitClick({
                     vertical: "top",
                     horizontal: "right",

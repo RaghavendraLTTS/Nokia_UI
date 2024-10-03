@@ -24,8 +24,9 @@ import Chip from "@mui/material/Chip";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
-import nokia_logo from "../../assests/images/nokia_logo.svg";
-import "../HeaderBar/HeaderBar.css";
+import nokia_logo from "../../Assests/images/nokia_logo.svg";
+import "../HeaderBar/headerBar.css";
+
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import Snackbar from "@mui/material/Snackbar";
 

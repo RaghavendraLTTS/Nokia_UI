@@ -16,10 +16,10 @@
 }
 
 .css-mtwa5k{
-  color: #FFFFFF !important;
+  color: #FFFFFF ;
 }
 .css-2bxn45{
-  color: #FFFFFF !important;
+  color: #FFFFFF ;
 }
 
 .textStyle {
@@ -33,31 +33,31 @@
 
 .MuiPickersLayout-contentWrapper.css-13xe9rf-MuiPickersLayout-contentWrapper {
   background: transparent linear-gradient(180deg, #403480 0%, #141653 100%) 0%
-    0% no-repeat padding-box !important;
+    0% no-repeat padding-box ;
 }
 
 .MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation8.MuiPopover-paper.MuiMenu-paper.MuiMenu-paper.css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
-  background-color: #282468 !important;
-  color: #a9c2ff !important;
-  font: "normal normal 600 16px Raleway" !important;
-  letter-spacing: 0px !important;
-  opacity: 1 !important;
+  background-color: #282468 ;
+  color: #a9c2ff ;
+  font: "normal normal 600 16px Raleway" ;
+  letter-spacing: 0px;
+  opacity: 1 ;
 }
 
 .MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.MuiSelect-icon.MuiSelect-iconFilled.css-hfutr2-MuiSvgIcon-root-MuiSelect-icon {
-  color: #FFFFFF !important;
+  color: #FFFFFF ;
 }
 
 .MuiFormLabel-root.MuiInputLabel-root.MuiInputLabel-formControl.MuiInputLabel-animated.MuiInputLabel-sizeMedium.MuiInputLabel-outlined.MuiFormLabel-colorPrimary.MuiInputLabel-root.MuiInputLabel-formControl.MuiInputLabel-animated.MuiInputLabel-sizeMedium.MuiInputLabel-outlined.css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root {
-  color: #FFFFFF !important;
+  color: #FFFFFF ;
 }
 
 .MuiFormLabel-root.MuiInputLabel-root.MuiInputLabel-formControl.MuiInputLabel-animated.MuiInputLabel-sizeMedium.MuiInputLabel-filled.MuiFormLabel-colorPrimary.MuiInputLabel-root.MuiInputLabel-formControl.MuiInputLabel-animated.MuiInputLabel-sizeMedium.MuiInputLabel-filled.css-e4w4as-MuiFormLabel-root-MuiInputLabel-root{
-  color: #FFFFFF !important;
+  color: #FFFFFF ;
   opacity: 1;
 }
 .MuiInputBase-root.MuiFilledInput-root.MuiFilledInput-underline.MuiInputBase-colorPrimary.MuiInputBase-formControl.css-batk84-MuiInputBase-root-MuiFilledInput-root{
-  color: #FFFFFF !important;
+  color: #FFFFFF ;
 }
 
 .onboardStyle{
