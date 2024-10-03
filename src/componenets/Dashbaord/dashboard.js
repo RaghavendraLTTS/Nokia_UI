@@ -3,7 +3,7 @@ import { Box, Tab, Tabs, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { styled } from "@mui/system";
 import Container from "@mui/material/Container";
-import "../Dashbaord/dashboard.css";
+import "../Dashboard/dashboard.css";
 import ListofTools from "./listofTools";
 
 const tabStyle = {
