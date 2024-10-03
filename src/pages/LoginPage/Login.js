@@ -17,7 +17,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import InputAdornment from "@mui/material/InputAdornment";
 import styled from "@emotion/styled/macro";
 import { useNavigate } from "react-router-dom";
-import nokia_logo from "../../assests/images/nokia_logo.svg";
+import nokia_logo from "../../Assests/images/nokia_logo.svg";
 import "../LoginPage/Login.css";
 
 const StyledLabel = styled.span`
@@ -87,7 +87,7 @@ const LoginPage = (props) => {
   return (
     <div
       style={{
-        backgroundImage: `url(${require("../../assests/images/image5.jpg")})`,
+        backgroundImage: `url(${require("../../Assests/images/image5.jpg")})`,
         backgroundSize: "cover",
         position: "relative",
       }}

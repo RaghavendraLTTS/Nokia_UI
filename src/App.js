@@ -6,14 +6,13 @@ import {
   useLocation,
   Navigate
 } from 'react-router-dom';
-import HeaderBar from './componenets/HeaderBar/HeaderBar'
+import HeaderBar from './componenets/HeaderBar/headerBar'
 import LoginPage from './pages/LoginPage/Login'
 import UserScreen from './pages/UserScreen/User'
-import DashboardScreen from './componenets/DashboardScreen/DashboardScreen'
-import Statistics from './componenets/Statistics/Statistics'
+import DashboardScreen from './componenets/DashboardScreen/dashboardScreen'
+import Statistics from './componenets/Statistics/statistics'
 import Dashboard from './pages/Dashbaord/Dashboard';
 import OnboardScreen from './pages/OnboardingScreen/OnBoarding';
-
 function AppRouter({handleLoginSuccess,token,data,toolData, toolExecuteData, setSelectedChip, setRole,isExecuting,
   setIsExecuting,}) {
   // const [selectedChip, setSelectedChip] = useState('');
@@ -105,7 +104,7 @@ function App() {
       const fetchToolData = async () => {
         try {
           // const resp = await fetch('http://localhost:8081/api/getTools');
-          const resp = await fetch('http://localhost:8083/api/getToolsAll'); // Unique All Tools
+          const resp = await fetch('http://localhost:8086/api/getToolsAll'); // Unique All Tools
           // const resp = await fetch("http://wfm-toolconfig.production.k-meain.he-pi-os-ohn-004.k8s.dyn.nesc.nokia.net/api/getTools")
           const res = await resp.json();
           setToolData(res);
